@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chihuobao.mapper.search.AddressSearchMapper" >
+	<select id="findShopByShopName" parameterType="String" resultType="com.chihuobao.po.Shop">
+		select * from shop where shopname like "%"#{shopname}"%"
+	</select>                                                                                                                                                                         
+	
+	<!-- 根据用户经纬度找到附件商家 -->
+	<select id="selectShopByUserPoint" parameterType="com.chihuobao.vo.LngAndLatVo" resultType="com.chihuobao.po.Shop">
+		select * from 
+(select * from shop where longitude &lt; ( #{lng} + #{rangeLng} ) and longitude &gt; ( #{lng} - #{rangeLng} ) ) as lngandid
+		where latitude &lt; ( #{lat} + #{rangeLat} ) and latitude &gt; ( #{lat} - #{rangeLat} )
+	</select>
+</mapper>

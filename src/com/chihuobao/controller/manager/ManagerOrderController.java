@@ -138,11 +138,11 @@ public class ManagerOrderController {
 		// 将接收到的id字符串转换位Integer类型
 		String[] idStringList = ids.split(",");
 
-		List<Integer> idList = new ArrayList<Integer>();
+		List<Long> idList = new ArrayList<Long>();
 
 		for (int i = 0; i < idStringList.length; i++) {
 
-			idList.add(Integer.parseInt(idStringList[i]));
+			idList.add(Long.parseLong(idStringList[i]));
 		}
 
 		ManagerOrderVo vo = new ManagerOrderVo();
@@ -177,7 +177,7 @@ public class ManagerOrderController {
 	 * @return
 	 */
 	@RequestMapping(value="/orderGoodsDetail.action")
-	public String orderGoodsDetail(Integer id, Model model) {
+	public String orderGoodsDetail(Long id, Model model) {
 
 		List<ManagerOrderGoods> vo = orderService.selectOrderGoodsByOrderId(id);
 		

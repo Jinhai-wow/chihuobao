@@ -61,7 +61,7 @@ public class ManagerOrderServiceImpl implements ManagerOrderService {
 
 	//查找当前订单的所有商品
 	@Override
-	public List<ManagerOrderGoods> selectOrderGoodsByOrderId(Integer id) {
+	public List<ManagerOrderGoods> selectOrderGoodsByOrderId(Long id) {
 		
 		return managerOrderMapper.selectOrderGoodsByOrderId(id);
 	}

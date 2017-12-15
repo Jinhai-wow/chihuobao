@@ -332,7 +332,7 @@ $.timepicker.timeRange(
 								<c:forEach items="${ordersList}" var="list">
 									<tr>
 										<td style="text-align: center;vertical-align: middle;"><fmt:formatDate
-												value="${list.creatime }" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+												value="${list.createtime }" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 										<td style="text-align: center;vertical-align: middle;"><c:forEach
 												items="${list.ordergoodsList }" var="goods">
 										${goods.goodsname }<br>
@@ -349,6 +349,7 @@ $.timepicker.timeRange(
 												<c:when test="${6 eq list.orderstate }">申请取消订单</c:when>
 												<c:when test="${7 eq list.orderstate }">客户已评价</c:when>
 												<c:when test="${8 eq list.orderstate }">取消失败，待发货</c:when>
+												<c:when test="${9 eq list.orderstate }">该订单已失效</c:when>
 											</c:choose></td>
 										<td
 											style="text-align: center;vertical-align: middle;line-height: 2em;">
@@ -418,7 +419,12 @@ $.timepicker.timeRange(
 													<a id="${list.id }" href="javascript:;"
 														class="btn btn-primary btn-xs" data-toggle="modal"
 														data-target="#backRefuseModal"
-														onclick="sendOrderSetId(this)">发货</a>
+														onclick="sendOrderSetId(this)">发货</a><br>
+													<a
+														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
+														class="btn btn-primary btn-xs">查看</a>
+												</c:when>
+												<c:when test="${9 eq list.orderstate }">
 													<a
 														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
 														class="btn btn-primary btn-xs">查看</a>

@@ -21,13 +21,13 @@ public class ManagerOrderVo implements Serializable{
 	
 	private Integer page;
 	private Integer rows;
-	private List<Integer> ids;
+	private List<Long> ids;
 	
-	private Integer id;
+	private Long id;
 	private Integer userId;
 	private Integer shopId;
 	private String shopName;
-	private Date arriveTime;
+	private String arriveTime;
 	private String deliverMethod;
 	private String userAddress;
 	private String payMethod;
@@ -42,11 +42,18 @@ public class ManagerOrderVo implements Serializable{
 	
 	
 	
-	public List<Integer> getIds() {
+	
+	public List<Long> getIds() {
 		return ids;
 	}
-	public void setIds(List<Integer> ids) {
+	public void setIds(List<Long> ids) {
 		this.ids = ids;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public Integer getPage() {
 		return page;
@@ -97,12 +104,7 @@ public class ManagerOrderVo implements Serializable{
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	
 	public Integer getUserId() {
 		return userId;
 	}
@@ -121,10 +123,11 @@ public class ManagerOrderVo implements Serializable{
 	public void setShopName(String shopName) {
 		this.shopName = shopName;
 	}
-	public Date getArriveTime() {
+	
+	public String getArriveTime() {
 		return arriveTime;
 	}
-	public void setArriveTime(Date arriveTime) {
+	public void setArriveTime(String arriveTime) {
 		this.arriveTime = arriveTime;
 	}
 	public String getDeliverMethod() {
@@ -151,6 +154,7 @@ public class ManagerOrderVo implements Serializable{
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+	
 	
 	
 }

@@ -20,6 +20,6 @@ public interface ManagerOrderMapper {
 
 	void deleteOrderByids(ManagerOrderVo vo);
 
-	List<ManagerOrderGoods> selectOrderGoodsByOrderId(Integer id);
+	List<ManagerOrderGoods> selectOrderGoodsByOrderId(Long id);
 
 }

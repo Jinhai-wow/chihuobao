@@ -21,14 +21,14 @@ public class ManagerIndex {
 		return "manager/index";
 	}
 	
-	/*@RequestMapping(value="/go.action")
+	@RequestMapping(value="/go.action")
 	public String user(){
 		
 		return "manager/login";
-	}*/
+	}
 	
 	
-	@RequestMapping(value="/go.action")
+	@RequestMapping(value="/login.action")
 	public  String login(String username,HttpSession session){
 		
 		session.setAttribute("username", username);

@@ -14,14 +14,15 @@ public class ManagerOrderGoods implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Integer orderId;
+	private Long orderId;
 	private String goodsName;
 	private Integer goodsQuatity;
 	private String goodsMoney;
-	public Integer getOrderId() {
+	
+	public Long getOrderId() {
 		return orderId;
 	}
-	public void setOrderId(Integer orderId) {
+	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
 	}
 	public String getGoodsName() {

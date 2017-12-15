@@ -333,6 +333,7 @@
 												<c:when test="${6 eq order.ordertable.orderstate }">正在申请取消订单</c:when>
 												<c:when test="${7 eq order.ordertable.orderstate }">客户已评价</c:when>
 												<c:when test="${8 eq order.ordertable.orderstate }">取消失败，待发货</c:when>
+												<c:when test="${9 eq order.ordertable.orderstate }">该订单已失效</c:when>
 											</c:choose></td>
 									</tr>
 									<c:if test="${7 eq order.ordertable.orderstate }">
@@ -364,8 +365,7 @@
 											<c:choose>
 												<c:when
 													test="${(2 eq order.ordertable.orderstate)or(8 eq order.ordertable.orderstate)}">
-													<input id="delivermethod" class="" name=""
-														delivermethod"" value="第三方配送">
+													<input id="delivermethod" class="" name="delivermethod" value="第三方配送">
 												</c:when>
 												<c:otherwise>
 													${order.ordertable.delivermethod}

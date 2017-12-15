@@ -22,11 +22,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	<result column="totalMoney" property="totalMoney"/>
 	 	<result column="shopName" property="shopName"/>
 	 	<association property="user" javaType="com.chihuobao.po.User">
-	 		<id column="id" property="id"/>
+	 		<!-- <id column="id" property="id"/> -->
 	 		<result column="username" property="username"/>
 	 	</association>
 	 	<association property="shop" javaType="com.chihuobao.po.Shop">
-	 		<id column="id" property="id"/>
+	 		<!-- <id column="id" property="id"/> -->
 	 		<result column="shopName" property="shopName"/>
 	 	</association>
 	 </resultMap>
@@ -86,11 +86,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	<result column="totalMoney" property="totalMoney"/>
 	 	<result column="shopName" property="shopName"/>
 	 	<association property="user" javaType="com.chihuobao.po.User">
-	 		<id column="id" property="id"/>
+	 		<!-- <id column="id" property="id"/> -->
 	 		<result column="username" property="username"/>
 	 	</association>
 	 	<association property="shop" javaType="com.chihuobao.po.Shop">
-	 		<id column="id" property="id"/>
+	 		<!-- <id column="id" property="id"/> -->
 	 		<result column="shopName" property="shopName"/>
 	 	</association>
 	 </resultMap>
@@ -132,7 +132,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<!-- 查找当前订单的所有商品 -->
-	<select id="selectOrderGoodsByOrderId" parameterType="Integer"
+	<select id="selectOrderGoodsByOrderId" parameterType="Long"
 		resultType="com.chihuobao.po.ManagerOrderGoods">
 			select * from ordergoods where orderId= #{id}
 	</select>

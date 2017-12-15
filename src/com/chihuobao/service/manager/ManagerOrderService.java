@@ -29,6 +29,6 @@ public interface ManagerOrderService {
 	void deleteOrderByids(ManagerOrderVo vo);
 
 	//查看当前订单的所有商品
-	List<ManagerOrderGoods> selectOrderGoodsByOrderId(Integer id);
+	List<ManagerOrderGoods> selectOrderGoodsByOrderId(Long id);
 
 }

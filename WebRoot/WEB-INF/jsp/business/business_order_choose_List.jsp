@@ -384,6 +384,7 @@
 												<c:when test="${6 eq list.orderstate }">申请取消订单</c:when>
 												<c:when test="${7 eq list.orderstate }">客户已评价</c:when>
 												<c:when test="${8 eq list.orderstate }">退单失败，待发货</c:when>
+												<c:when test="${9 eq list.orderstate }">该订单已失效</c:when>
 											</c:choose></td>
 										<td
 											style="text-align: center;vertical-align: middle;line-height: 2em;">
@@ -449,6 +450,11 @@
 														class="btn btn-primary btn-xs" data-toggle="modal"
 														data-target="#sendOrderModal"
 														onclick="sendOrderSetId(this)">发货</a>
+													<a
+														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
+														class="btn btn-primary btn-xs">查看</a>
+												</c:when>
+												<c:when test="${9 eq list.orderstate }">
 													<a
 														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
 														class="btn btn-primary btn-xs">查看</a>

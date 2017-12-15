@@ -78,12 +78,12 @@
 				url:"${pageContext.request.contextPath }/manager/selectOrderList.action",  
     			columns:[[
     				 {field:"id",title:"id",width:100}, 
-    				{field:"deliverMethod",title:"配送方式",width:100},
-    				{field:"username",title:"用户名",width:100,formatter: function(value,row,index){
+    				{field:"deliverMethod",title:"配送方式",width:300},
+    				{field:"username",title:"用户名",width:200,formatter: function(value,row,index){
                           if (row.user){
                         return row.user.username;
                      }}},    
-    				{field:"shopName",title:"商店名",width:150,formatter:function(value,row,index){
+    				{field:"shopName",title:"商店名",width:200,formatter:function(value,row,index){
     						if(row.shop){
     						return row.shop.shopName;
     						}
@@ -162,7 +162,7 @@
     			var id = rows[0].id;
     			
     			
-    			alert(id);
+    	
     			
     			//1.获取pageUrl属性值（需要跳转的页面地址）
     			var pageUrl = $(this).attr("pageUrl");
@@ -239,7 +239,7 @@
     				var state = data.stateName;
     					
         			$(array).each(function(i){
-    					alert(array[i].orderState);
+    					
         
     					 $('#searchRadio').menu('appendItem', {
     						text : state[i],
