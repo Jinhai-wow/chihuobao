@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chihuobao.mapper.business.ShopMapper" >
+  <resultMap id="BaseResultMap" type="com.chihuobao.po.Shop" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="shopNumber" property="shopNumber" jdbcType="CHAR" />
+    <result column="shopName" property="shopName" jdbcType="VARCHAR" />
+    <result column="storerId" property="storerId" jdbcType="INTEGER" />
+    <result column="shopOwner" property="shopOwner" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="longitude" property="longitude" jdbcType="DOUBLE" />
+    <result column="latitude" property="latitude" jdbcType="DOUBLE" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="shopPic" property="shopPic" jdbcType="VARCHAR" />
+    <result column="announce" property="announce" jdbcType="VARCHAR" />
+    <result column="businessTime" property="businessTime" jdbcType="VARCHAR" />
+    <result column="startPrice" property="startPrice" jdbcType="DOUBLE" />
+    <result column="deliveryCost" property="deliveryCost" jdbcType="DOUBLE" />
+    <result column="shopScore" property="shopScore" jdbcType="INTEGER" />
+    <result column="openState" property="openState" jdbcType="INTEGER" />
+    <result column="auditState" property="auditState" jdbcType="INTEGER" />
+    <result column="shopStyleId" property="shopStyleId" jdbcType="INTEGER" />
+    <result column="serviceScope" property="serviceScope" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap type="com.chihuobao.po.Shop" id="shopAndStyle" autoMapping="true">
+		<id column="id" property="id" />
+		<result column="shopNumber" property="shopNumber" jdbcType="CHAR" />
+		<collection property="goodStyles" javaType="list" ofType="GoodsStyle"
+			autoMapping="true">
+			<id property="id" column="id"/>
+			<result column="shopId" property="shopId"/>
+			<result column="styleName" property="styleName"/>
+		</collection>
+  </resultMap>
+  <resultMap type="com.chihuobao.po.Shop" id="shopAndShopData" autoMapping="true">
+		<id column="id" property="id" />
+		<result column="shopNumber" property="shopNumber" jdbcType="CHAR" />
+		<collection property="shopData" ofType="ShopData"
+			autoMapping="true">
+			<id property="id" column="id"/>
+			<result column="shopId" property="shopId"/>
+		</collection>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, shopNumber, shopName, storerId, shopOwner, address, longitude, latitude, telephone, 
+    shopPic, announce, businessTime, startPrice, deliveryCost, shopScore, openState, 
+    auditState, shopStyleId, serviceScope
+  </sql>
+  <select id="selectByExample" resultType="com.chihuobao.po.Shop" parameterType="com.chihuobao.po.ShopExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultType="com.chihuobao.po.Shop" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from shop
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectShopDataByShopId" resultType="com.chihuobao.po.ShopData" parameterType="java.lang.Integer">
+  	select * from shopData where shopId = #{shopId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectShopByAccountId" resultType="com.chihuobao.po.Shop" parameterType="java.lang.Integer" >
+      select * from shop
+    where storerId = #{storerId,jdbcType=INTEGER}
+  </select>
+<!--   <select id="selectShopByAccountId" resultMap="shopAndStyle" parameterType="java.lang.Integer" >
+    select * from shop LEFT JOIN goodsStyle on shop.id=goodsStyle.shopId
+    where shop.storerId = #{storerId,jdbcType=INTEGER}
+  </select> -->
+<!--   <select id="selectShopByAccountId" resultMap="shopAndShopData" parameterType="java.lang.Integer">
+  	select * from shop LEFT JOIN shopData on shop.id=shopData.shopId
+    where shop.storerId = #{storerId,jdbcType=INTEGER}
+  </select> -->
+  
+  <select id="selectOrdersByShopId" resultType="com.chihuobao.po.Ordertable" parameterType="java.lang.Integer">
+  	select * from orderTable where shopId = #{shopId,jdbcType=INTEGER} order by payTime desc
+  </select>
+  
+  <select id="selectShopStyle" resultType="com.chihuobao.po.ShopStyle">
+  	select * from shopStyle
+  </select>
+  
+  <select id="selectLastId" resultType="java.lang.Integer">
+  	SELECT max(id) from shop
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from shop
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.chihuobao.po.ShopExample" >
+    delete from shop
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.chihuobao.po.Shop" >
+    insert into shop (id, shopNumber, shopName, 
+      storerId, shopOwner, address, 
+      longitude, latitude, telephone, 
+      shopPic, announce, businessTime, 
+      startPrice, deliveryCost, shopScore, 
+      openState, auditState, shopStyleId, 
+      serviceScope)
+    values (#{id,jdbcType=INTEGER}, #{shopNumber,jdbcType=CHAR}, #{shopName,jdbcType=VARCHAR}, 
+      #{storerId,jdbcType=INTEGER}, #{shopOwner,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{telephone,jdbcType=VARCHAR}, 
+      #{shopPic,jdbcType=VARCHAR}, #{announce,jdbcType=VARCHAR}, #{businessTime,jdbcType=VARCHAR}, 
+      #{startPrice,jdbcType=DOUBLE}, #{deliveryCost,jdbcType=DOUBLE}, #{shopScore,jdbcType=INTEGER}, 
+      #{openState,jdbcType=INTEGER}, #{auditState,jdbcType=INTEGER}, #{shopStyleId,jdbcType=INTEGER}, 
+      #{serviceScope,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.chihuobao.po.Shop" >
+    insert into shop
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopNumber != null" >
+        shopNumber,
+      </if>
+      <if test="shopName != null" >
+        shopName,
+      </if>
+      <if test="storerId != null" >
+        storerId,
+      </if>
+      <if test="shopOwner != null" >
+        shopOwner,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="shopPic != null" >
+        shopPic,
+      </if>
+      <if test="announce != null" >
+        announce,
+      </if>
+      <if test="businessTime != null" >
+        businessTime,
+      </if>
+      <if test="startPrice != null" >
+        startPrice,
+      </if>
+      <if test="deliveryCost != null" >
+        deliveryCost,
+      </if>
+      <if test="shopScore != null" >
+        shopScore,
+      </if>
+      <if test="openState != null" >
+        openState,
+      </if>
+      <if test="auditState != null" >
+        auditState,
+      </if>
+      <if test="shopStyleId != null" >
+        shopStyleId,
+      </if>
+      <if test="serviceScope != null" >
+        serviceScope,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="shopNumber != null" >
+        #{shopNumber,jdbcType=CHAR},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="storerId != null" >
+        #{storerId,jdbcType=INTEGER},
+      </if>
+      <if test="shopOwner != null" >
+        #{shopOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPic != null" >
+        #{shopPic,jdbcType=VARCHAR},
+      </if>
+      <if test="announce != null" >
+        #{announce,jdbcType=VARCHAR},
+      </if>
+      <if test="businessTime != null" >
+        #{businessTime,jdbcType=VARCHAR},
+      </if>
+      <if test="startPrice != null" >
+        #{startPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="deliveryCost != null" >
+        #{deliveryCost,jdbcType=DOUBLE},
+      </if>
+      <if test="shopScore != null" >
+        #{shopScore,jdbcType=INTEGER},
+      </if>
+      <if test="openState != null" >
+        #{openState,jdbcType=INTEGER},
+      </if>
+      <if test="auditState != null" >
+        #{auditState,jdbcType=INTEGER},
+      </if>
+      <if test="shopStyleId != null" >
+        #{shopStyleId,jdbcType=INTEGER},
+      </if>
+      <if test="serviceScope != null" >
+        #{serviceScope,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+ 
+    <insert id="insertShopData" parameterType="com.chihuobao.po.ShopData" >
+    insert into shopData
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopId != null" >
+        shopId,
+      </if>
+      <if test="outPic != null" >
+        outPic,
+      </if>
+      <if test="inPic != null" >
+        inPic,
+      </if>
+      <if test="shopLicense != null" >
+        shopLicense,
+      </if>
+      <if test="ownerId != null" >
+        ownerId,
+      </if>
+      <if test="ownerIdUpPic != null" >
+        ownerIdUpPic,
+      </if>
+      <if test="ownerIdDownPic != null" >
+        ownerIdDownPic,
+      </if>
+      <if test="serviceLicense != null" >
+        serviceLicense,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="outPic != null" >
+        #{outPic,jdbcType=VARCHAR},
+      </if>
+      <if test="inPic != null" >
+        #{inPic,jdbcType=VARCHAR},
+      </if>
+      <if test="shopLicense != null" >
+        #{shopLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerId != null" >
+        #{ownerId,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdUpPic != null" >
+        #{ownerIdUpPic,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdDownPic != null" >
+        #{ownerIdDownPic,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceLicense != null" >
+        #{serviceLicense,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <select id="countByExample" parameterType="com.chihuobao.po.ShopExample" resultType="java.lang.Integer" >
+    select count(*) from shop
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update shop
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopNumber != null" >
+        shopNumber = #{record.shopNumber,jdbcType=CHAR},
+      </if>
+      <if test="record.shopName != null" >
+        shopName = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storerId != null" >
+        storerId = #{record.storerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopOwner != null" >
+        shopOwner = #{record.shopOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.longitude != null" >
+        longitude = #{record.longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.latitude != null" >
+        latitude = #{record.latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.telephone != null" >
+        telephone = #{record.telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopPic != null" >
+        shopPic = #{record.shopPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.announce != null" >
+        announce = #{record.announce,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessTime != null" >
+        businessTime = #{record.businessTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startPrice != null" >
+        startPrice = #{record.startPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.deliveryCost != null" >
+        deliveryCost = #{record.deliveryCost,jdbcType=DOUBLE},
+      </if>
+      <if test="record.shopScore != null" >
+        shopScore = #{record.shopScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.openState != null" >
+        openState = #{record.openState,jdbcType=INTEGER},
+      </if>
+      <if test="record.auditState != null" >
+        auditState = #{record.auditState,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopStyleId != null" >
+        shopStyleId = #{record.shopStyleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.serviceScope != null" >
+        serviceScope = #{record.serviceScope,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+    <update id="updateShopDataByShopId" parameterType="com.chihuobao.po.ShopData" >
+    update shopData
+    <set >
+      <if test="shopId != null" >
+       shopId = #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="outPic != null" >
+        outPic = #{outPic,jdbcType=VARCHAR},
+      </if>
+      <if test="inPic != null" >
+        inPic = #{inPic,jdbcType=VARCHAR},
+      </if>
+      <if test="shopLicense != null" >
+        shopLicense = #{shopLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerId != null" >
+        ownerId = #{ownerId,jdbcType=VARCHAR},
+      </if>
+       <if test="ownerIdUpPic != null" >
+        ownerIdUpPic = #{ownerIdUpPic,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdDownPic != null" >
+        ownerIdDownPic = #{ownerIdDownPic,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceLicense != null" >
+        serviceLicense = #{serviceLicense,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByExample" parameterType="map" >
+    update shop
+    set id = #{record.id,jdbcType=INTEGER},
+      shopNumber = #{record.shopNumber,jdbcType=CHAR},
+      shopName = #{record.shopName,jdbcType=VARCHAR},
+      storerId = #{record.storerId,jdbcType=INTEGER},
+      shopOwner = #{record.shopOwner,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      longitude = #{record.longitude,jdbcType=DOUBLE},
+      latitude = #{record.latitude,jdbcType=DOUBLE},
+      telephone = #{record.telephone,jdbcType=VARCHAR},
+      shopPic = #{record.shopPic,jdbcType=VARCHAR},
+      announce = #{record.announce,jdbcType=VARCHAR},
+      businessTime = #{record.businessTime,jdbcType=VARCHAR},
+      startPrice = #{record.startPrice,jdbcType=DOUBLE},
+      deliveryCost = #{record.deliveryCost,jdbcType=DOUBLE},
+      shopScore = #{record.shopScore,jdbcType=INTEGER},
+      openState = #{record.openState,jdbcType=INTEGER},
+      auditState = #{record.auditState,jdbcType=INTEGER},
+      shopStyleId = #{record.shopStyleId,jdbcType=INTEGER},
+      serviceScope = #{record.serviceScope,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chihuobao.po.Shop" >
+    update shop
+    <set >
+      <if test="shopNumber != null" >
+        shopNumber = #{shopNumber,jdbcType=CHAR},
+      </if>
+      <if test="shopName != null" >
+        shopName = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="storerId != null" >
+        storerId = #{storerId,jdbcType=INTEGER},
+      </if>
+      <if test="shopOwner != null" >
+        shopOwner = #{shopOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPic != null" >
+        shopPic = #{shopPic,jdbcType=VARCHAR},
+      </if>
+      <if test="announce != null" >
+        announce = #{announce,jdbcType=VARCHAR},
+      </if>
+      <if test="businessTime != null" >
+        businessTime = #{businessTime,jdbcType=VARCHAR},
+      </if>
+      <if test="startPrice != null" >
+        startPrice = #{startPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="deliveryCost != null" >
+        deliveryCost = #{deliveryCost,jdbcType=DOUBLE},
+      </if>
+      <if test="shopScore != null" >
+        shopScore = #{shopScore,jdbcType=INTEGER},
+      </if>
+      <if test="openState != null" >
+        openState = #{openState,jdbcType=INTEGER},
+      </if>
+      <if test="auditState != null" >
+        auditState = #{auditState,jdbcType=INTEGER},
+      </if>
+      <if test="shopStyleId != null" >
+        shopStyleId = #{shopStyleId,jdbcType=INTEGER},
+      </if>
+      <if test="serviceScope != null" >
+        serviceScope = #{serviceScope,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chihuobao.po.Shop" >
+    update shop
+    set shopNumber = #{shopNumber,jdbcType=CHAR},
+      shopName = #{shopName,jdbcType=VARCHAR},
+      storerId = #{storerId,jdbcType=INTEGER},
+      shopOwner = #{shopOwner,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DOUBLE},
+      latitude = #{latitude,jdbcType=DOUBLE},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      shopPic = #{shopPic,jdbcType=VARCHAR},
+      announce = #{announce,jdbcType=VARCHAR},
+      businessTime = #{businessTime,jdbcType=VARCHAR},
+      startPrice = #{startPrice,jdbcType=DOUBLE},
+      deliveryCost = #{deliveryCost,jdbcType=DOUBLE},
+      shopScore = #{shopScore,jdbcType=INTEGER},
+      openState = #{openState,jdbcType=INTEGER},
+      auditState = #{auditState,jdbcType=INTEGER},
+      shopStyleId = #{shopStyleId,jdbcType=INTEGER},
+      serviceScope = #{serviceScope,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

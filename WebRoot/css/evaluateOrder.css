@@ -1,0 +1,39 @@
+.topDiv{
+    margin-top:20px;
+    padding: 18px 0px 16px;
+    background-color: #f8f8f6;
+    border: 1px solid #eee;
+}
+
+.topDivCenter{
+   margin-top:68px;
+}
+
+.topDivRight{
+    margin-top:68px;
+}
+ 
+ /* ��ƷͼƬ */
+.goods{
+width:70px ;
+height:70px;
+}
+
+ .shopServiceStar{
+margin-top:26px;
+
+}
+.sliderDiv{
+/* width:300px; */
+margin-top: 36px;
+}
+.sliderDivFont{
+/* width:300px; */
+margin-top: 36px;
+}
+
+.containerDiv{
+border:1px solid #eee;
+/* margin:30px; */
+width:auto;
+}

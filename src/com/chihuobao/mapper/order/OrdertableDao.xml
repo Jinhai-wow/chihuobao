@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chihuobao.mapper.order.OrdertableDao">
+	<!-- //总条数 -->
+	<!-- public Integer customerCountByQueryVo(QueryVo vo); private String custName; 
+		private String custSource; private String custIndustry; private String custLevel; -->
+
+	<!-- 通过订单号查询 订单及关联的订单中的商品 表为ordertable和ordergoods -->
+	<!-- <select id="getOrder" parameterType="Integer" resultType="Ordertable" 
+		> select count(1) from customer <where> <if test="custName != null and custName 
+		!= ''"> cust_name like "%"#{custName}"%" </if> <if test="custSource != null 
+		and custSource != ''"> and cust_source = #{custSource} </if> <if test="custIndustry 
+		!= null and custIndustry != ''"> and cust_industry = #{custIndustry} </if> 
+		<if test="custLevel != null and custLevel != ''"> and cust_level = #{custLevel} 
+		</if> </where> </select> -->
+
+	<!-- public Ordertable getOrder(Integer id);根据订单id获取订单 -->
+
+	<resultMap type="Ordertable" id="ordertable" autoMapping="true">
+		<id column="id" property="id" />
+		<result column="shopName" property="shopname" />
+		<collection property="ordergoodsList" ofType="Ordergoods"
+			autoMapping="true">
+			<result column="goodsname" property="goodsname" />
+		</collection>
+	</resultMap>
+
+	<select id="getOrder" parameterType="Long" resultMap="ordertable">
+
+		SELECT * from ordertable ot LEFT JOIN ordergoods og on ot.id=og.orderId
+		where ot.id=#{id}
+
+	</select>
+
+
+
+
+
+
+
+
+
+	<!-- 一对多 public List<Ordertable> getOrderList(); -->
+	<!-- 默认很像不开启自动映射，要加autoMapping="true" -->
+	<resultMap type="Ordertable" id="ordertableList" autoMapping="true">
+		<id column="id" property="id" />
+		<result column="shopName" property="shopname" />
+		<collection property="ordergoodsList" ofType="Ordergoods"
+			autoMapping="true">
+			<result column="goodsname" property="goodsname" />
+		</collection>
+
+	</resultMap>
+
+	<!-- resultMap="ordertable"对应上面的ordertable -->
+	<select id="getOrderList" resultMap="ordertableList">
+		SELECT * from ordertable ot LEFT JOIN ordergoods og on ot.id=og.orderId
+	</select>
+
+
+	<!--获取分页数据 public List<Ordertable> getOrderListByPagination(Integer page,Integer 
+		rows); -->
+<!-- ot LEFT JOIN ordergoods og on ot.id=og.orderId
+		order by ot.id desc limit #{page},#{rows} -->
+	<select id="getOrderListByPagination"
+		parameterType="PageBean" resultType="Ordertable">
+		SELECT * from ordertable order by id desc limit #{page},#{rows}
+		
+	</select>
+
+   
+
+
+
+	<!-- 获取订单总数public int getOrderListSize(); -->
+	<select id="getOrderListSize" resultType="Integer">
+
+		SELECT count(*) from ordertable
+
+	</select>
+
+
+
+	<!--一个购物车对应多种商品 一对多 public Shopcart getShopCart(); -->
+
+	<!-- 默认很像不开启自动映射，要加autoMapping="true" -->
+	<resultMap type="Shopcart" id="shopcartlist" autoMapping="true">
+		<id column="shopcartId" property="shopcartid" />
+		<collection property="shopcartlist" ofType="Shopcartlist"
+			autoMapping="true">
+			<result column="goodsname" property="goodsname" />
+		</collection>
+
+	</resultMap>
+
+	<select id="getShopCart" parameterType="Integer" resultMap="shopcartlist">
+		SELECT * from shopcart sc LEFT JOIN shopcartlist scl on
+		sc.shopcartid=scl.shopcartid
+	</select>
+	
+	
+	<!-- public User  getUser(Integer userid); -->
+	
+	
+		<!-- 默认很像不开启自动映射，要加autoMapping="true"  ofType="Address"获取Address对象-->
+	<resultMap type="UserForOrder" id="addresslist" autoMapping="true">
+		<id column="id" property="id" />
+		<collection property="addresslist" ofType="Address"
+			autoMapping="true">
+			<result column="address" property="address" />
+		</collection>
+
+	</resultMap>
+	
+	
+	<!-- 只查询addrss 表state=1的即默认地址 -->
+	<select id="getUser" parameterType="Integer" resultMap="addresslist">
+		SELECT * from User u LEFT JOIN Address a on u.id=a.userid where a.state=1
+	</select>
+	
+	
+	<!--查询shop表public Shop getShop(Integer shopid);  -->
+	
+	<select id="getShop" parameterType="Integer" resultType="Shop">
+		SELECT * from shop s where s.id=#{shopid}
+	</select>
+	
+	<!-- 	public void addOrder(Ordertable ordertable);
+	
+	 -->
+	<insert id="addOrder" parameterType="Ordertable">
+	
+	insert into ordertable(id,userid,shopid,shopname,
+	arrivetime,delivermethod,useraddress,paymethod,createtime,
+	orderstate,totalmoney,remark,shopphone,shopcartid,shoppic) values(#{id},#{userid},#{shopid}
+	,#{shopname},#{arrivetime},#{delivermethod},#{useraddress},#{paymethod}
+	,#{createtime},#{orderstate},#{totalmoney},#{remark},#{shopphone},#{shopcartid},#{shoppic})
+	
+	</insert>
+	
+	<!-- 		
+	
+	public void addOrderGoods(Ordergoods ordergoods);
+	
+	 -->
+	<insert id="addOrderGoods" parameterType="Ordergoods">
+	
+	insert into ordergoods(orderid,goodsname,goodsquatity,goodsmoney)
+	values(#{orderid},#{goodsname},#{goodsquatity},#{goodsmoney})
+	</insert>
+	
+	<!-- public List<Ordergoods> getOrdergoodsListByOrderID(long orderid); -->
+	
+	<select id="getOrdergoodsListByOrderID" parameterType="Long" resultType="Ordergoods">
+	
+	select * from ordergoods where orderid=#{orderid}
+	</select>
+	
+	
+	<!-- public void updateOrder(Ordertable ordertable); -->
+	
+	<update id="updateOrder" parameterType="Ordertable">
+	
+	update ordertable set  shopservice=#{shopservice},deliverspeed=#{deliverspeed},
+	evaluatefood=#{evaluatefood},orderstate=#{orderstate} where id=#{id}
+	
+	</update>
+	
+	
+	<!--  -->
+	<update id="updateOrderState" parameterType="Long">
+	
+	update ordertable set orderstate=5 where id=#{id}
+	
+	</update>
+	<!--  -->
+	<update id="applyCancelOrder" parameterType="Long">
+	
+	update ordertable set orderstate=7 where id=#{id}
+	
+	</update>
+	
+	
+	<!-- public void getOrderNoPay(User userid); 查询该用户id，下所有未付款订单（即ordertable的state为0）-->
+	
+	
+	<select id="getOrderNoPay"  resultType="Ordertable">
+	
+	SELECT * from ordertable where  orderstate=0
+	</select>
+	
+	
+	<!-- public void modifyOrderState(List<Long> orderIdList);  orderstate为9，代表该订单失效-->
+	
+	<update id="modifyOrderState" parameterType="java.util.List">
+	
+	update ordertable set orderstate=9 where id in
+	 <foreach collection="list" item="item" index="index" separator=","  open="(" close=")">  
+        #{item} 
+    </foreach>  
+	
+	</update>
+	
+	
+	
+	<!--public void addComplain(Complain complain);  -->
+	
+	
+	<insert id="addComplain" parameterType="Complain">
+	
+	insert into complain(userid,reason,orderid,shopid,otherreason)
+	values(#{userid},#{reason},#{orderid},#{shopid},#{otherreason});
+	
+	</insert>
+	
+	
+</mapper>

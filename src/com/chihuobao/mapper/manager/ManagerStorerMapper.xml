@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chihuobao.mapper.manager.ManagerStorerMapper">
+
+	
+	<!-- 根据页数查询所有数据 -->
+	<select id="queryStorerByPage" parameterType="com.chihuobao.vo.StorerAccountVo"
+		resultType="com.chihuobao.po.StorerAccount">
+		select * from storeraccount limit 
+		     #{page},#{rows}
+		
+	</select>
+	
+	<select id="deleteStorerByids" parameterType="com.chihuobao.vo.StorerAccountVo">
+		delete from storeraccount 
+		<where>
+			id in
+			<foreach collection="ids" item="id" separator="," open="(" close=")">
+	 			#{id}
+	 		</foreach>
+		</where> 
+	</select>
+	
+	<select id="selectStorerByid" parameterType="Integer" resultType="com.chihuobao.po.StorerAccount">
+		select * from storeraccount where id = #{id}
+	</select>
+	
+	
+	<update id="updateStorer" parameterType="com.chihuobao.po.StorerAccount" >
+		update storeraccount
+		<set>
+			<if test="storerName != null">
+				storerName = #{storerName}
+			</if>
+			
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	<update id="freezeStorerById" parameterType="Integer">
+		update storeraccount set accountState = 1 where id = #{id}
+	</update>
+
+	<update id="releaseStorerById" parameterType="Integer">
+		update storeraccount set accountState = 0 where id = #{id}
+	</update>
+	
+	<select id="searchByContextAll" parameterType="Integer" 
+	             resultType="com.chihuobao.po.StorerAccount">
+		SELECT * FROM storeraccount where accountState = #{accountState};
+	</select>
+	
+	<!-- 查看总记录数 -->
+	<select id="queryTotal" parameterType="Integer" resultType="Integer">
+		select count(*) from storeraccount;
+	</select>
+	
+	<select id="queryByContextTatal" parameterType="com.chihuobao.po.StorerAccount" 
+		resultType="Integer">
+		select count(*) from storeraccount where 1=1
+		
+			<if test="storerName != null">
+			   and storerName like "%"#{storerName}"%"
+			</if>
+			
+			<if test="accountState != null">
+				and accountState = #{accountState};
+			</if>
+					 
+	</select>
+	
+	<select id="searchByContextPage" parameterType="com.chihuobao.vo.StorerAccountVo"
+		resultType="com.chihuobao.po.StorerAccount">
+			select * from storeraccount where 1=1
+			<if test="storerAccount.storerName != null">
+				and storerName like "%"#{storerAccount.storerName}"%"
+			</if>
+			<if test="storerAccount.accountState != null">
+				and accountState = #{storerAccount.accountState}
+			</if> 
+				
+			 limit #{page},#{rows}
+	</select>
+	
+	
+	<resultMap type="com.chihuobao.vo.StorerAccountVo" id="storer">
+	 	<result column="id" property="storerAccount.id"/>
+	 	<result column="storerName" property="storerAccount.storerName"/>
+	 	<result column="storerRegistTime" property="storerAccount.storerRegistTime"/>
+	 	<result column="email" property="storerAccount.email"/>
+	 	<result column="storerPic" property="storerAccount.storerPic"/>
+	 	<result column="storerMoney" property="storerAccount.storerMoney"/>
+	 	<association property="shop" javaType="com.chihuobao.po.Shop">
+	 		<id column="id" property="id"/>
+	 		<result column="shopName" property="shopName"/>
+	 	</association>
+	 </resultMap>
+	 <select id="selectStorerDetailByid" parameterType="Integer" resultMap="storer">
+	 	SELECT 
+	 	sa.id,
+	 	sa.storerName,
+	 	sa.storerRegistTime,
+	 	sa.email,
+	 	sa.storerPic,
+	 	sa.storerMoney,
+	 	s.shopName
+	 	FROM storeraccount sa,shop s
+	 	where sa.id = s.storerId
+	 	and sa.id = #{id}
+	 	
+	 </select> 
+	 
+	 
+	 <select id="SelectStorerList" resultType="com.chihuobao.po.StorerAccount">
+	 	select * from storeraccount
+	 </select>
+	
+</mapper>

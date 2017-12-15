@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chihuobao.mapper.business.StorerAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.chihuobao.po.StorerAccount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="storerNumber" property="storerNumber" jdbcType="CHAR" />
+    <result column="storerName" property="storerName" jdbcType="VARCHAR" />
+    <result column="storerRegistTime" property="storerRegistTime" jdbcType="TIMESTAMP" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="storerPic" property="storerPic" jdbcType="VARCHAR" />
+    <result column="storerMoney" property="storerMoney" jdbcType="DOUBLE" />
+    <result column="accountState" property="accountState" jdbcType="INTEGER" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, storerNumber, storerName, storerRegistTime, email, password, storerPic, storerMoney, 
+    accountState,telephone
+  </sql>
+  <select id="selectByExample" resultType="com.chihuobao.po.StorerAccount" parameterType="com.chihuobao.po.StorerAccountExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from storerAccount
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultType="com.chihuobao.po.StorerAccount" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from storerAccount
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from storerAccount
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.chihuobao.po.StorerAccountExample" >
+    delete from storerAccount
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.chihuobao.po.StorerAccount" >
+    insert into storerAccount (id, storerNumber, storerName, 
+      storerRegistTime, email, password, 
+      storerPic, storerMoney, accountState,telephone
+      )
+    values (#{id,jdbcType=INTEGER}, #{storerNumber,jdbcType=CHAR}, #{storerName,jdbcType=VARCHAR}, 
+      #{storerRegistTime,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{storerPic,jdbcType=VARCHAR}, #{storerMoney,jdbcType=DOUBLE}, #{accountState,jdbcType=INTEGER}, 
+      #{telephone,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.chihuobao.po.StorerAccount" >
+    insert into storerAccount
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="storerNumber != null" >
+        storerNumber,
+      </if>
+      <if test="storerName != null" >
+        storerName,
+      </if>
+      <if test="storerRegistTime != null" >
+        storerRegistTime,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="storerPic != null" >
+        storerPic,
+      </if>
+      <if test="storerMoney != null" >
+        storerMoney,
+      </if>
+      <if test="accountState != null" >
+        accountState,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="storerNumber != null" >
+        #{storerNumber,jdbcType=CHAR},
+      </if>
+      <if test="storerName != null" >
+        #{storerName,jdbcType=VARCHAR},
+      </if>
+      <if test="storerRegistTime != null" >
+        #{storerRegistTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="storerPic != null" >
+        #{storerPic,jdbcType=VARCHAR},
+      </if>
+      <if test="storerMoney != null" >
+        #{storerMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="accountState != null" >
+        #{accountState,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.chihuobao.po.StorerAccountExample" resultType="java.lang.Integer" >
+    select count(*) from storerAccount
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update storerAccount
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.storerNumber != null" >
+        storerNumber = #{record.storerNumber,jdbcType=CHAR},
+      </if>
+      <if test="record.storerName != null" >
+        storerName = #{record.storerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storerRegistTime != null" >
+        storerRegistTime = #{record.storerRegistTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storerPic != null" >
+        storerPic = #{record.storerPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storerMoney != null" >
+        storerMoney = #{record.storerMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.accountState != null" >
+        accountState = #{record.accountState,jdbcType=INTEGER},
+      </if>
+      <if test="record.telephone != null" >
+        #{record.telephone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update storerAccount
+    set id = #{record.id,jdbcType=INTEGER},
+      storerNumber = #{record.storerNumber,jdbcType=CHAR},
+      storerName = #{record.storerName,jdbcType=VARCHAR},
+      storerRegistTime = #{record.storerRegistTime,jdbcType=TIMESTAMP},
+      email = #{record.email,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      storerPic = #{record.storerPic,jdbcType=VARCHAR},
+      storerMoney = #{record.storerMoney,jdbcType=DOUBLE},
+      accountState = #{record.accountState,jdbcType=INTEGER},
+      telephone = #{record.telephone,jdbcType=VARCHAR},
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chihuobao.po.StorerAccount" >
+    update storerAccount
+    <set >
+      <if test="storerNumber != null" >
+        storerNumber = #{storerNumber,jdbcType=CHAR},
+      </if>
+      <if test="storerName != null" >
+        storerName = #{storerName,jdbcType=VARCHAR},
+      </if>
+      <if test="storerRegistTime != null" >
+        storerRegistTime = #{storerRegistTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="storerPic != null" >
+        storerPic = #{storerPic,jdbcType=VARCHAR},
+      </if>
+      <if test="storerMoney != null" >
+        storerMoney = #{storerMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="accountState != null" >
+        accountState = #{accountState,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chihuobao.po.StorerAccount" >
+    update storerAccount
+    set storerNumber = #{storerNumber,jdbcType=CHAR},
+      storerName = #{storerName,jdbcType=VARCHAR},
+      storerRegistTime = #{storerRegistTime,jdbcType=TIMESTAMP},
+      email = #{email,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      storerPic = #{storerPic,jdbcType=VARCHAR},
+      storerMoney = #{storerMoney,jdbcType=DOUBLE},
+      accountState = #{accountState,jdbcType=INTEGER},
+      telephone = #{telephone,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

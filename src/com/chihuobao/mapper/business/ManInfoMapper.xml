@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chihuobao.mapper.business.ManInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.chihuobao.po.ManInfo" >
+    <id column="infoId" property="infoid" jdbcType="INTEGER" />
+    <result column="manageId" property="manageId" jdbcType="INTEGER" />
+    <result column="infomation" property="infomation" jdbcType="VARCHAR" />
+    <result column="sendObject" property="sendObject" jdbcType="INTEGER" />
+    <result column="sendId" property="sendId" jdbcType="INTEGER" />
+    <result column="infoDate" property="infoDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    infoId, manageId, infomation, sendObject, sendId, infoDate
+  </sql>
+  <select id="selectByExample" resultType="com.chihuobao.po.ManInfo" parameterType="com.chihuobao.po.ManInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from manInfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultType="com.chihuobao.po.ManInfo" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from manInfo
+    where infoId = #{infoId,jdbcType=INTEGER}
+  </select>
+  <select id="selectSysMsgAll" resultType="com.chihuobao.po.ManInfo">
+    select * from manInfo order by infoDate desc
+  </select>
+    <select id="selectSysMsgByShopId" resultType="com.chihuobao.po.ManInfo" parameterType="java.lang.Integer">
+    select * from manInfo where sendId = #{sendId,jdbcType=INTEGER} order by infoDate desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from manInfo
+    where infoId = #{infoId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.chihuobao.po.ManInfoExample" >
+    delete from manInfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.chihuobao.po.ManInfo" >
+    insert into manInfo (infoId, manageId, infomation, 
+      sendObject, sendId, infoDate
+      )
+    values (#{infoId,jdbcType=INTEGER}, #{manageId,jdbcType=INTEGER}, #{infomation,jdbcType=VARCHAR}, 
+      #{sendObject,jdbcType=INTEGER}, #{sendId,jdbcType=INTEGER}, #{infoDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.chihuobao.po.ManInfo" >
+    insert into manInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="infoId != null" >
+        infoId,
+      </if>
+      <if test="manageId != null" >
+        manageId,
+      </if>
+      <if test="infomation != null" >
+        infomation,
+      </if>
+      <if test="sendObject != null" >
+        sendObject,
+      </if>
+      <if test="sendId != null" >
+        sendId,
+      </if>
+      <if test="infoDate != null" >
+        infoDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="infoId != null" >
+        #{infoId,jdbcType=INTEGER},
+      </if>
+      <if test="manageId != null" >
+        #{manageId,jdbcType=INTEGER},
+      </if>
+      <if test="infomation != null" >
+        #{infomation,jdbcType=VARCHAR},
+      </if>
+      <if test="sendObject != null" >
+        #{sendObject,jdbcType=INTEGER},
+      </if>
+      <if test="sendId != null" >
+        #{sendId,jdbcType=INTEGER},
+      </if>
+      <if test="infoDate != null" >
+        #{infoDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.chihuobao.po.ManInfoExample" resultType="java.lang.Integer" >
+    select count(*) from manInfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update manInfo
+    <set >
+      <if test="record.infoId != null" >
+        infoId = #{record.infoId,jdbcType=INTEGER},
+      </if>
+      <if test="record.manageId != null" >
+        manageId = #{record.manageId,jdbcType=INTEGER},
+      </if>
+      <if test="record.infomation != null" >
+        infomation = #{record.infomation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendObject != null" >
+        sendObject = #{record.sendObject,jdbcType=INTEGER},
+      </if>
+      <if test="record.sendId != null" >
+        sendId = #{record.sendId,jdbcType=INTEGER},
+      </if>
+      <if test="record.infoDate != null" >
+        infoDate = #{record.infoDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update manInfo
+    set infoId = #{record.infoId,jdbcType=INTEGER},
+      manageId = #{record.manageId,jdbcType=INTEGER},
+      infomation = #{record.infomation,jdbcType=VARCHAR},
+      sendObject = #{record.sendObject,jdbcType=INTEGER},
+      sendId = #{record.sendId,jdbcType=INTEGER},
+      infoDate = #{record.infoDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chihuobao.po.ManInfo" >
+    update manInfo
+    <set >
+      <if test="manageId != null" >
+        manageId = #{manageId,jdbcType=INTEGER},
+      </if>
+      <if test="infomation != null" >
+        infomation = #{infomation,jdbcType=VARCHAR},
+      </if>
+      <if test="sendObject != null" >
+        sendObject = #{sendObject,jdbcType=INTEGER},
+      </if>
+      <if test="sendId != null" >
+        sendId = #{sendId,jdbcType=INTEGER},
+      </if>
+      <if test="infoDate != null" >
+        infoDate = #{infoDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where infoId = #{infoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chihuobao.po.ManInfo" >
+    update manInfo
+    set manageId = #{manageId,jdbcType=INTEGER},
+      infomation = #{infomation,jdbcType=VARCHAR},
+      sendObject = #{sendObject,jdbcType=INTEGER},
+      sendId = #{sendId,jdbcType=INTEGER},
+      infoDate = #{infoDate,jdbcType=TIMESTAMP}
+    where infoId = #{infoId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chihuobao.mapper.manager.ManagerShopMapper">
+
+	
+
+	<select id="selectShopById" parameterType="Integer"
+		resultType="com.chihuobao.po.Shop">
+		 select * from shop where  id = #{shopId} and auditState = 1
+	</select>
+	
+	<select id="selectShopTotal" parameterType="com.chihuobao.po.Shop"
+		resultType="Integer">
+			select count(*) from shop where auditState = 1;
+	</select>
+	
+
+	
+	 <resultMap type="com.chihuobao.vo.ShopVo" id="shop">
+	 	<result column="id" property="id"/>
+	 	<result column="storerId" property="storerId"/>
+	 	<result column="shopName" property="shopName"/>
+	 	<result column="shopNumber" property="shopNumber"/>
+	 	<result column="shopOwner" property="shopOwner"/>
+	 	<result column="address" property="address"/>
+	 	<result column="telephone" property="telephone"/>
+	 	<result column="businessTime" property="businessTime"/>
+	 	<result column="shopScore" property="shopScore"/>
+	 	<result column="openState" property="openState"/>
+	 	
+	 	<association property="storerAccount" javaType="com.chihuobao.po.StorerAccount">
+	 		<id column="id" property="id"/>
+	 		<result column="storerName" property="storerName"/>
+	 	</association>
+	 	<association property="shopStyle" javaType="com.chihuobao.po.ShopStyle">
+	 		<id column="id" property="id"/>
+	 		<result column="styleName" property="styleName"/>
+	 	</association>
+	 </resultMap>
+	 <select id="selectShopList" resultMap="shop">
+	 	SELECT
+	shop.id,
+	shopName,
+	storerName,
+	styleName,
+	shop.shopNumber,
+	shop.shopOwner,
+	shop.address,
+	shop.telephone,
+	shop.businessTime,
+	shop.shopScore,
+	shop.openState
+	FROM
+	shop ,storeraccount,shopstyle
+	where shop.storerId=storeraccount.id
+	and shop.shopStyleId=shopstyle.id and shop.auditState = 1
+	<if test="page != null">
+			   limit #{page},
+			</if>
+			
+			<if test="rows != null">
+				#{rows}
+			</if>
+	 </select> 
+	 
+	 <select id="selectTotalByContext" parameterType="com.chihuobao.vo.ShopVo"
+	 	resultType="Integer">
+	 		select count(*) from shop where auditState = 1
+		
+			<if test="shopName != null">
+			   and shopName like "%"#{shopName}"%"
+			</if>
+			
+			<if test="shopStyleId != null">
+				and shopStyleId = #{shopStyleId};
+			</if>
+	 </select>
+	 
+	
+	
+	 <resultMap type="com.chihuobao.vo.ShopVo" id="shopByContext">
+	 	<result column="id" property="id"/>
+	 	<result column="storerId" property="storerId"/>
+	 	<result column="shopName" property="shopName"/>
+	 	<result column="shopNumber" property="shopNumber"/>
+	 	<result column="shopOwner" property="shopOwner"/>
+	 	<result column="address" property="address"/>
+	 	<result column="telephone" property="telephone"/>
+	 	<result column="businessTime" property="businessTime"/>
+	 	<result column="shopScore" property="shopScore"/>
+	 	<result column="openState" property="openState"/>
+	 	<association property="storerAccount" javaType="com.chihuobao.po.StorerAccount">
+	 		<id column="id" property="id"/>
+	 		<result column="storerName" property="storerName"/>
+	 	</association>
+	 	<association property="shopStyle" javaType="com.chihuobao.po.ShopStyle">
+	 		<id column="id" property="id"/>
+	 		<result column="styleName" property="styleName"/>
+	 	</association>
+	 </resultMap>
+	 <select id="searchGoodsByContextPage" resultMap="shopByContext">
+	 	SELECT
+	shop.id,
+	shopName,
+	storerName,
+	styleName,
+	shop.shopNumber,
+	shop.shopOwner,
+	shop.address,
+	shop.telephone,
+	shop.businessTime,
+	shop.shopScore,
+	shop.openState
+	FROM
+	shop ,storeraccount,shopstyle
+	where shop.storerId=storeraccount.id
+	and shop.shopStyleId=shopstyle.id and shop.auditState = 1
+	<if test="shopName != null">
+	and shopName like "%"#{shopName}"%"
+    </if>
+	<if test="shopStyleId != null">
+		and shopStyleId = #{shopStyleId}
+	</if>
+	limit #{page},#{rows}
+	 </select> 
+	
+	<select id="deleteGoodsByids">
+		delete from shop 
+		<where>
+			id in
+			<foreach collection="ids" item="id" separator="," open="(" close=")">
+	 			#{id}
+	 		</foreach>
+		</where> 
+	</select>
+	
+	<select id="selectGoodsByShopId" parameterType="Integer"
+		resultType="com.chihuobao.vo.GoodsVo">
+			SELECT 
+       g.goodName,gs.styleName
+        FROM  
+        shop s ,goods g,goodsStyle gs
+        where g.goodStyleId=gs.id and s.id=gs.shopId and s.id=#{id} 
+	</select>
+	
+	<!-- 一对多一对多查询 -->
+	<resultMap type="com.chihuobao.po.Shop" id="goodsDetail">  
+        <id property="id" column="id" />  
+        <result column="shopName" property="shopName"/>
+        <collection property="goodsStyle" ofType="com.chihuobao.po.GoodsStyle">  
+            <id property="id" column="id" />  
+            <result property="styleName" column="styleName" />  
+            <collection property="goods" ofType="com.chihuobao.po.Goods">  
+                <id property="id" column="id" />  
+                <result property="id" column="id" />  
+                <result property="goodName" column="goodName" />  
+                <result property="quantity" column="quantity" />  
+            </collection>  
+        </collection>  
+    </resultMap>  
+    <select id="selectGoodsShopList" resultMap="goodsDetail">  
+        SELECT  
+       g.goodName, gs.styleName
+        FROM  
+        shop s ,goods g,goodsStyle gs
+        where g.goodStyleId=gs.id and s.id=gs.shopId and s.id=#{id}   
+    </select>
+	
+	<!-- 查找审核资料表中待审核的条数 -->
+	<select id="selectShopDataTotal" parameterType="com.chihuobao.vo.ShopDataVo" resultType="Integer">
+		select count(*) from shop where auditState = #{auditState}
+	</select>
+	
+	<!-- 查找审核资料表中的待审核所有记录 -->
+	<select id="selectShopDataList" parameterType="com.chihuobao.vo.ShopDataVo"
+		resultType="com.chihuobao.vo.ShopDataVo">
+			select * from shopdata sd,shop s where 
+			sd.shopId = s.id and s.auditState = #{auditState}
+			limit #{page},#{rows}
+	</select>
+	
+	<!-- 根据商店审核资料id获取信息回显到审核页面 --> 
+	<select id="shopDataEdit" parameterType="Integer"
+		resultType="com.chihuobao.po.ShopData">
+			select * from shopdata where id = #{id}
+	</select>
+	
+	<!-- 审核成功并将状态id置1 -->
+	<select id="auditSuccess" parameterType="Integer">
+		update shop 
+		<set>
+			auditState = 1 
+		</set>
+		where id = #{shopId}
+	</select>
+	
+	<!-- 审核失败并将状态值置为2 -->
+	<select id="auditFail" parameterType="Integer">
+		update shop 
+		<set>
+			auditState = 2
+		</set>
+		 where id = #{shopId}
+	</select>
+	
+	<!-- 保存审核建议 -->
+	<select id="auditShopDataAdvise" parameterType="com.chihuobao.po.ShopData">
+		update shopdata set advise = #{advise} where id = #{id}
+	</select>
+	
+	<!-- 根据资料id删除审核的资料结果 -->
+	<delete id="deleteAuditShopData" parameterType="com.chihuobao.vo.ShopDataVo">
+		delete from shopdata 
+		<where>
+			id in
+			<foreach collection="ids" item="id" separator="," open="(" close=")">
+	 			#{id}
+	 		</foreach>
+		</where> 
+	</delete>
+	 
+</mapper>

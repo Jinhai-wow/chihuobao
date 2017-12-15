@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chihuobao.mapper.manager.ManageOperMapper">
+
+	<cache/>
+	<insert id="saveManageOper" parameterType="com.chihuobao.po.ManagerOpera">
+	insert into manageroperation (operation,operaDate,operaRole) values (#{operation},#{operaDate},#{operaRole});
+	</insert>
+	
+	<select id="getTotal" resultType="Integer">
+		select count(*) from manageroperation;
+	</select>
+	
+	<select id="selectOperAll" parameterType="com.chihuobao.vo.ManagerOperaVo" resultType="com.chihuobao.po.ManagerOpera">
+		select * from manageroperation limit 
+		     #{page},#{rows}
+		
+	</select>
+	
+	<delete id="deleteOperasByids" parameterType="com.chihuobao.vo.ManagerOperaVo">
+		delete from manageroperation 
+		<where>
+			id in
+			<foreach collection="ids" item="id" separator="," open="(" close=")">
+	 			#{id}
+	 		</foreach>
+		</where> 
+	</delete>
+	
+	<select id="selectByOperaTotal" parameterType="com.chihuobao.po.ManagerOpera"
+	      resultType="Integer">
+		select count(*) from manageroperation where 1=1
+		
+			<if test="operation != null">
+			   and operation like "%"#{operation}"%"
+			</if>
+			
+			<if test="operaRole != null">
+				and operaRole = #{operaRole}
+			</if>
+	</select>
+	
+	<select id="searchByOperaPage" parameterType="com.chihuobao.vo.ManagerOperaVo"
+	        resultType="com.chihuobao.po.ManagerOpera">
+		select * from manageroperation where 1=1
+			<if test="mOpera.operation != null">
+				and operation like "%"#{mOpera.operation}"%"
+			</if>
+			<if test="mOpera.operaRole != null">
+				and operaRole = #{mOpera.operaRole}
+			</if> 
+				
+			 limit #{page},#{rows}
+	</select>
+</mapper>

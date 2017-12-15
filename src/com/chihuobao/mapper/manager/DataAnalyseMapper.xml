@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chihuobao.mapper.manager.DataAnalyseMapper">
+
+	<cache/>
+	
+	<select id="selectGoodsStyleById" parameterType="Integer"
+		resultType="com.chihuobao.po.GoodsStyle">
+		 select * from goodsstyle where id = #{goodStyleId}
+	</select>
+	
+	<select id="selectGoodsStyle" resultType="com.chihuobao.po.GoodsStyle">
+		select * from goodsstyle
+	</select>
+	
+	<select id="selectOrderAnalyseResult" parameterType="String" resultType="com.chihuobao.po.OrderAnalyse">
+		SELECT shopName,shopStyleName,goodsName,goodsMoney,MAX(num) as total,createTime 
+from (SELECT og.goodsName ,ot.shopId,s.shopName,ss.styleName as shopStyleName,og.goodsMoney,COUNT(*) as num ,ot.createTime 
+from ordertable ot,ordergoods og ,shopstyle ss,shop s
+where ot.id=og.orderId and ot.shopId = s.id and s.shopStyleId = ss.id  and createTime LIKE #{date}"%" GROUP BY og.goodsName) as ff
+	</select>
+	
+	
+	<insert id="saveOrderAnalyseResult" parameterType="com.chihuobao.po.OrderAnalyse">
+		insert into orderanalyse (shopName,shopStyleName,goodsName,total,createTime,goodsMoney)
+		values (#{shopName},#{shopStyleName},#{goodsName},#{total},#{createTime},#{goodsMoney})
+	</insert>
+	
+	
+	<select id="selectShopAnalyseResult" parameterType="String" resultType="com.chihuobao.po.ShopAnalyse">
+		SELECT shopName,styleName, MAX(num) as total,createTime FROM 
+		(select ot.shopId,s.shopName,ss.styleName,ot.createTime, COUNT(*) as num from ordertable ot,ordergoods og,shop s,shopstyle ss 
+		where ot.id= og.orderId and ot.shopId = s.id  
+        and s.shopStyleId = ss.id and createTime LIKE #{date}"%"  GROUP BY ot.shopId) as shop
+	</select>
+	
+	<insert id="saveShopAnalyseResult" parameterType="com.chihuobao.po.ShopAnalyse">
+		insert into shopanalyse (shopName,styleName,total,createTime) 
+		values (#{shopName},#{styleName},#{total},#{createTime})
+	</insert>
+	
+	<select id="selectBestGoodsTotal" resultType="Integer">
+		select count(*) from orderanalyse 
+	</select>
+	
+	<select id="selectBestGoodsList" parameterType="com.chihuobao.po.OrderAnalyse"
+		resultType="com.chihuobao.po.OrderAnalyse">
+			select * from orderanalyse 
+			<if test="page != null">
+				limit #{page},#{rows}
+			</if>
+			
+	</select>
+	
+	<select id="goodsChart" resultType="com.chihuobao.po.OrderAnalyse">
+		select * from orderanalyse 
+	</select>
+	
+	<select id="selectBestShopTotal" resultType="Integer">
+		select count(*) from shopanalyse
+	</select>
+	
+	<select id="selectBestShopList" parameterType="com.chihuobao.po.ShopAnalyse"
+		resultType="com.chihuobao.po.ShopAnalyse">
+			select * from shopanalyse 
+			<if test="page != null">
+				limit #{page},#{rows}
+			</if>
+	</select>
+	
+	<select id="selectBestShop" resultType="com.chihuobao.po.ShopAnalyse">
+			select * from shopanalyse 
+	</select>
+	
+	<!-- 根据条件查找商品条数 -->
+	<select id="selectBestGoodsTotalByTime" parameterType="String" resultType="Integer">
+		select count(*) from orderanalyse 
+		where createTime like #{createTime}"%"
+		
+	</select>
+	
+	<!-- 根据条件查找商品记录 -->
+	<select id="selectBestGoodsListByTime" parameterType="String"
+		resultType="com.chihuobao.po.OrderAnalyse">
+			select * from orderanalyse 
+			where createTime like #{createTime}"%"
+	</select>
+	
+	<!-- 根据条件查找商家条数 -->
+	<select id="selectBestShopTotalByTime" parameterType="String" resultType="com.chihuobao.po.ShopAnalyse">
+		select count(*) from shopanalyse 
+		where createTime like #{createTime}"%"
+	</select>
+	
+	<!-- 根据条件查找商家记录 -->
+	<select id="selectBestShopListByTime" parameterType="String"
+		resultType="com.chihuobao.po.ShopAnalyse">
+			select * from shopanalyse 
+			where createTime like #{createTime}"%"
+	</select>
+	
+	<!-- 根据时间初始值来获取销售最多的商品数据显示图表 -->
+	<select id="goodsChartsListBydate" parameterType="com.chihuobao.po.OrderAnalyse"
+		resultType="com.chihuobao.po.OrderAnalyse">
+			select * from orderanalyse where createTime BETWEEN #{fromdate} and #{todate}
+	</select>
+	
+	<!-- 异步查找在某个时间范围内的每天卖出最多商品的商店，图表显示 -->
+	<select id="shopChartsListBydate" parameterType="com.chihuobao.po.ShopAnalyse"
+		resultType="com.chihuobao.po.ShopAnalyse">
+			select * from shopanalyse where createTime BETWEEN #{fromdate} and #{todate}
+	</select>
+	
+</mapper>

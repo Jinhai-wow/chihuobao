@@ -1,0 +1,266 @@
+body {
+	padding-top: 50px;
+}
+
+/*
+ * 全局
+ */
+.sub-header {
+	padding-bottom: 4px;
+	border-bottom: 1px solid #ddd;
+}
+
+a.normal {
+	text-decoration: none;
+	color: black;
+}
+
+.pointer {
+	cursor: pointer;
+}
+/*-------------全局设置 结束-------------------*/
+
+/*---------------head部分 开始-------------------*/
+.navbar-fixed-top {
+	border: 0;
+}
+
+#head nav.navset {
+	margin-bottom: 0;
+}
+
+#head nav:first-of-type a {
+	color: #FFF;
+	font-size: 16px;
+	user-select: none;
+}
+/*font-color-black*/
+#head .fc-black li a {
+	color: black;
+}
+
+.chb-logo {
+	position: relative;
+	top: -8px;
+}
+
+.bgcolor {
+	background-color: #1e89e0;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus,
+	.navbar-default .navbar-nav>.open>a:hover {
+	background-color: rgba(221, 221, 221, 0.3);
+}
+
+.dropdown-menu {
+	min-width: 143px;
+}
+/*---------------head部分 开始-------------------*/
+
+/*
+ * 侧边栏
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+	display: none;
+}
+
+@media ( min-width : 768px) {
+	.sidebar {
+		position: fixed;
+		top: 51px;
+		bottom: 0;
+		left: 0;
+		z-index: 1000;
+		display: block;
+		padding: 20px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		/* Scrollable contents if viewport is shorter than content. */
+		background-color: #f5f5f5;
+		border-right: 1px solid #eee;
+	}
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+	margin-right: -21px; /* 20px padding + 1px border */
+	margin-left: -20px;
+}
+
+.nav-sidebar>li>a {
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+.nav-sidebar>.active>a, .nav-sidebar>.active>a:hover, .nav-sidebar>.active>a:focus
+	{
+	color: #fff;
+	background-color: #428bca;
+}
+
+/*
+ * 主框
+ */
+.main {
+	padding-left: 0px;
+}
+
+@media ( min-width : 768px) {
+	.main {
+		padding-right: 40px;
+		overflow-x: hidden;
+	}
+}
+
+.main .page-header {
+	margin-top: 0;
+}
+
+.path {
+	height: 54px;
+	line-height: 54px;
+	font-size: 12px;
+}
+
+.path span:first-of-type {
+	user-select: none;
+	color: #999;
+}
+
+.path span:nth-of-type(n+2) {
+	margin-left: 5px;
+}
+
+.path i {
+	display: inline-block;
+	font-style: normal;
+	font-size: 16px;
+	user-select: none;
+}
+
+.path a.normal:hover {
+	color: #0089dc;
+}
+/*
+ *商品列表
+ */
+.goodsList {
+	font-size: 0.8em;
+}
+
+.btn-goods-edit {
+	text-align: right;
+}
+
+.detail-con {
+	
+}
+
+.goods-img {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+/*
+ *账号头像
+ */
+.account-img {
+	height: 130px;
+	align: center;
+}
+
+.accountName {
+	color: #1e89e0;
+	font-size: 0.8em;
+}
+/*
+ *公告
+ */
+.announcement {
+	height: 90px;
+}
+
+/*
+ *商品栏
+ */
+.goodsCon .thumbnail {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/*
+ *选择列表栏
+ */
+.list-menu {
+	font-size: 1em;
+	margin-bottom:20px; 
+}
+
+/*
+ *我的消息
+ */
+.info-con {
+	margin: 15px 0px;
+	box-shadow: 4px 4px 6px #666;
+	background: #fff;
+	height: 100px;
+}
+
+.info-con .message-img {
+	position: relative;
+	top: 10px;
+	height: 80px;
+}
+
+.info-con .message-con {
+	height: 40px;
+	overflow-y: hidden;
+	text-overflow: ellipsis;
+}
+
+.info-con span {
+	color: #666;
+}
+
+/*input file */
+.a-upload {
+	padding: 4px 10px;
+	height: 30px;
+	line-height: 20px;
+	position: relative;
+	text-align: center;
+	cursor: pointer;
+	color: #fff;
+	background: #1E89E0;
+	border: 1px solid #1E89E0;
+	border-radius: 4px;
+	overflow: hidden;
+	display: inline-block;
+	*display: inline;
+	*zoom: 1
+}
+
+.a-upload  input {
+	position: absolute;
+	font-size: 100px;
+	right: 0;
+	top: 0;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	cursor: pointer
+}
+
+.a-upload:hover {
+	color: #fff;
+	background: #286090;
+	border-color: #286090;
+	text-decoration: none
+}
+
+/****************订单*******************/
+.order-msg {
+	background-color: #F5F5F5;
+}

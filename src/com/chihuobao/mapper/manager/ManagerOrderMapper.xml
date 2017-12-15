@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chihuobao.mapper.manager.ManagerOrderMapper">
+
+	<cache/>
+	<select id="selectOrderTotal" 
+		resultType="Integer">
+			select count(*) from shop;
+	</select>
+	
+	<!-- 查找所有订单 -->
+	 <resultMap type="com.chihuobao.vo.ManagerOrderVo" id="order">
+	 	<result column="id" property="id"/>
+	 	<result column="userId" property="userId"/>
+	 	<result column="shopId" property="shopId"/>
+	 	<result column="arriveTime" property="arriveTime"/>
+	 	<result column="deliverMethod" property="deliverMethod"/>
+	 	<result column="userAddress" property="userAddress"/>
+	 	<result column="orderState" property="orderState"/>
+	 	<result column="totalMoney" property="totalMoney"/>
+	 	<result column="shopName" property="shopName"/>
+	 	<association property="user" javaType="com.chihuobao.po.User">
+	 		<id column="id" property="id"/>
+	 		<result column="username" property="username"/>
+	 	</association>
+	 	<association property="shop" javaType="com.chihuobao.po.Shop">
+	 		<id column="id" property="id"/>
+	 		<result column="shopName" property="shopName"/>
+	 	</association>
+	 </resultMap>
+	 <select id="selectOrderList" resultMap="order">
+	 	SELECT
+	o.id,
+	o.shopId,
+	o.userId,
+	o.arriveTime,
+	o.deliverMethod,
+	o.userAddress,
+	o.orderState,
+	o.totalMoney,
+	s.shopName,
+	username
+	FROM
+	ordertable o,shop s,user u
+	where o.shopId=s.id
+	and o.userId=u.id 
+	limit #{page},#{rows}
+	 </select> 
+	 
+	 
+	 <select id="selectOrderState" parameterType="com.chihuobao.vo.ManagerOrderVo"
+	 	resultType="com.chihuobao.vo.ManagerOrderVo">
+	select distinct(o.orderState) from ordertable o,shop s,user u
+	where o.shopId=s.id
+	and o.userId=u.id
+	 </select>
+	 
+	 
+	<!--  按条件查找订单总条数 -->
+	 <select id="selectTotalByContext" parameterType="com.chihuobao.vo.ManagerOrderVo"
+	 	resultType="Integer">
+	 		select count(*) from ordertable where 1=1
+		
+			<if test="userAddress != null">
+			   and userAddress like "%"#{userAddress}"%"
+			</if>
+			
+			<if test="orderState != null">
+				and orderState = #{orderState}
+			</if>
+	 </select>
+	 
+	
+	<!-- 按条件查找订单 -->
+	
+	 <resultMap type="com.chihuobao.vo.ManagerOrderVo" id="searchOrder">
+	 	<result column="id" property="id"/>
+	 	<result column="userId" property="userId"/>
+	 	<result column="shopId" property="shopId"/>
+	 	<result column="arriveTime" property="arriveTime"/>
+	 	<result column="deliverMethod" property="deliverMethod"/>
+	 	<result column="userAddress" property="userAddress"/>
+	 	<result column="orderState" property="orderState"/>
+	 	<result column="totalMoney" property="totalMoney"/>
+	 	<result column="shopName" property="shopName"/>
+	 	<association property="user" javaType="com.chihuobao.po.User">
+	 		<id column="id" property="id"/>
+	 		<result column="username" property="username"/>
+	 	</association>
+	 	<association property="shop" javaType="com.chihuobao.po.Shop">
+	 		<id column="id" property="id"/>
+	 		<result column="shopName" property="shopName"/>
+	 	</association>
+	 </resultMap>
+	 <select id="searchOrderByContextPage"  parameterType="com.chihuobao.vo.ManagerOrderVo"
+	 	resultMap="searchOrder">
+	 	SELECT
+	o.id,
+	o.shopId,
+	o.userId,
+	o.arriveTime,
+	o.deliverMethod,
+	o.userAddress,
+	o.orderState,
+	o.totalMoney,
+	s.shopName,
+	username
+	FROM
+	ordertable o,shop s,user u
+	where o.shopId=s.id
+	and o.userId=u.id 
+	<if test="userAddress != null">
+			   and userAddress like "%"#{userAddress}"%"
+			</if>
+			
+			<if test="orderState != null">
+				and orderState = #{orderState}
+			</if>
+	limit #{page},#{rows}
+	 </select> 
+	
+	<delete id="deleteOrderByids" parameterType="com.chihuobao.vo.ManagerOrderVo">
+		delete from ordertable
+		<where>
+			id in
+			<foreach collection="ids" item="id" separator="," open="(" close=")">
+	 			#{id}
+	 		</foreach>
+		</where> 
+	</delete>
+	
+	<!-- 查找当前订单的所有商品 -->
+	<select id="selectOrderGoodsByOrderId" parameterType="Integer"
+		resultType="com.chihuobao.po.ManagerOrderGoods">
+			select * from ordergoods where orderId= #{id}
+	</select>
+	
+
+	
+</mapper>

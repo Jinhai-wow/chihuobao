@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chihuobao.mapper.business.GoodsMapper" >
+  <resultMap id="goodResultMap" type="com.chihuobao.vo.GoodsCustom" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="goodNumber" property="goodNumber" jdbcType="CHAR" />
+    <result column="goodName" property="goodName" jdbcType="VARCHAR" />
+    <result column="goodStyleId" property="goodStyleId" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="goodPic" property="goodPic" jdbcType="VARCHAR" />
+    <result column="goodIntro" property="goodIntro" jdbcType="VARCHAR" />
+    <result column="sellState" property="sellState" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <!-- 一对一 -->
+    <association property="goodStyle" javaType="goodsStyle">
+    	<id property="id" column="goodStyleId"/>
+    	<result property="shopId" column="shopId"/>
+    	<result property="styleName" column="styleName"/>
+    	<result property="styleDesc" column="styleDesc"/>
+    </association>
+  </resultMap>
+  <!-- 订单 -->
+  <resultMap type="Ordertable" id="ordertable" autoMapping="true">
+		<id column="id" property="id" />
+		<result column="shopName" property="shopname" />
+		<collection property="ordergoodsList" ofType="Ordergoods"
+			autoMapping="true">
+			<result column="goodsname" property="goodsname" />
+		</collection>
+	</resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, goodNumber, goodName, goodStyleId, price, quantity, goodPic, goodIntro, sellState, 
+    createTime
+  </sql>
+  <select id="selectByExample" resultType="com.chihuobao.po.Goods" parameterType="com.chihuobao.po.GoodsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from goods order by createTime desc
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultType="com.chihuobao.po.Goods" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByGoodNumber" resultType="com.chihuobao.po.Goods" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods
+    where goodNumber = #{goodNumber,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByGoodName" resultType="com.chihuobao.po.Goods" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods
+    where goodName = #{goodName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKeyWithGoodStyle" resultMap="goodResultMap" parameterType="java.lang.Integer" >
+    SELECT 
+    goods.id, goods.goodNumber, goods.goodName, goods.goodStyleId, goods.price, 
+	goods.quantity, goods.goodPic, goods.goodIntro, goods.sellState, goods.createTime, 
+	goodsstyle.shopId, goodsstyle.styleDesc, goodsstyle.styleName
+	FROM goods 
+	LEFT JOIN goodsStyle ON goods.goodStyleId = goodsstyle.id
+	WHERE goods.id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectStyleByShopId" resultType="com.chihuobao.po.GoodsStyle" parameterType="java.lang.Integer" >
+    select * from goodsStyle 
+    where shopId = #{shopId,jdbcType=INTEGER} 
+  </select>
+   <select id="selectGoodStyleIdByShopIdNew" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select id from goodsStyle
+    where shopId = #{shopId,jdbcType=INTEGER} ORDER BY id desc LIMIT 1
+  </select>
+  <select id="selectGoodByShopId" resultType="com.chihuobao.po.Goods" parameterType="java.lang.Integer" >
+    SELECT * FROM goods WHERE goodStyleId in 
+    (SELECT id FROM goodsStyle WHERE shopId = #{shopId,jdbcType=INTEGER}) order by createTime desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from goods
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+   <delete id="deleteGoodStyleById" parameterType="java.lang.Integer" >
+    delete from goodsStyle
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.chihuobao.po.GoodsExample" >
+    delete from goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.chihuobao.po.Goods" >
+    insert into goods (id, goodNumber, goodName, 
+      goodStyleId, price, quantity, 
+      goodPic, goodIntro, sellState, 
+      createTime)
+    values (#{id,jdbcType=INTEGER}, #{goodNumber,jdbcType=CHAR}, #{goodName,jdbcType=VARCHAR}, 
+      #{goodStyleId,jdbcType=INTEGER}, #{price,jdbcType=DOUBLE}, #{quantity,jdbcType=INTEGER}, 
+      #{goodPic,jdbcType=VARCHAR}, #{goodIntro,jdbcType=VARCHAR}, #{sellState,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.chihuobao.po.Goods" >
+    insert into goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="goodNumber != null" >
+        goodNumber,
+      </if>
+      <if test="goodName != null" >
+        goodName,
+      </if>
+      <if test="goodStyleId != null" >
+        goodStyleId,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="goodPic != null" >
+        goodPic,
+      </if>
+      <if test="goodIntro != null" >
+        goodIntro,
+      </if>
+      <if test="sellState != null" >
+        sellState,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="goodNumber != null" >
+        #{goodNumber,jdbcType=CHAR},
+      </if>
+      <if test="goodName != null" >
+        #{goodName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodStyleId != null" >
+        #{goodStyleId,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="goodPic != null" >
+        #{goodPic,jdbcType=VARCHAR},
+      </if>
+      <if test="goodIntro != null" >
+        #{goodIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="sellState != null" >
+        #{sellState,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertGoodStyle" parameterType="com.chihuobao.po.GoodsStyle">
+  	insert into goodsStyle
+  	<trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopId != null" >
+        shopId,
+      </if>
+      <if test="styleName != null" >
+        styleName,
+      </if>
+      <if test="styleDesc != null" >
+        styleDesc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="styleName != null" >
+        #{styleName,jdbcType=VARCHAR},
+      </if>
+      <if test="styleDesc != null" >
+        #{styleDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.chihuobao.po.GoodsExample" resultType="java.lang.Integer" >
+    select count(*) from goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectGoodStyleByAll" resultType="com.chihuobao.po.GoodsStyle" >
+    select * from goodsStyle
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update goods
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodNumber != null" >
+        goodNumber = #{record.goodNumber,jdbcType=CHAR},
+      </if>
+      <if test="record.goodName != null" >
+        goodName = #{record.goodName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodStyleId != null" >
+        goodStyleId = #{record.goodStyleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.quantity != null" >
+        quantity = #{record.quantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodPic != null" >
+        goodPic = #{record.goodPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodIntro != null" >
+        goodIntro = #{record.goodIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellState != null" >
+        sellState = #{record.sellState,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update goods
+    set id = #{record.id,jdbcType=INTEGER},
+      goodNumber = #{record.goodNumber,jdbcType=CHAR},
+      goodName = #{record.goodName,jdbcType=VARCHAR},
+      goodStyleId = #{record.goodStyleId,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=DOUBLE},
+      quantity = #{record.quantity,jdbcType=INTEGER},
+      goodPic = #{record.goodPic,jdbcType=VARCHAR},
+      goodIntro = #{record.goodIntro,jdbcType=VARCHAR},
+      sellState = #{record.sellState,jdbcType=INTEGER},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chihuobao.po.Goods" >
+    update goods
+    <set >
+      <if test="goodNumber != null" >
+        goodNumber = #{goodNumber,jdbcType=CHAR},
+      </if>
+      <if test="goodName != null" >
+        goodName = #{goodName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodStyleId != null" >
+        goodStyleId = #{goodStyleId,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="goodPic != null" >
+        goodPic = #{goodPic,jdbcType=VARCHAR},
+      </if>
+      <if test="goodIntro != null" >
+        goodIntro = #{goodIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="sellState != null" >
+        sellState = #{sellState,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chihuobao.po.Goods" >
+    update goods
+    set goodNumber = #{goodNumber,jdbcType=CHAR},
+      goodName = #{goodName,jdbcType=VARCHAR},
+      goodStyleId = #{goodStyleId,jdbcType=INTEGER},
+      price = #{price,jdbcType=DOUBLE},
+      quantity = #{quantity,jdbcType=INTEGER},
+      goodPic = #{goodPic,jdbcType=VARCHAR},
+      goodIntro = #{goodIntro,jdbcType=VARCHAR},
+      sellState = #{sellState,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!--  商店相关 -->
+	<select id="selectOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
+		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 
+		where shopid = #{shopid,javaType=INTEGER} order by createtime desc
+	</select>
+	<select id="selectAcceptingOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
+		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 
+		where shopid = #{shopid,javaType=INTEGER} and orderstate =1  order by createtime desc
+	</select>
+	<select id="selectCancelingOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
+		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 
+		where shopid = #{shopid,javaType=INTEGER} and orderstate =6  order by createtime desc
+	</select>
+	<select id="selectFinishOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
+		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 
+		where shopid = #{shopid,javaType=INTEGER} and orderstate =5 or orderstate=7 order by createtime desc
+	</select>
+	<select id="selectNoSendOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
+		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 
+		where shopid = #{shopid,javaType=INTEGER} and orderstate =2 or orderstate=8 order by createtime desc
+	</select>
+	<select id="selectSendOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
+		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 
+		where shopid = #{shopid,javaType=INTEGER} and orderstate =3 order by createtime desc
+	</select>
+	<update id="updateOrderStateAccept" parameterType="Long">
+		update ordertable set orderstate=2 where id=#{id}
+	</update>
+	<update id="updateOrderStateSend" parameterType="Ordertable">
+		update ordertable set orderstate=3,delivermethod=#{delivermethod},arrivetime=#{arrivetime} where id=#{id}
+	</update>
+	<update id="updateOrderStateBackRefuse" parameterType="Ordertable">
+		update ordertable set orderstate=8,shopremark=#{shopremark} where id=#{id}
+	</update>
+	<update id="updateOrderStateBackAccept" parameterType="Long">
+		update ordertable set orderstate=4 where id=#{id}
+	</update>
+	<update id="updateOrderRefuse" parameterType="Ordertable">
+		update ordertable set orderstate=0,shopremark=#{shopremark} where id=#{id}
+	</update>
+	<!-- 查找用户 -->
+	<select id="getUser" parameterType="Integer" resultType="user">
+		SELECT * from User u LEFT JOIN Address a on u.id=a.userid where a.state=1
+	</select>
+</mapper>

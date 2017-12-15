@@ -1,0 +1,400 @@
+.messagn-panel{
+	height: 680px;
+	width: 100%;
+	background-color:#ffffff;
+}
+	/*-------------全局设置 开始-------------------*/
+a.normal{
+	text-decoration: none;
+	color: black;
+}
+.pointer{
+	cursor: pointer;
+}
+	/*-------------全局设置 结束-------------------*/
+
+
+	/*---------------head部分 开始-------------------*/
+#head nav.navset{
+	margin-bottom: 0;
+}
+#head nav:first-of-type a{
+	color: #FFF;
+	font-size: 16px;
+	user-select: none;
+}
+	/*font-color-black*/
+#head .fc-black li a{
+	color: black;
+}
+.chb-logo{
+	position: relative;
+	top: -8px;
+}
+.bgcolor{
+	background-color: #1e89e0;
+}
+.navbar-default .navbar-nav>.open>a,
+.navbar-default .navbar-nav>.open>a:focus,
+.navbar-default .navbar-nav>.open>a:hover{
+	background-color: rgba(221,221,221,0.3);
+}
+.dropdown-menu{
+	min-width: 143px;
+}
+.dropdown-menu:hover{
+	background-color: rgba(221,221,221,1);
+}
+	/*---------------head部分 结束-------------------*/
+
+
+	/*---------------main部分 开始-------------------*/
+.path{
+	height: 54px;
+	line-height: 54px;
+	font-size: 12px;
+}
+.path span:first-of-type{
+	user-select: none;
+}
+.path span:nth-of-type(n+2){
+			margin-left: 5px;
+}
+.path i{
+	display: inline-block;
+	font-style: normal;
+	font-size: 16px;
+	user-select: none;
+}
+.path a.normal:hover{
+	color: #0089dc;
+}
+.main-content .row-left ul{
+	margin-bottom: 20px;
+}
+.main-content .row-left ul li a{
+	padding: 0;
+	margin: 0;
+	color: #666;
+	text-decoration: none;
+	}
+.main-content .row-left ul li span{
+	font-size: 17px;
+	font-weight: 700;
+}
+.main-content .row-left ul li i{
+	display: inline-block;
+	width: 30px;
+	color: #aaa;
+	font-size: 16px;
+	line-height: 26px;
+	user-select: none;
+}
+.main-content .row-left ul li:first-of-type{
+	margin-bottom: 8px;
+}
+.main-content .row-left ul li:nth-of-type(n+2){
+	margin-left: 30px;
+	cursor: auto;
+	text-align: match-parent;
+	padding: 4px 0;
+}
+	/*---------------main部分 结束-------------------*/
+
+	/*---------------footer部分 开始-------------------*/
+
+#footer{
+	margin-top: 50px;
+}
+#footer .row .nav li:first-of-type{
+	font-size: 14px;
+	line-height: 30px;
+	font-weight: 400;
+}
+#footer .row .nav li a{
+	padding: 0;
+	margin: 0;
+	font-size: 12px;
+	color: #999;
+	display: block;
+	line-height: 24px;
+	text-decoration: none;
+	width: 50%;
+}
+.footer-copyright{
+	padding-top: 60px;
+}
+.footer-copyright .owner{
+	display: block;
+	text-align: center;
+	color: #0e0e0e;
+	font-weight: 400;
+	font-size: 12px;
+	margin: 0;
+	padding: 0;
+}
+.footer-copyright p{
+	margin: 0;
+	padding: 0 ;
+	color:#999;
+	text-align: center;
+}
+.footer-copyright p a{
+	text-decoration: none;
+	color:#999;
+}
+body {
+    background: #f7f7f7;
+    padding-right: 35px;
+}
+.fontlink-color{
+	color: #0089dc!important;
+}
+
+	/*     --------个人资料----------       */	
+.profile{
+    border: 1px solid #eee;
+    background-color: #fff;
+    min-height: 680px;
+    padding: 20px 50px;
+}
+.profileinfo {
+    margin-top: 30px;
+    margin-left: 20px;
+}
+.profileinfo-item {
+    margin-bottom: 20px;
+}
+p {
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+.profileinfo-label {
+    margin-right: 15px;
+    width: 60px;
+    text-align: right;
+}
+.profileinfo-label, .profileinfo-value {
+    vertical-align: middle;
+    display: inline-block;
+}
+.profileinfo-face {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 12px;
+    vertical-align: top;
+    width: 100px;
+    height: 100px;
+}
+.profileinfo-face>img {
+    width: 100%;
+}
+fieldset, img {
+    border: 0;
+}
+.profileinfo-value {
+    width: 218px;
+    color: #666;
+}
+.profileinfo-label, .profileinfo-value {
+    vertical-align: middle;
+    display: inline-block;
+}
+.unbind {
+    color: #f74342;
+}
+.column{
+    padding-left: 0;
+    padding-right: 0;
+}
+.nf-binding{
+    padding-left: 16px;
+}
+.modify-user{
+    padding-left: 10px
+}
+.modal-dialog{
+    margin-top: 300px;
+}
+.modal-content{
+    width:350px;
+    height:180px;
+    margin-left: 120px;
+}
+.btn{
+    padding: 0 0;
+}
+.head-portrait{
+    height: 150px;
+    margin-bottom: 20px;
+}
+.message-item{
+    margin-bottom: 30px;
+}
+.profile-paneltitle {
+    border-bottom: 2px solid #f4f4f4;
+    padding: 0 20px 11px;
+    font-size: 18px;
+    font-weight: 700;
+    padding-bottom: 20px;
+}
+h3 {
+    display: block;
+    font-size: 1.17em;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+.profile-paneltitle .subtitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: #999;
+}
+//修改密码
+.profile-paneltitle {
+    border-bottom: 2px solid #f4f4f4;
+    padding: 0 20px 11px;
+    font-size: 18px;
+    font-weight: 700;
+    padding-bottom: 20px;
+}
+h3 {
+    display: block;
+    font-size: 1.17em;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+.profile-paneltitle .subtitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: #999;
+}
+.profile-panelcontent {
+    display: inline-block;
+    width: 100%;
+}
+.changepwd {
+    margin: 40px 0 0 15px;
+}
+form {
+    display: block;
+    margin-top: 0em;
+}
+html {
+    color: #333;
+    background: #fff;
+    text-rendering: optimizelegibility;
+    box-sizing: border-box;
+}
+.changepwd-tip {
+    margin-bottom: 30px;
+    color: #999;
+}
+.formfield {
+    position: relative;
+    padding-bottom: 25px;
+}
+.container {
+    font-size: 14px;
+    width: 960px;
+  
+}
+.formfield>label {
+    float: left;
+    display: inline-block;
+    width: 120px;
+    height: 38px;
+    margin-right: 20px;
+    line-height: 38px;
+    text-align: right;
+    color: #666;
+}
+label {
+    cursor: default;
+}
+.formfield>input {
+    vertical-align: baseline;
+    border: 1px solid #dedede;
+    width: 300px;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 10px;
+    border-radius: 2px;
+}
+.formfield-hint {
+    position: absolute;
+    font-size: 12px;
+    line-height: 20px;
+    bottom: 5px;
+    margin-left: 142px;
+}
+.formfield {
+    position: relative;
+    padding-bottom: 25px;
+}
+.formfield [class^=btn-] {
+    width: 300px;
+}
+.btn-primary {
+    background-color: #0089dc;
+    color: #fff;
+}
+.btn-lg {
+    padding: 12px 30px;
+    font-size: 16px;
+}
+[class*=" btn-"], [class^=btn-] {
+    display: inline-block;
+    padding: 12px 30px;
+    line-height: 1;
+    border: none;
+    border-radius: 2px;
+    outline: 0;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+button, input {
+    line-height: normal;
+}
+#user-img-block{
+	width:120px;
+	height:120px;
+}
+.profileinfo-facedit {
+    position: absolute;
+    display: none;
+    bottom: -30px;
+    width: 150px;
+    line-height: 28px;
+    text-align: center;
+    background-color: #000;
+    background-color: rgba(0,0,0,.6);
+    color: #fff;
+}
+a, ins {
+    text-decoration: none;
+}
+.profileinfo-face{
+    
+}
+#main .container1 .row{
+	margin:20px;
+}
+#profile-img{
+	width:150px;
+	height:150px;
+}
+#modal-554954{
+	color: #428bca;
+	background-color: #ffffff;
+}
+

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chihuobao.mapper.manager.ManagerShopStyleMapper">
+
+	<cache/>
+	
+	<select id="selectShopStyle" resultType="com.chihuobao.po.ShopStyle">
+		select * from shopstyle
+	</select>
+	
+	<insert id="saveShopStyle" parameterType="com.chihuobao.po.ShopStyle">
+		insert into shopstyle (styleName,styleDesc) values (#{styleName},#{styleDesc})
+	</insert>
+	
+	<select id="selectShopStyleTotal" resultType="Integer">
+		select count(*) from shopstyle;
+	</select>
+	
+	<select id="selectShopStyleList" parameterType="com.chihuobao.vo.ShopStyleVo"
+		resultType="com.chihuobao.vo.ShopStyleVo">
+			select * from shopstyle limit #{page},#{rows}
+	</select>
+	
+	<select id="selectShopStyleByid" parameterType="Integer" resultType="com.chihuobao.po.ShopStyle">
+		select * from shopstyle where id = #{id}
+	</select>
+	
+	<update id="updateShopStyle" parameterType="com.chihuobao.po.ShopStyle">
+		update shopstyle
+		<set>
+			<if test="styleName != null">
+				styleName = #{styleName},
+			</if>
+			
+			<if test="styleDesc != null">
+				styleDesc = #{styleDesc}
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	<delete id="deleteShopStyleByids" parameterType="com.chihuobao.vo.ShopStyleVo">
+		delete from shopstyle 
+		<where>
+			id = 
+			<foreach collection="ids" item="id" separator="," open="(" close=")">
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+	
+</mapper>

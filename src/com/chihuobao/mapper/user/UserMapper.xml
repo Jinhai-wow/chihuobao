@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chihuobao.mapper.user.UserMapper">
+	<!-- 开启本mapper的namespace下的二级缓存 -->
+	<cache/>
+
+	<resultMap type="com.chihuobao.vo.UserVo" id="findUserByPasswordMap">
+		<!-- 配置映射的关系的用户信息 -->
+		<!-- association:用于映射关联查询单个对象的信息
+		javaType：要将关联查询的用户信息映射到OrdersResultMappojo类的那个属性 -->
+		<association property="user" javaType="com.chihuobao.po.User">
+			<!-- id:关联查询用户的唯一标识
+			column：指定唯一标识用户信息的列
+			property：映射到user的哪个属性 -->
+			<id column="id" property="id"/>
+			<result column="username" property="username"/>
+			<result column="password" property="password"/>
+			<result column="name" property="name"/>
+			<result column="sex" property="sex"/>
+			<result column="email" property="email"/>
+			<result column="phone" property="phone"/>
+			<result column="photo" property="photo"/>
+			<result column="registertime" property="registertime"/>
+			<result column="userstatus" property="userstatus"/>
+			<result column="userfreeze" property="userfreeze"/>
+		</association>
+	</resultMap>
+	
+	<!-- 密码登陆 -->
+	<select id="findUserByPassword" parameterType="com.chihuobao.vo.UserVo" resultMap="findUserByPasswordMap">
+		<!-- SELECT * FROM user WHERE phone='${user.phone}' AND `password`='${user.password}' -->
+		SELECT * FROM `user`  WHERE phone='${user.phone}' AND  `password`='${user.password}'
+	</select>
+	
+	<!-- 短信注册 -->
+	<insert id="messageRegister" parameterType="com.chihuobao.vo.UserVo">
+	
+		<selectKey keyProperty="user.id" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO `user`(username,phone,registertime,userstatus) 
+		VALUES('${user.username}','${user.phone}',#{user.registertime},1)
+	</insert>
+	
+	<!-- 短信登陆 -->
+	<select id="findUserByPhone" parameterType="com.chihuobao.vo.UserVo" resultMap="findUserByPasswordMap">
+		SELECT * FROM `user`  WHERE phone='${user.phone}'
+	</select>
+	
+	<!-- 登陆成功时，把登陆状态写1 -->
+	<update id="setuserstatus" parameterType="java.lang.Integer">
+		UPDATE `user` SET userstatus=1 WHERE id=#{id}
+	</update>
+	
+	<!-- 个人中心-个人资料，根据id查询用户信息 -->
+	<select id="findUserById" parameterType="java.lang.Integer" resultMap="findUserByPasswordMap">
+		SELECT * FROM `user`  WHERE id=#{id}
+	</select>
+	
+	<!-- 修改用户名 -->
+	<update id="updateUsername" parameterType="com.chihuobao.po.User">
+		UPDATE `user` SET username=#{username} WHERE id=#{id}
+	</update>
+	
+		
+	<!-- 修改密码 -->
+	<update id="modifyPassword" parameterType="com.chihuobao.po.User">
+		UPDATE `user` SET `password`=#{password} WHERE id=#{id}
+	</update>
+	
+	<!-- 保存上传的头像图片 -->
+	<update id="headPortrait" parameterType="com.chihuobao.po.User">
+		UPDATE `user` SET photo=#{photo} WHERE id=#{id}
+	</update>
+	
+	<!-- 查找用户地址 -->
+	<select id="findUserAddress" parameterType="java.lang.Integer" resultType="com.chihuobao.po.Address">
+		SELECT * FROM address WHERE userid=#{id}
+	</select>
+	
+</mapper>

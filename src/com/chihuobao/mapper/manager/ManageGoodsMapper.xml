@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chihuobao.mapper.manager.ManageGoodsMapper">
+
+	<cache/>
+	<select id="selectGoodsTotal" resultType="Integer">
+		select count(*) from goods
+	</select>
+	
+	
+	 <!-- <resultMap type="com.chihuobao.vo.GoodsAndGoodsStyleVo" id="goodsAndStyle">
+	 	<result column="id" property="goods.id"/>
+	 	<result column="goodStyleId" property="goods.goodStyleId"/>
+	 	<result column="goodName" property="goods.goodName"/>
+	 	<result column="price" property="goods.price"/>
+	 	<result column="quantity" property="goods.quantity"/>
+	 	<result column="goodNumber" property="goods.goodNumber"/>
+	 	<association property="goodsStyle" javaType="com.chihuobao.po.GoodsStyle">
+	 		<id column="id" property="id"/>
+	 		<result column="shopId" property="shopId"/>
+	 		<result column="styleName" property="styleName"/>
+	 	</association>
+	 </resultMap>
+	 <select id="selectGoodsList" resultMap="goodsAndStyle">
+	 	SELECT 
+	 	g.id,
+	 	g.goodStyleId,
+	 	g.goodName,
+	    g.price, 
+	    g.quantity,
+	    g.goodNumber,
+	    gs.shopId,
+	    gs.styleName
+	 	FROM goods g 
+	 	left join goodsstyle gs 
+	 	on g.goodStyleId = gs.id 
+	 	limit #{page},#{rows}
+	 </select>  -->
+	
+	 
+	 <select id="selectGoodsList" parameterType="com.chihuobao.vo.GoodsAndGoodsStyleVo"
+	 	resultType="com.chihuobao.vo.GoodsVo">
+	 	SELECT 
+	 	g.id,
+	 	g.goodStyleId,
+	 	g.goodName,
+	    price, 
+	    quantity,
+	    goodNumber,
+	    g.createTime,
+	    g.sellState,
+	    gs.shopId,
+	    gs.styleName
+	 	FROM goods g 
+	 	, goodsstyle gs 
+	 	where g.goodStyleId = gs.id 
+	 	limit #{page},#{rows}
+	 </select>
+	 
+	 
+	 <select id="selectGoodsByid" parameterType="Integer" 
+	 	resultType="com.chihuobao.po.Goods">
+	 		select * from goods where id=#{id}
+	 </select>
+	 
+	 
+	 <!-- <resultMap type="com.chihuobao.po.Shop" id="goodsDetail">  
+        <id property="id" column="id" />  
+        <result column="shopName" property="shopName"/>
+        <collection property="goodsStyle" ofType="com.chihuobao.po.GoodsStyle">  
+            <id property="id" column="id" />  
+            <result property="styleName" column="styleName" />  
+            <collection property="goods" ofType="com.chihuobao.po.Goods">  
+                <id property="id" column="id" />  
+                <result property="id" column="id" />  
+                <result property="goodName" column="goodName" />  
+                <result property="quantity" column="quantity" />  
+            </collection>  
+        </collection>  
+    </resultMap>  
+    <select id="selectGoodsShopList" resultMap="goodsDetail">  
+        SELECT  
+       s.shopName,g.goodName, gs.styleName,g.quantity
+        FROM  
+        shop s ,goods g,goodsStyle gs
+        where g.goodStyleId=gs.id and s.id=gs.shopId     
+    </select>  -->  
+    
+    
+    
+     <!-- <resultMap type="com.chihuobao.po.Goods" id="goodsDetail">
+	 	<result column="goodName" property="goodName"/>
+	 	<association property="goodsStyle" javaType="com.chihuobao.po.GoodsStyle">
+	 		<id column="id" property="id"/>
+	 		<result column="styleName" property="styleName"/>
+	 		 <association property="shop" javaType=com.chihuobao.po.Shop>
+	 		  <id column="id" property="id"/>
+	 		  <result column="shopName" property="shopName"/>
+	 	    </association>
+	 	</association>
+	 </resultMap>
+    <select id="selectGoodsDetailList" resultMap="goodsDetail">
+    	 SELECT  
+       s.shopName,g.goodName, gs.styleName,g.quantity
+        FROM  
+        shop s ,goods g,goodsStyle gs
+        where g.goodStyleId=gs.id and s.id=gs.shopId
+    </select>
+     -->
+     
+    
+    <select id="selectGoodsDetailList" parameterType="com.chihuobao.vo.GoodsAndGoodsStyleVo" 
+      resultType="com.chihuobao.vo.GoodsVo">
+    	 SELECT 
+       g.id,
+       s.shopName,
+       g.goodName, 
+       gs.styleName,
+       g.quantity,
+	 	g.goodStyleId,
+	    price, 
+	    goodNumber,
+	    g.createTime,
+	    g.sellState,
+	    gs.shopId
+        FROM  
+        shop s ,goods g,goodsStyle gs
+        where g.goodStyleId=gs.id and s.id=gs.shopId 
+        limit #{page},#{rows}
+        
+    </select> 
+    
+   
+   <select id="selectGoodsDetailById" parameterType="Integer"
+    resultType="com.chihuobao.vo.GoodsVo">
+    	SELECT 
+       g.id,
+       s.shopName,
+       g.goodName, 
+       gs.styleName,
+       g.quantity
+        FROM  
+        shop s ,goods g,goodsStyle gs
+        where g.goodStyleId=gs.id and s.id=gs.shopId and g.id=#{id}
+    </select>
+    
+    <select id="selectTotalByContext" parameterType="com.chihuobao.vo.GoodsVo" 
+        resultType="Integer">
+         select count(*) from goods where 1=1
+		
+			<if test="goodName != null">
+			   and goodName like "%"#{goodName}"%"
+			</if>
+			
+			<if test="goodStyleId != null">
+				and goodStyleId = #{goodStyleId};
+			</if>
+    </select>
+		
+		
+	<select id="searchGoodsByContextPage" parameterType="com.chihuobao.vo.GoodsVo"
+		resultType="com.chihuobao.vo.GoodsVo">
+			SELECT 
+       g.id,
+       s.shopName,
+       g.goodName, 
+       gs.styleName,
+       g.quantity
+        FROM  
+        shop s ,goods g,goodsStyle gs
+        where g.goodStyleId=gs.id and s.id=gs.shopId 
+        <if test="goodName != null">
+				and goodName like "%"#{goodName}"%"
+			</if>
+			<if test="goodStyleId != null">
+				and goodStyleId = #{goodStyleId}
+			</if> 
+        limit #{page},#{rows}
+	</select>
+	
+	<delete id="deleteGoodsByids" parameterType="com.chihuobao.vo.GoodsVo">
+		delete from goods 
+		<where>
+			id in
+			<foreach collection="ids" item="id" separator="," open="(" close=")">
+	 			#{id}
+	 		</foreach>
+		</where> 
+	</delete>
+</mapper>

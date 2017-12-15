@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chihuobao.mapper.manager.ManagerUserMapper">
+
+	<cache/>
+	<!-- 查询所有数量 -->
+	<select id="SelectUserTotal" parameterType="com.chihuobao.po.User"
+		resultType="Integer">
+		select count(*) from user  
+	</select>
+	
+	<select id="selectUserList" parameterType="com.chihuobao.vo.UserVo"
+		resultType="com.chihuobao.po.User">
+			select * from user 
+			<if test="page != null">
+			   limit #{page},
+			</if>
+			
+			<if test="rows != null">
+				#{rows}
+			</if>
+		
+	</select>
+	
+	<select id="selectUserByid" parameterType="Integer"
+		resultType="com.chihuobao.po.User">
+			select * from user where id=#{id}
+	</select>
+	
+	<update id="updateUser" parameterType="com.chihuobao.po.User">
+		update user
+		<set>
+			<if test="username != null">
+				username = #{username},
+			</if>
+			<if test="phone != null">
+				phone = #{phone}
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	<update id="freezeUserById" parameterType="Integer">
+		update user set userfreeze = 1 where id = #{id}
+	</update>
+	
+	<update id="releaseUserById" parameterType="Integer">
+		update user set userfreeze = 0 where id = #{id}
+	</update>
+	
+	<delete id="deleteStorersByids" parameterType="com.chihuobao.vo.UserVo">
+		delete from user 
+		<where>
+			id in
+			<foreach collection="ids" item="id" separator="," open="(" close=")">
+	 			#{id}
+	 		</foreach>
+		</where> 
+	</delete>
+	
+	<select id="selectTotalByContext" parameterType="com.chihuobao.vo.UserVo" resultType="Integer">
+		select count(*) from user where 1=1
+		
+			<if test="user.username != null">
+			   and username like "%"#{user.username}"%"
+			</if>
+			
+			<if test="user.userstatus != null">
+				and userstatus = #{user.userstatus};
+			</if>
+	</select>
+	
+	<select id="searchByContextPage" parameterType="com.chihuobao.vo.UserVo"
+		resultType="com.chihuobao.po.User">
+			select * from user where 1=1
+			<if test="user.username != null">
+			   and username like "%"#{user.username}"%"
+			</if>
+			
+			<if test="user.userstatus != null">
+				and userstatus = #{user.userstatus}
+			</if>
+			limit #{page},#{rows}
+	</select>
+	
+	<select id="selectUserAddressDetailByUserId" parameterType="Integer"
+		resultType="com.chihuobao.po.Address">
+			select * from address where userid = #{id}
+	</select>
+</mapper>
