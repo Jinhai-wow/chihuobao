@@ -16,7 +16,7 @@
     <result column="businessTime" property="businessTime" jdbcType="VARCHAR" />
     <result column="startPrice" property="startPrice" jdbcType="DOUBLE" />
     <result column="deliveryCost" property="deliveryCost" jdbcType="DOUBLE" />
-    <result column="shopScore" property="shopScore" jdbcType="INTEGER" />
+    <result column="shopScore" property="shopScore" jdbcType="DOUBLE" />
     <result column="openState" property="openState" jdbcType="INTEGER" />
     <result column="auditState" property="auditState" jdbcType="INTEGER" />
     <result column="shopStyleId" property="shopStyleId" jdbcType="INTEGER" />
@@ -143,7 +143,7 @@
   </select> -->
   
   <select id="selectOrdersByShopId" resultType="com.chihuobao.po.Ordertable" parameterType="java.lang.Integer">
-  	select * from orderTable where shopId = #{shopId,jdbcType=INTEGER} order by payTime desc
+  	select * from orderTable where shopId = #{shopId,jdbcType=INTEGER} order by createTime desc
   </select>
   
   <select id="selectShopStyle" resultType="com.chihuobao.po.ShopStyle">
@@ -175,7 +175,7 @@
       #{storerId,jdbcType=INTEGER}, #{shopOwner,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{telephone,jdbcType=VARCHAR}, 
       #{shopPic,jdbcType=VARCHAR}, #{announce,jdbcType=VARCHAR}, #{businessTime,jdbcType=VARCHAR}, 
-      #{startPrice,jdbcType=DOUBLE}, #{deliveryCost,jdbcType=DOUBLE}, #{shopScore,jdbcType=INTEGER}, 
+      #{startPrice,jdbcType=DOUBLE}, #{deliveryCost,jdbcType=DOUBLE}, #{shopScore,jdbcType=DOUBLE}, 
       #{openState,jdbcType=INTEGER}, #{auditState,jdbcType=INTEGER}, #{shopStyleId,jdbcType=INTEGER}, 
       #{serviceScope,jdbcType=INTEGER})
   </insert>
@@ -284,7 +284,7 @@
         #{deliveryCost,jdbcType=DOUBLE},
       </if>
       <if test="shopScore != null" >
-        #{shopScore,jdbcType=INTEGER},
+        #{shopScore,jdbcType=DOUBLE},
       </if>
       <if test="openState != null" >
         #{openState,jdbcType=INTEGER},
@@ -363,12 +363,14 @@
     </trim>
   </insert>
   
-  
   <select id="countByExample" parameterType="com.chihuobao.po.ShopExample" resultType="java.lang.Integer" >
     select count(*) from shop
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
+  </select>
+  <select id="countOrdersByShopId" parameterType="com.chihuobao.vo.ShopCustom" resultType="java.lang.Integer" >
+    select count(*) from ordertable where shopid = #{shopid,javaType=INTEGER}
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
     update shop
@@ -416,7 +418,7 @@
         deliveryCost = #{record.deliveryCost,jdbcType=DOUBLE},
       </if>
       <if test="record.shopScore != null" >
-        shopScore = #{record.shopScore,jdbcType=INTEGER},
+        shopScore = #{record.shopScore,jdbcType=DOUBLE},
       </if>
       <if test="record.openState != null" >
         openState = #{record.openState,jdbcType=INTEGER},
@@ -483,7 +485,7 @@
       businessTime = #{record.businessTime,jdbcType=VARCHAR},
       startPrice = #{record.startPrice,jdbcType=DOUBLE},
       deliveryCost = #{record.deliveryCost,jdbcType=DOUBLE},
-      shopScore = #{record.shopScore,jdbcType=INTEGER},
+      shopScore = #{record.shopScore,jdbcType=DOUBLE},
       openState = #{record.openState,jdbcType=INTEGER},
       auditState = #{record.auditState,jdbcType=INTEGER},
       shopStyleId = #{record.shopStyleId,jdbcType=INTEGER},
@@ -535,7 +537,7 @@
         deliveryCost = #{deliveryCost,jdbcType=DOUBLE},
       </if>
       <if test="shopScore != null" >
-        shopScore = #{shopScore,jdbcType=INTEGER},
+        shopScore = #{shopScore,jdbcType=DOUBLE},
       </if>
       <if test="openState != null" >
         openState = #{openState,jdbcType=INTEGER},
@@ -567,7 +569,7 @@
       businessTime = #{businessTime,jdbcType=VARCHAR},
       startPrice = #{startPrice,jdbcType=DOUBLE},
       deliveryCost = #{deliveryCost,jdbcType=DOUBLE},
-      shopScore = #{shopScore,jdbcType=INTEGER},
+      shopScore = #{shopScore,jdbcType=DOUBLE},
       openState = #{openState,jdbcType=INTEGER},
       auditState = #{auditState,jdbcType=INTEGER},
       shopStyleId = #{shopStyleId,jdbcType=INTEGER},

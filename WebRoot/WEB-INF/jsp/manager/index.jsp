@@ -26,7 +26,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript">
     
     
-    var username="aaa";
+    var broadname="bbb";
     	var users=[];
     	
     	var ws;  // 管理登陆，退出，用户列表的 socket
@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	window.onload= ws_init;
 			
 	    function  ws_init(){
-				 var target="ws://172.16.11.236:8080/CHB/broadcast?username="+username;
+				 var target="ws://172.16.9.211:8080/CHB/broadcast?username="+broadname;
 		   		  if ('WebSocket' in window) {
 		                 ws = new WebSocket(target);
 		             } else if ('MozWebSocket' in window) {
@@ -199,7 +199,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<li><span>商家管理</span>
 						<ul>
 							<li><a href="javascript:void(0)" 
-							pageUrl="${pageContext.request.contextPath }/manager/text.action"><span>商家信息管理</span></a>
+							pageUrl="${pageContext.request.contextPath }/manager/storer.action"><span>商家信息管理</span></a>
 								</li>
 							<li><a href="javascript:void(0)" 
 							pageUrl="${pageContext.request.contextPath }/manager/Goods.action"><span>商品管理</span></a>

@@ -8,19 +8,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-  <head>
-    <base href="<%=basePath%>">
-    
-    <title>吃货宝home界面</title>
-    
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	
-	<link href="css/bootstrap.css" type="text/css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="css/iconfont.css">
+ <head>
+<base href="<%=basePath%>">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>home</title>
+	<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+	<link rel="stylesheet" href="css/iconfont.css">
 	<style>
 
 		/*-------------全局设置 开始-------------------*/
@@ -169,18 +162,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		/*---------------footer部分 结束-------------------*/
 	</style>
+</head>
+<body>
 
-  </head>
-  
-  <body>
-    <div id="big-box" class="map">
+<div id="big-box" class="map">
 	<div class="container">
 		<div class="map-head clearfix">
 			<div class="head-left">
-				<a href="${pageContext.request.contextPath}/user/index.action"><img src="img/head-left.png" class=""></a>
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/user/index.action">
+					<img src="img/chb-logo.png" class="">
+				</a>
 			</div>
 			<div class="head-right pull-right">
-				<c:choose>
+					<c:choose>
    					<c:when test="${user!=null }">
    						<span>${user.user.username }</span>
    						<a href="${pageContext.request.contextPath}/user/logout.action">安全退出</a>
@@ -190,7 +184,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    						<a href="${pageContext.request.contextPath}/user/loginPage.action">注册</a>
 						<span>|</span>
 						<a href="${pageContext.request.contextPath}/user/loginPage.action">登录</a>
+						<a  href="${pageContext.request.contextPath}/user/StorerLoginPage.action">
 						<button type="button" class="btn btn-sm btn-success">我要开店</button>
+						</a>
    					</c:otherwise>
 				</c:choose>
 			</div>
@@ -198,15 +194,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="map-main clearfix">
 			<div>
 				<div class="main-top">
-					<img src="img/map-logo.png" alt="map-logo">
+					<img src="img/chb-map-logo.png" alt="map-logo">
 				</div>
 				<div class="main-bottom clearfix">
 					<div class="map-search">
-						<form>
-							<div id="r-result"><input type="text" id="suggestId" size="20" value="百度" placeholder="请输入你的收货地址（写字楼，小区，街道或者学校）" /></div>
-							<input class="search" type="submit" value="搜 索" />
-							<div id="searchResultPanel"></div>
-						</form>
+						<div>
+							<%-- <form action="${pageContent.request.contentPath }/showShopId.action" method="post"> --%>
+								<div id="r-result"><input type="text" id="suggestId" size="20" placeholder="请输入你的收货地址（写字楼，小区，街道或者学校）" /></div>
+								<input name="address" class="search" type="button" value="选这里" />
+								<div id="searchResultPanel"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -238,145 +235,176 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</footer>
 	</div>
 </div>
+
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cuO8YzFSo9UbHPVxQsSTEh85RcyAxzGt"></script>
+
+
 <script type="text/javascript">
-    // 百度地图API功能
-    function G(id) {
-        return document.getElementById(id);
-    }
+ $(function () {
+        // 百度地图API功能
+        function G(id) {
+            return document.getElementById(id);
+        }
 
-    var map = new BMap.Map("map");
-    var point = new BMap.Point(116.331398,39.897445);
-    map.centerAndZoom(point,17);
-    map.enableScrollWheelZoom(true);
-    var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
-        {"input" : "suggestId"
-            ,"location" : map
+        var myPoint = {};
+        var location_ = "";
+        var map = new BMap.Map("map");
+        map.centerAndZoom(new BMap.Point(110.307239,21.157362),18);
+        map.enableScrollWheelZoom(true);
+        var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+            {"input" : "suggestId"
+                ,"location" : map
+            });
+
+        ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+            var str = "";
+            var _value = e.fromitem.value;
+            var value = "";
+            if (e.fromitem.index > -1) {
+                value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+            }
+            str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+            value = "";
+            if (e.toitem.index > -1) {
+                _value = e.toitem.value;
+                value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+            }
+            str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+            G("searchResultPanel").innerHTML = str;
         });
 
-    ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
-        var str = "";
-        var _value = e.fromitem.value;
-        var value = "";
-        if (e.fromitem.index > -1) {
-            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-        }
-        str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
-
-        value = "";
-        if (e.toitem.index > -1) {
-            _value = e.toitem.value;
-            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-        }
-        str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
-        G("searchResultPanel").innerHTML = str;
-    });
-
-    var myValue;
-    ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
-        var _value = e.item.value;
-        myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-        G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
-
-        setPlace();
-
-    });
-
-    function setPlace(){
-        map.clearOverlays();    //清除地图上所有覆盖物
-        function myFun(){
-            var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
-            map.centerAndZoom(pp, 18);
-            map.addOverlay(new BMap.Marker(pp));    //添加标注
-
-            addMarker(pp);
-        }
-        var local = new BMap.LocalSearch(map, { //智能搜索
-            onSearchComplete: myFun
-        });
-        local.search(myValue);
-
-    }
-    //初始化地图时，坐标为用户当前的ip地址位置
-    function myFun(result){
-        var cityName = result.name;
-        map.setCenter(cityName);
-        // 用城市名设置地图中心点，画圆
-        var pt = new BMap.Point(result.center.lng,result.center.lat);
-        console.log(result.center.lng,result.center.lat);
-        findPoint(pt);
-    }
-    var myCity = new BMap.LocalCity();
-    myCity.get(myFun);
-    //点击地图 获取当前点经纬度
-    var geoc = new BMap.Geocoder();
-    map.addEventListener("click",function(e){
-//        alert(e.point.lng + "," + e.point.lat);
-        var point = new BMap.Point(e.point.lng, e.point.lat);
-        console.log(e.point.lng, e.point.lat)
-        addMarker(point);
-        findPoint(point);
-        var pt = e.point;
-        geoc.getLocation(pt, function(rs){
-            var addComp = rs.addressComponents;
-            var str = addComp.province  + addComp.city  + addComp.district  + addComp.street  + addComp.streetNumber;
-            var input = document.querySelectorAll("#suggestId")[0];
-            input.value = str;
+        var myValue;
+        ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+            var _value = e.item.value;
+            myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+            G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+			location_ = myValue;
+            setPlace();
         });
 
+        function setPlace(){
+            map.clearOverlays();    //清除地图上所有覆盖物
+            function myFun(){
+                var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+                map.centerAndZoom(pp, 18);
+                map.addOverlay(new BMap.Marker(pp));    //添加标注
+                addMarker(pp);
+                myPoint = pp;
+            }
+            var local = new BMap.LocalSearch(map, { //智能搜索
+                onSearchComplete: myFun
+            });
+            local.search(myValue);
+        }
+        //初始化地图时，坐标为用户当前的ip地址位置
+        function myFun(result){
+            var cityName = result.name;
+            map.setCenter(cityName);
+        }
+        var myCity = new BMap.LocalCity();
+        myCity.get(myFun);
+        //点击地图 获取当前点经纬度
+        var geoc = new BMap.Geocoder();
+        map.addEventListener("click",function(e){
+            var point = new BMap.Point(e.point.lng, e.point.lat);
+            addMarker(point);
+            myPoint = point;
+            var pt = e.point;
+            geoc.getLocation(pt, function(rs){
+                var addComp = rs.addressComponents;
+                var str = addComp.province  + addComp.city  + addComp.district  + addComp.street  + addComp.streetNumber;
+                var input = document.querySelectorAll("#suggestId")[0];
+                input.value = str;
+                location_ = str;
+              /*   var userPoint = {
+	                lng:myPoint.lng,
+	                lat:myPoint.lat,
+	                place:str
+	            }
+		        localStorage.setItem("userPoint",JSON.stringify(userPoint)); */
+            });
+        });
+        var position = new BMap.Label("我在这里",{offset:new BMap.Size(-15,-40)});
+        position.setStyle({
+            fontWeight: 900,
+            fontSize : "12px",
+            height : "20px",
+            lineHeight : "20px",
+            border:"none",
+            borderRadius: "20%",
+            backgroundColor: "transparent"
+        });
+        // 编写自定义函数,创建标注
+        function addMarker(point){
+            map.clearOverlays();
+            var marker = new BMap.Marker(point);
+            marker.setLabel(position);
+            map.addOverlay(marker);
+            marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        }
+        //计算两点距离
+        function getDistance(Point1,Point2) {
+            return Math.floor(BMapLib.GeoUtils.getDistance(Point1,Point2)/1000);
+        }
+        showPoint()
+        function showPoint() {
+            $(".search").on("click",function () {
+                if(myPoint.lng == null || myPoint.lng == "" ||myPoint.lat == null || myPoint.lat == ""){
+                    alert("请在地图上选取派送位置");
+                }else{
+                    var data = {
+                        lng:myPoint.lng,
+                        lat:myPoint.lat,
+                        range:10//搜索用户坐标的，10公里内的所有商家
+                    }
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/showShopId.action",
+                        type: "post",
+                        contentType: "application/json",
+                        dataType: "json",
+                        data: JSON.stringify(data),
+                        success: function (result) {
+                        
+                            setStorage(result,data);
+                            window.location.href="user/index.action";
+                        },error: function (XMLResponse) {
+                            alert(XMLResponse.responseText)
+                        }
+                    });
+                };
+            });
+	}
 
-    });
-    var position = new BMap.Label("我在这里",{offset:new BMap.Size(-15,-40)});
-    position.setStyle({
-        fontWeight: 900,
-        fontSize : "12px",
-        height : "20px",
-        lineHeight : "20px",
-        border:"none",
-        borderRadius: "20%",
-        backgroundColor: "transparent"
-    });
-    // 编写自定义函数,创建标注
-    function addMarker(point){
-        map.clearOverlays();
-        var marker = new BMap.Marker(point);
-        marker.setLabel(position);
-        map.addOverlay(marker);
-        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-
-
-    }
-    //查找坐标点
-    function findPoint(mPoint){
-        var circle = new BMap.Circle(mPoint,200,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.2, strokeOpacity: 0.3});
-        map.addOverlay(circle);
-        var local =  new BMap.LocalSearch(map, {renderOptions: {map: map, autoViewport: false}});
-        local.searchNearby('餐馆',mPoint,200);
-        console.log("hi")
-    }
-
-
-
-    // 计算距离用法
-    var point1 =new BMap.Point(110.365494,21.277163);//用户所在经纬度
-    var point2 =new BMap.Point(110.363685,21.27727);//商家所在经纬度
-	//parseInt(getDistance(point1,point2) 获取用户与商家之间的距离
-    console.log("距离 ： ",parseInt(getDistance(point1,point2)) , " 米")
-    //计算两点距离
-	function getDistance(point1,point2) {
-        var lon1 = point1.lng;
-        var lat1 = point1.lat;
-
-        var lon2 = point2.lng;
-		var	lat2 = point2.lat;
-
-		var distance =  Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1)) * 6371;
-		//返回的单位是米。（distance 是获得公里）
-		return distance *1000;
-    }
-
+    function setStorage(result,data){
+        if(result!=null && result != []){
+            var shopIdList = [];
+            var Point1 = new BMap.Point(myPoint.lng,myPoint.lat);
+            for( var i in result){
+                var Point2 = new BMap.Point(result[i].longitude , result[i].latitude);
+                var distance = getDistance(Point1,Point2);
+                //找到可以进行配送的商家
+                if(distance < result[i].serviceScope){
+                    //找到10距离用户10公里以内的商家
+                    if(distance < parseInt(data.range)){
+                        shopIdList.push(result[i].id+":"+result[i].shopName+":"+result[i].shopPic);
+                    }
+                }
+            }
+            var userPoint = {
+                lng:myPoint.lng,
+                lat:myPoint.lat,
+                place:location_
+	        }
+		    localStorage.setItem("userPoint",userPoint.place);
+            localStorage.setItem("nearbyShopIdList",shopIdList);//JSON.stringify(shopIdList)
+        }
+    };
+	    
+});
 </script>
-  </body>
+</body>
 </html>

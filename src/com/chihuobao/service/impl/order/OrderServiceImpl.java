@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.chihuobao.mapper.order.OrdertableDao;
+import com.chihuobao.po.Address;
 import com.chihuobao.po.Complain;
 import com.chihuobao.po.Ordergoods;
 import com.chihuobao.po.Ordertable;
@@ -123,6 +124,27 @@ public class OrderServiceImpl implements OrderService {
 		ordertableDao.addComplain(complain);
 		
 	}
+
+	@Override
+	public void updateUser(UserForOrder userForOrder) {
+		ordertableDao.updateUser(userForOrder);
+		
+	}
+
+	@Override
+	public void addAddress(Address address) {
+		// TODO Auto-generated method stub
+		ordertableDao.addAddress(address);
+	}
+
+	@Override
+	public void modifyAddressState() {
+		ordertableDao.modifyAddressState();
+		
+	}
+
+
+	
 
 
 

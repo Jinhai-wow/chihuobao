@@ -143,7 +143,7 @@
 					<hr>
 					<div>
 						<c:choose>
-							<c:when test="${business.shop.id != shopDta.shopId}">
+							<c:when test="${business.shop.id != shopData.shopId}">
 
 								<div class="panel panel-default"
 									style="text-align: center;vertical-align: middle;">

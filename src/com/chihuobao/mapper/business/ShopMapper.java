@@ -51,4 +51,6 @@ public interface ShopMapper {
 	int selectLastId();//返回最新的商店记录id
 
 	int insertShopData(ShopData shopData);//
+
+	int countOrdersByShopId(Integer shopId);//商家订单数
 }

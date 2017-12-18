@@ -22,4 +22,6 @@ public interface ShopCartMapper {
 	public void createShopCart(Shopcart shopCart);
 	//创建购物车的商品列表
 	public void createShopCartGoods(Shopcartlist shopCartList);
+	//
+	public int selectShopCartId();
 }

@@ -25,6 +25,7 @@ import com.chihuobao.exception.CustomException;
 import com.chihuobao.po.Address;
 import com.chihuobao.po.User;
 import com.chihuobao.service.user.UserService;
+import com.chihuobao.vo.StorerAccountEx;
 import com.chihuobao.vo.UserVo;
 
 
@@ -216,5 +217,40 @@ public class UserController {
 		List<Address> addressList=userService.findUserAddress(id);
 		return addressList;
 	}
+	
+	//商家密码登陆
+	@RequestMapping("/storerAccountLoginByPassword")
+	public String findstoreraccountByPassword(StorerAccountEx storerAccountVo,HttpSession session) throws Exception{
+		//调用service根据商品id查询商品信息
+		StorerAccountEx storerAccount=userService.findstoreraccountByPassword(storerAccountVo);
+		session.setAttribute("storerAccount", storerAccount);
+		return "redirect:/getBusiness.action"; 
+	}
+	
+	//商家登录或注册
+	@RequestMapping("/storerAccountLoginRegisterByMessage")
+	public String storerAccountloginRegisterByMessage(StorerAccountEx storerAccountVo,HttpSession session) throws Exception{
+		StorerAccountEx storerAccount=userService.storerAccountloginRegisterByMessage(storerAccountVo);
+		session.setAttribute("storerAccount", storerAccount);
+		return "redirect:/getBusiness.action"; 
+	}
+	
+	//进入商家登录注册页面
+	@RequestMapping("/StorerLoginPage")
+	public ModelAndView StorerLoginPage() throws Exception{
+		
+		ModelAndView modelAndView=new ModelAndView();
+
+		modelAndView.setViewName("user/storer_login_register");
+			
+		return modelAndView; 
+	}
+	
+	//商家退出登录
+	/*@RequestMapping("/StorerLogout")
+	public String StorerLogout(HttpSession session) throws Exception{
+		session.invalidate();
+		return "home";
+	}*/
 	
 }

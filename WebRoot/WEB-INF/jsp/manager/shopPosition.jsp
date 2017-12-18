@@ -26,7 +26,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			// 百度地图API功能
 			var longitude = '${longitude }';
 			var latitude = '${latitude }';
-			var serviceScope = '${serviceScope }';
+			var serviceScope = '${serviceScope }' * 1000;
 		
 			var map = new BMap.Map("allmap"); // 创建Map实例
 			var mPoint = new BMap.Point(longitude, latitude);

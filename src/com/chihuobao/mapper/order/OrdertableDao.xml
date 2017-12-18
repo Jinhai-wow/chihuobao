@@ -3,18 +3,9 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chihuobao.mapper.order.OrdertableDao">
-	<!-- //总条数 -->
-	<!-- public Integer customerCountByQueryVo(QueryVo vo); private String custName; 
-		private String custSource; private String custIndustry; private String custLevel; -->
 
 	<!-- 通过订单号查询 订单及关联的订单中的商品 表为ordertable和ordergoods -->
-	<!-- <select id="getOrder" parameterType="Integer" resultType="Ordertable" 
-		> select count(1) from customer <where> <if test="custName != null and custName 
-		!= ''"> cust_name like "%"#{custName}"%" </if> <if test="custSource != null 
-		and custSource != ''"> and cust_source = #{custSource} </if> <if test="custIndustry 
-		!= null and custIndustry != ''"> and cust_industry = #{custIndustry} </if> 
-		<if test="custLevel != null and custLevel != ''"> and cust_level = #{custLevel} 
-		</if> </where> </select> -->
+
 
 	<!-- public Ordertable getOrder(Integer id);根据订单id获取订单 -->
 
@@ -27,6 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</collection>
 	</resultMap>
 
+<!--获取订单-->
 	<select id="getOrder" parameterType="Long" resultMap="ordertable">
 
 		SELECT * from ordertable ot LEFT JOIN ordergoods og on ot.id=og.orderId
@@ -54,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	</resultMap>
 
-	<!-- resultMap="ordertable"对应上面的ordertable -->
+	<!-- resultMap="ordertable"对应上面的ordertable 获取订单和订单商品 -->
 	<select id="getOrderList" resultMap="ordertableList">
 		SELECT * from ordertable ot LEFT JOIN ordergoods og on ot.id=og.orderId
 	</select>
@@ -62,8 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!--获取分页数据 public List<Ordertable> getOrderListByPagination(Integer page,Integer 
 		rows); -->
-<!-- ot LEFT JOIN ordergoods og on ot.id=og.orderId
-		order by ot.id desc limit #{page},#{rows} -->
+
 	<select id="getOrderListByPagination"
 		parameterType="PageBean" resultType="Ordertable">
 		SELECT * from ordertable order by id desc limit #{page},#{rows}
@@ -94,10 +85,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</collection>
 
 	</resultMap>
-
+<!--获取购物车和其中的商品  -->
 	<select id="getShopCart" parameterType="Integer" resultMap="shopcartlist">
 		SELECT * from shopcart sc LEFT JOIN shopcartlist scl on
-		sc.shopcartid=scl.shopcartid
+		sc.shopcartid=scl.shopcartid  where sc.shopcartid =#{shopcartid}
 	</select>
 	
 	
@@ -143,7 +134,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 		
 	
 	public void addOrderGoods(Ordergoods ordergoods);
-	
+	添加订单商品
 	 -->
 	<insert id="addOrderGoods" parameterType="Ordergoods">
 	
@@ -153,6 +144,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- public List<Ordergoods> getOrdergoodsListByOrderID(long orderid); -->
 	
+	<!--通过订单id查找订单中的商品  -->
 	<select id="getOrdergoodsListByOrderID" parameterType="Long" resultType="Ordergoods">
 	
 	select * from ordergoods where orderid=#{orderid}
@@ -160,7 +152,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	<!-- public void updateOrder(Ordertable ordertable); -->
-	
+	<!--更新订单  -->
 	<update id="updateOrder" parameterType="Ordertable">
 	
 	update ordertable set  shopservice=#{shopservice},deliverspeed=#{deliverspeed},
@@ -169,13 +161,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	
-	<!--  -->
+	<!-- 更新订单状态 -->
 	<update id="updateOrderState" parameterType="Long">
 	
 	update ordertable set orderstate=5 where id=#{id}
 	
 	</update>
-	<!--  -->
+	<!--申请取消订单  -->
 	<update id="applyCancelOrder" parameterType="Long">
 	
 	update ordertable set orderstate=7 where id=#{id}
@@ -185,7 +177,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- public void getOrderNoPay(User userid); 查询该用户id，下所有未付款订单（即ordertable的state为0）-->
 	
-	
 	<select id="getOrderNoPay"  resultType="Ordertable">
 	
 	SELECT * from ordertable where  orderstate=0
@@ -193,7 +184,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	<!-- public void modifyOrderState(List<Long> orderIdList);  orderstate为9，代表该订单失效-->
-	
+	<!--修改订单状态  -->
 	<update id="modifyOrderState" parameterType="java.util.List">
 	
 	update ordertable set orderstate=9 where id in
@@ -205,7 +196,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	
-	<!--public void addComplain(Complain complain);  -->
+	<!--public void addComplain(Complain complain); 
+	添加投诉
+	 -->
 	
 	
 	<insert id="addComplain" parameterType="Complain">
@@ -214,6 +207,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	values(#{userid},#{reason},#{orderid},#{shopid},#{otherreason});
 	
 	</insert>
+	<!-- 	public void updateUser(UserForOrder userForOrder);
+	public void updateAddress(Address address); 
+	更新用户
+	-->
+	
+	<update id="updateUser" parameterType="UserForOrder">
+	update user set username=#{username},sex=#{sex},phone=#{phone} where id=#{id}
+	
+<!-- 	public void modifyAddressState(); -->
+	
+	</update>
+	
+<!-- 修改地址状态，把所有地址置为0 -->
+	<update id="modifyAddressState" >
+	update Address set state=0 
+	</update>
+<!-- 添加新地址，state置为1，即设为默认地址 -->
+	<insert id="addAddress" parameterType="Address">
+	insert into Address(userid,address,state) values(#{userid},#{address},1)	
+	</insert>
+	
+	
 	
 	
 </mapper>

@@ -392,11 +392,11 @@
 	</select>
 	<select id="selectFinishOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
 		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 
-		where shopid = #{shopid,javaType=INTEGER} and orderstate =5 or orderstate=7 order by createtime desc
+		where shopid = #{shopid,javaType=INTEGER} and (orderstate =5 or orderstate=7) order by createtime desc
 	</select>
 	<select id="selectNoSendOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
 		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 
-		where shopid = #{shopid,javaType=INTEGER} and orderstate =2 or orderstate=8 order by createtime desc
+		where shopid = #{shopid,javaType=INTEGER} and (orderstate =2 or orderstate=8) order by createtime desc
 	</select>
 	<select id="selectSendOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
 		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 

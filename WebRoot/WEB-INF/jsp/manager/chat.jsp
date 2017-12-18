@@ -13,8 +13,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<script type="text/javascript" src="${pageContext.request.contextPath }/js/manager/chat.js"></script>
    
     <script type="text/javascript">
-    	var username='${sessionScope.user.username }';
-    	var users=[];
+    	var admin='${sessionScope.admin }';
+    	alert(admin);
     	
     	var ws;  // 管理登陆，退出，用户列表的 socket
     	//var ws2;  // 管理聊天 的 socket
@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	window.onload= ws_init;
 			
 	    function  ws_init(){
-				 var target="ws://172.16.11.236:8080/CHB/chat?username="+username;
+				 var target="ws://172.16.9.211:8080/CHB/chat?username="+admin;
 		   		  if ('WebSocket' in window) {
 		                 ws = new WebSocket(target);
 		             } else if ('MozWebSocket' in window) {
@@ -52,15 +52,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							$("#userList").html("");
 							var array = msg.usernames;	
 								$(msg.usernames).each(function(i){
-									if(username != "aaa"){
+									if(admin != "aaa"){
 										return;
 									}else{
 									
 									$("#userList").append("<input type=checkbox value='"+this+"'/>"+this+"</br>");
 									}
 								});
-								if(username != "aaa"){
-									$("#userList").append("<input type=checkbox value='"+username+"'/>"+username+"</br>");
+								if(admin != "aaa"){
+									$("#userList").append("<input type=checkbox value='"+admin+"'/>"+admin+"</br>");
 									$("#userList").append("<input type=checkbox value='aaa'/>aaa</br>");
 								}
 									
@@ -91,7 +91,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   			
 	   		}else{
 	   			var to = $("#userList :checked").val();
-	   			var name='${sessionScope.username }'; 
+	   			var name='${sessionScope.admin }'; 
 	   			 
 	   			 obj= {
 	   			from:name,

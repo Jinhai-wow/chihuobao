@@ -236,7 +236,7 @@
 						title="点击查看账号信息" class="headerLink col-xs-12"> <img
 						class="img-responsive img-thumbnail"
 						style="width: 80px;height: 80px;"
-						src="/pic/${business.storerAccount.storerPic }" alt="账号头像" />
+						src="${pageContext.request.contextPath }/upload/business/${business.storerAccount.storerPic }" alt="账号头像" />
 					</a> <span class="accountName">${business.storerAccount.storerName }</span>
 				</div>
 				<h4 class="sub-header">订单中心</h4>
@@ -267,10 +267,10 @@
 				<ul class="nav nav-sidebar">
 					<li><a
 						href="${pageContext.request.contextPath }/getUserComment.action">用户评论<span
-							class="badge">1</span></a></li>
+							class="badge"></span></a></li>
 					<li><a
 						href="${pageContext.request.contextPath }/getSysMsg.action">系统消息<span
-							class="badge">2</span></a></li>
+							class="badge"></span></a></li>
 
 				</ul>
 			</div>
@@ -294,7 +294,7 @@
 									<div class="col-xs-2">
 										<a href="javascript:;" title="${order.user.username}"><img
 											class="img-circle" height="80px" width="80px" alt="用户头像"
-											src="${pageContext.request.contextPath }/img/null.png"></a>
+											src="${pageContext.request.contextPath }/upload/${order.user.photo}"></a>
 									</div>
 									<div class="col-xs-6" style="padding-top: 60px;">联系方式：${order.user.phone}</div>
 									<div class="col-xs-4" style="padding-top: 60px;">编号：${order.ordertable.id}</div>

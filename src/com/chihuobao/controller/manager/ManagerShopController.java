@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import javax.servlet.http.HttpServletRequest;
+
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
@@ -21,17 +21,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chihuobao.po.ManagerOpera;
 import com.chihuobao.po.ShopData;
-
+import com.chihuobao.po.StorerMessage;
 import com.chihuobao.service.manager.ManageOperService;
+import com.chihuobao.service.manager.ManagerMessageService;
 import com.chihuobao.service.manager.ManagerShopService;
-import com.chihuobao.util.ExportUtils;
+
 import com.chihuobao.vo.GoodsVo;
 import com.chihuobao.vo.ShopDataVo;
 import com.chihuobao.vo.ShopVo;
 
 
 /**
- * 商家controller类
+ * 管理员对商家controller类
  * @author 谢韦烈
  *2017-12-04
  */
@@ -41,15 +42,18 @@ import com.chihuobao.vo.ShopVo;
 public class ManagerShopController {
 	
 	@Autowired
-	private ManagerShopService shopService;
+	private ManagerShopService shopService; //管理员的商店业务逻辑接口类
 	
 	@Autowired
-	private ManageOperService mOperService;
-
-	ManagerOpera mOpera = new ManagerOpera();
+	private ManageOperService mOperService; //记录操作业务逻辑接口类
 	
+	@Autowired
+	private ManagerMessageService mMessageService; //消息管理的服务接口
 
-	//跳转到商家显示页面
+	ManagerOpera mOpera = new ManagerOpera(); //记录操作实体类
+	StorerMessage storerMessage = new StorerMessage(); //商家消息实体类
+
+	//跳转到商店显示页面
 	@RequestMapping(value="/shop.action")
 	public String shopList(){
 		
@@ -57,7 +61,7 @@ public class ManagerShopController {
 	}
 	
 	
-	//查找所有商家
+	//查找所有商店
 	@RequestMapping(value="/selectShoplist.action")
 	public @ResponseBody
 	Map<String, Object> selectShoplist(Integer page, Integer rows){
@@ -80,7 +84,7 @@ public class ManagerShopController {
 		return shopResult;
 	}
 	
-	//根据搜索条件查询所有商家
+	//根据搜索条件查询所有商店
 	@RequestMapping(value="/searchShopByContext.action")
 	public @ResponseBody 
 	Map<String, Object> searchShopByContext(String shopName, Integer shopStyleId, Integer page,
@@ -103,10 +107,10 @@ public class ManagerShopController {
 		vo.setRows(rows);
 		vo.setPage((page - 1) * rows);
 
-		// 查找商家总条数
+		// 查找商店总条数
 		Integer total = shopService.selectTotalByContext(vo);
 
-		// 有条件的查找商家
+		// 有条件的查找商店
 		List<ShopVo> goodsVo = shopService.searchGoodsByContextPage(vo);
 		
 		for(ShopVo shopvo : goodsVo){
@@ -119,7 +123,7 @@ public class ManagerShopController {
 		return searchShop;
 	}
 	
-	//删除商家
+	//删除商店
 	@RequestMapping(value="/deleteShop.action")
 	public @ResponseBody Map<String, Object> deleteShop(String ids) {
 
@@ -169,39 +173,7 @@ public class ManagerShopController {
 		return "manager/shopDetail";
 	}
 	
-	
-	/*//导出execl
-			@RequestMapping(value="/shopExport.action")
-			public void export(String fields,String titles,String className ,HttpServletResponse response){
-				
-				System.out.println(fields+"-"+titles+"-"+className);
-				//HttpServletResponse response = ServletActionContext.getResponse();
-				response.setContentType("application/octet-stream");
-				response.setHeader("Content-Disposition", "attachment;filename=export.xls");
-				
-				//创建Excel
-				HSSFWorkbook wb = new HSSFWorkbook();
-				HSSFSheet sheet = wb.createSheet("sheet0");
-				
-				try {
-					
-					ShopVo vo = new ShopVo();
-					List<ShopVo> list = shopService.selectShopList(vo);
-					//titles = new String(titles.getBytes("ISO-8859-1"),"UTF-8");
-					ExportUtils.outputHeaders(titles.split(","), sheet);
-					ExportUtils.outputColumns(fields.split(","), list, sheet, 1);
-					//获取输出流，写入excel 并关闭
-					ServletOutputStream out = response.getOutputStream();
-					wb.write(out);
-					out.flush();
-					out.close();
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			
-				
-			}*/
+
 			
 	//跳转审核页面
 	@RequestMapping(value="/shopData.action")
@@ -221,8 +193,6 @@ public class ManagerShopController {
 			
 		return "manager/managerAuditFalseList";
 	}
-	
-	
 	
 	
 	//审核商家入驻资料
@@ -279,9 +249,16 @@ public class ManagerShopController {
 			result.put("success", e.getMessage());
 		}
 		
+		
+		
 		// 将管理员更新操作存入表
 		mOpera.setOperation("审核商家id为"+shopId+"的通过操作");
 		mOperService.saveManageOper(mOpera);
+		
+		//将审核商店申请资料存入用户消息表
+		storerMessage.setMessage("你好，你的审核资料已通过审核，请查看，如有问题可联系客服");
+		storerMessage.setStorerId(selectStorerIdByShopId(shopId));
+		mMessageService.saveStorerMessage(storerMessage);
 
 		return result;
 	}
@@ -308,6 +285,12 @@ public class ManagerShopController {
 		// 将管理员更新操作存入表
 		mOpera.setOperation("审核商家id为"+shopId+"的不通过操作");
 		mOperService.saveManageOper(mOpera);
+		
+		//将审核商店申请资料存入用户消息表
+		storerMessage.setMessage("你好，你的审核资料未通过审核，请查看，如有问题可联系客服");
+		storerMessage.setStorerId(selectStorerIdByShopId(shopId));
+		mMessageService.saveStorerMessage(storerMessage);
+
 
 		return result;
 	}
@@ -362,6 +345,13 @@ public class ManagerShopController {
 		req.setAttribute("serviceScope", serviceScope);
 		//System.out.println(longitude+"-"+latitude+"-"+serviceScope);
 		return "manager/shopPosition";
+	}
+	
+	//根据shopId找出storerId
+	public Integer selectStorerIdByShopId(Integer shopId){
+		
+		Integer storerId = shopService.selectStorerIdByShopId(shopId);
+		return storerId;
 	}
 	
 }

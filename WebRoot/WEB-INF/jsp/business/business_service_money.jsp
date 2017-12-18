@@ -93,7 +93,7 @@
 				<ul class="nav nav-sidebar">
 					<li><a
 						href="${pageContext.request.contextPath }/getUserComment.action">用户评论<span
-							class="badge">1</span></a></li>
+							class="badge"></span></a></li>
 					<li><a
 						href="${pageContext.request.contextPath }/getSysMsg.action">系统消息</a></li>
 
@@ -140,7 +140,7 @@
 						<tbody>
 							<c:forEach items="${myService.orders }" var="orders">
 								<tr>
-									<td><fmt:formatDate value="${orders.paytime}"
+									<td><fmt:formatDate value="${orders.createtime}"
 											pattern="yyyy-MM-dd HH:mm:ss" /></td>
 									<td>￥&nbsp;${orders.totalmoney}</td>
 									<td>￥&nbsp;${myService.disbursement }</td>

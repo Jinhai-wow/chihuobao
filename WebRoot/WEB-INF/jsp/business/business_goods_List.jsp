@@ -94,10 +94,10 @@
 				<ul class="nav nav-sidebar">
 					<li><a
 						href="${pageContext.request.contextPath }/getUserComment.action">用户评论<span
-							class="badge">1</span></a></li>
+							class="badge"></span></a></li>
 					<li><a
 						href="${pageContext.request.contextPath }/getSysMsg.action">系统消息<span
-							class="badge">2</span></a></li>
+							class="badge"></span></a></li>
 
 				</ul>
 			</div>
@@ -138,8 +138,9 @@
 											<a
 												href="${pageContext.request.contextPath }/getGoodDetail.action?id=${goods.id}"
 												title="点击查看${goods.goodName}详细信息" onclick="">${goods.goodName}<br>
-											</a> <small>￥${goods.price}/份</small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<small>剩余：<i style="font-size: 1.8em;color: #1e89e0;">${goods.quantity}</i>份</small>
+											</a> 
+											<small class="col-xs-12" style="margin-top:10px;">￥${goods.price}/份</small>
+											<small class="col-xs-12" style="text-align: right;">剩余：<i style="font-size: 1.8em;color: #1e89e0;">${goods.quantity}</i>份</small>
 										</h4>
 										简介： <small>${goods.goodIntro}</small>
 										<div class="btn-goods-edit">

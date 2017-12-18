@@ -94,7 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	          <ul class="nav navbar-nav">
 				  <!--<li class="active"><a href="#">首页</a></li>-->
 	            <li><a href="#">首页</a></li>
-	            <li><a href="#">我的订单</a></li>
+	            <li><a href="${pageContext.request.contextPath }/orderList.action">我的订单</a></li>
 	            <li><a href="#">加盟合作</a></li>
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
@@ -129,10 +129,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<li><i class="icon Hui-iconfont">&#xe625;</i><span class="pointer"><a href="#" class="setfontcolor">个人中心</a></span></li>
 					</ul>
 					<ul class="nav nav-sidebar">
-						<li><i class="icon Hui-iconfont">&#xe627;</i><span>我的订单</span></li>
-						<li><a class="setfontcolor" href="#">近三个月订单</a></li>
-						<li><a class="setfontcolor" href="#">待评价订单</a></li>
-						<li><a class="setfontcolor" href="#">退单记录</a></li>
+						<li><i class="icon Hui-iconfont">&#xe627;</i><span><a href="${pageContext.request.contextPath }/orderList.action" class="setfontcolor">我的订单</a></span></li>
 					</ul>
 					<ul class="nav nav-sidebar">
 						<li><i class="icon Hui-iconfont">&#xe63a;</i><span>我的资产</span></li>

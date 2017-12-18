@@ -38,5 +38,10 @@ public class ShopCartServiceImpl implements ShopCartService {
 	public void createShopCartGoods(Shopcartlist shopCartList){
 		shopCartMapper.createShopCartGoods(shopCartList);
 	}
+	@Override
+	public int selectLastShopCartId() {
+		
+		return shopCartMapper.selectShopCartId();
+	}
 
 }

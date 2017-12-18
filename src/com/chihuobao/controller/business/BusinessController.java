@@ -345,6 +345,7 @@ public class BusinessController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return "business/business_error";
 		}
 
 		return "business/business_goods_detail";
@@ -363,8 +364,7 @@ public class BusinessController {
 		Shop shop = business.getShop();
 		List<Goods> goods;
 		try {
-			ShopData shopData = businessService.selectShopDataByShopId(shop.getId());
-			if (shop == null || shop.getAuditState() == 2 || shopData == null) {
+			if (shop == null || shop.getAuditState() == 2) {
 				return "business/business_noshopOrwaitingaudit";
 			}
 			goods = businessService.seleteGoodByShopId(business.getShop().getId());
@@ -374,7 +374,7 @@ public class BusinessController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return "";
+			return "business/business_error";
 		}
 
 		return "business/business_goods_List";
@@ -405,31 +405,6 @@ public class BusinessController {
 		return modelAndView;
 	}
 
-//	/**
-//	 * 更新商品
-//	 * 
-//	 * @param good
-//	 * @param request
-//	 * @param response
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/updateGood.action", method = RequestMethod.POST)
-//	public String updateGood(GoodsCustomVo good, @RequestParam(value = "goodPic") MultipartFile goodPic) {
-//		UploadImageUtil uImageUtil = new UploadImageUtil(goodPic);
-//		int record;
-//		try {
-//			if (uImageUtil.getFileName() != null) {
-//				good.getGoods().setGoodPic(uImageUtil.getFileName());
-//			}
-//			record = businessService.updateGoodById(good.getGoods());
-//			if (record > 0) {
-//				uImageUtil.saveToDisk();
-//			}
-//		} catch (Exception e) {
-//			record = -1;
-//		}
-//		return "redirect:/toGoodEdit.action?id=" + good.getGoods().getId();
-//	}
 
 	/**
 	 * 更新商品
@@ -499,33 +474,6 @@ public class BusinessController {
 		return modelAndView;
 	}
 
-//	/**
-//	 * 添加商品
-//	 * 
-//	 * @param good
-//	 * @param request
-//	 * @param response
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/addGood.action", method = RequestMethod.POST)
-//	public String addGood(GoodsCustomVo good, @RequestParam(value = "goodPic") MultipartFile goodPic,
-//			HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-//		UploadImageUtil uImageUtil = new UploadImageUtil(goodPic);
-//		BusinessCustom businessCustom = (BusinessCustom) session.getAttribute("business");
-//		int record;
-//		try {
-//			good.getGoods().setGoodPic(uImageUtil.getFileName());
-//			record = businessService.insertGood(good.getGoods(), businessCustom.getShop().getId());
-//			if (record > 0) {
-//				uImageUtil.saveToDisk();
-//			}
-//		} catch (Exception e) {
-//			record = -1;
-//			e.printStackTrace();
-//		}
-//
-//		return "redirect:/getGoodsList.action";
-//	}
 	
 	/**
 	 * 添加商品
@@ -592,20 +540,7 @@ public class BusinessController {
 		}
 		return record;
 	}
-	// @RequestMapping(value="/addGoodsStyle.action")
-	// public String addGoodsStyle(GoodsStyle GoodsStyle,HttpServletRequest
-	// request,
-	// HttpServletResponse response){
-	//
-	// int record = businessService.insertGoodsStyle(GoodsStyle);
-	// if (record > 0 ) {
-	// request.setAttribute("addGood", "true");
-	// return "redirect:/getGoodsList.action";
-	// }else {
-	// request.setAttribute("addGood", "false");
-	// return "redirect:/toAddGood.action";
-	// }
-	// }
+
 
 	/**
 	 * 获取所有系统消息
@@ -651,9 +586,7 @@ public class BusinessController {
 			if (shop == null || shop.getAuditState() == 2 || shopData == null) {
 				return "business/business_noshopOrwaitingaudit";
 			}
-			// List<UserComment> comments =
-			// businessService.selectUserMsgByShopId(shop.getId());
-			// model.addAttribute("userComments", comments);
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -678,7 +611,7 @@ public class BusinessController {
 			if (shop == null || shop.getAuditState() == 2 || shopData == null) {
 				return "business/business_noshopOrwaitingaudit";
 			}
-			StorerAccountVo storerAccountVo = businessService.selectServiceMsg(business.getShop().getId());//
+			StorerAccountVo storerAccountVo = businessService.selectServiceMsg(shop.getId());//
 			storerAccountVo.setStorerAccount(storerAccount);
 			model.addAttribute("myService", storerAccountVo);
 		} catch (Exception e) {
@@ -694,19 +627,7 @@ public class BusinessController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getAccount.action")
-	public String getAccount(HttpSession session) {
-		BusinessCustom businessCustom = (BusinessCustom) session.getAttribute("business");
-		Shop shop = businessCustom.getShop();
-		
-		try {
-//			ShopData shopData = businessService.selectShopDataByShopId(shop.getId());
-			if (shop.getAuditState() == 2) {
-				return "business/business_shop_message_noshop";
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public String getAccount(Model model,HttpSession session) {
 		return "business/business_account_message";
 	}
 
@@ -1034,6 +955,13 @@ public class BusinessController {
 		Shop shop = businessCustom.getShop();
 		try {
 			if (shop == null || shop.getAuditState() == 2) {
+				if (shop!=null) {
+					ShopData shopData = businessService.selectShopDataByShopId(shop.getId());
+					if (shopData == null) {
+						return "business/business_noshopOrwaitingaudit";
+					}
+					model.addAttribute("shopData", shopData);
+				}
 				return "business/business_shop_message_noshop";
 			}
 			
@@ -1133,6 +1061,13 @@ public class BusinessController {
 		try {
 			ShopData shopData = businessService.selectShopDataByShopId(shop.getId());
 			if (shop == null || shop.getAuditState() == 2 || shopData == null) {
+				if (shop!=null) {
+					if (shopData == null) {
+						model.addAttribute("shopData", shopData);
+						return "business/business_noshopOrwaitingaudit";
+					}
+					model.addAttribute("shopData", shopData);
+				}
 				return "business/business_shop_message_noshop";
 			}
 			model.addAttribute("shopData", shopData);
@@ -1328,23 +1263,28 @@ public class BusinessController {
 	@RequestMapping(value = "/getBusiness.action")
 	public String getBusiness(Model model, BusinessCustom business, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) {
-
+		StorerAccount account = (StorerAccount) session.getAttribute("storerAccount");
 		String record;
 		try {
-			StorerAccount account = businessService.selectAccountById(4);
+//			StorerAccount account = businessService.selectAccountById(4);
+			if (account == null) {
+				return "user/storer_login_register";
+			}
 			Shop shop = businessService.selectShopByAccountId(account.getId());
-			// 获取商家的评论和系统消息省略
-//			if (shop != null) {
-//				List<Ordertable> ordertables = businessService.seleteOrderByShopId(shop.getId());
-//				business.setShop(shop);
-//				shopData = businessService.selectShopDataByShopId(shop.getId());
-//				// business.setGoods(goods);
-//				model.addAttribute("ordersList", ordertables);
-//				model.addAttribute("shopData", shopData);
-//			}
+
 			business.setStorerAccount(account);
-			request.getSession().setAttribute("business", business);
+			session.setAttribute("business", business);
 			if (shop == null || shop.getAuditState() == 2) {
+				if (shop!=null) {
+					business.setShop(shop);
+					ShopData shopData = businessService.selectShopDataByShopId(shop.getId());
+					if (shopData == null) {
+						return "business/business_noshopOrwaitingaudit";
+					}
+					List<Ordertable> ordertables = businessService.seleteOrderByShopId(shop.getId());
+					model.addAttribute("shopData", shopData);
+					model.addAttribute("ordersList", ordertables);//订单
+				}
 				return "business/business_noshopOrwaitingaudit";// 没有商店或待审核或审核失败
 			}
 			business.setShop(shop);

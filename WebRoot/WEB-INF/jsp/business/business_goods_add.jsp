@@ -32,7 +32,7 @@ function deleteTaps(obj) {
 	var styleId = $(obj).attr("id");
 	$.ajax({
 		type : "post",
-		url : "${pageContext.request.contextPath }/deleteGoodStyle.action?id=" + styleId,
+		url : "${pageContext.request.contextPath }/deleteGoodsStyle.action?id=" + styleId,
 		dataType : "json",
 		success : function(data) {
 			if (data == -1)
@@ -56,7 +56,7 @@ function addGoodStyle() {
 	/* alert(JSON.stringify(jsonData)); */
 	$.ajax({
 		type : "post",
-		url : "${pageContext.request.contextPath }/addGoodStyle.action",
+		url : "${pageContext.request.contextPath }/addGoodsStyle.action",
 		dataType : "json",
 		data : {
 			"shopId" : shopId,
@@ -68,7 +68,7 @@ function addGoodStyle() {
 				alert("添加失败，请重新输入！");
 			else if(data == -2){
 				alert("类型名称不能为空！");
-			}else if(data = -3){
+			}else if(data == -3){
 				alert("该类型名已存在！");
 			}
 			else{
@@ -159,10 +159,10 @@ function addGoodStyle() {
 				<ul class="nav nav-sidebar">
 					<li><a
 						href="${pageContext.request.contextPath }/getUserComment.action">用户评论<span
-							class="badge">1</span></a></li>
+							class="badge"></span></a></li>
 					<li><a
 						href="${pageContext.request.contextPath }/getSysMsg.action">系统消息<span
-							class="badge">2</span></a></li>
+							class="badge"></span></a></li>
 
 				</ul>
 			</div>

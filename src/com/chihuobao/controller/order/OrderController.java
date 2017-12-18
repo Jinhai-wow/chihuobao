@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.chihuobao.util.Utils;
+import com.chihuobao.po.Address;
 import com.chihuobao.po.Complain;
 import com.chihuobao.po.Ordergoods;
 
@@ -32,6 +33,7 @@ import com.chihuobao.po.Shop;
 import com.chihuobao.po.Shopcart;
 import com.chihuobao.po.Shopcartlist;
 import com.chihuobao.po.UserForOrder;
+import com.chihuobao.po.UserForOrderAddress;
 import com.chihuobao.service.order.OrderService;
 import com.github.pagehelper.PageInfo;
 
@@ -40,13 +42,6 @@ import net.sf.json.JSONObject;
 
 @Controller
 public class OrderController {
-	/*
-	 * @RequestMapping(value="/test1.action") public String setTePO1(TestPO
-	 * testPO){ System.out.println(testPO.getUsername()); return "Test1"; }
-	 * 
-	 * @RequestMapping(value="/test.action") public String setTePO(TestPO
-	 * testPO){ System.out.println(testPO.getUsername()); return "Test"; }
-	 */
 
 	@Autowired
 	private OrderService orderService;
@@ -58,45 +53,10 @@ public class OrderController {
 		return page;
 	}
 
-	/* 获取所有订单 */
 	/*
-	 * @RequestMapping("/orderList.action") public String getOrderList(Model
-	 * model) {
+	 * 根据订单id获取订单 ，进入订单详情页调用
 	 * 
-	 * List<Ordertable> orderList = orderService.getOrderList(); for (Ordertable
-	 * ordertable : orderList) { System.out.println(ordertable); for (Ordergoods
-	 * ordergoods : ordertable.getOrdergoodsList()) {
-	 * System.out.println(ordergoods); } } return "orderList"; }
-	 */
-
-	/*
-	 * @RequestMapping("/orderList.action") public String getOrderList(Model
-	 * model) {
-	 * 
-	 * PageInfo<Ordertable> pageInfo=
-	 * orderService.getOrderListByPagination(1,5);
-	 * System.out.println(pageInfo.getTotal());
-	 * model.addAttribute("orderlist",pageInfo.getList()); for (Ordertable
-	 * ordertable : pageInfo.getList()) { System.out.println(ordertable);
-	 * 
-	 * for (Ordergoods ordergoods : ordertable.getOrdergoodsList()) {
-	 * System.out.println(ordergoods); } } return "orderList"; }
-	 */
-
-	/*
-	 * @RequestMapping("/orderList.action") public String getOrderList(Model
-	 * model, @RequestParam(value="page",required = false, defaultValue = "1")
-	 * Integer page,@RequestParam(value="rows",required = false, defaultValue =
-	 * "5") Integer rows) {
-	 * 
-	 * PageInfo<Ordertable> pageInfo=
-	 * orderService.getOrderListByPagination(page,rows);
-	 * System.out.println(pageInfo.getTotal());
-	 * model.addAttribute("orderlist",pageInfo.getList()); for (Ordertable
-	 * ordertable : pageInfo.getList()) { System.out.println(ordertable);
-	 * 
-	 * for (Ordergoods ordergoods : ordertable.getOrdergoodsList()) {
-	 * System.out.println(ordergoods); } } return "orderList"; }
+	 * @param id :订单id
 	 */
 
 	@RequestMapping(value = { "/orderDetail.action" })
@@ -116,36 +76,26 @@ public class OrderController {
 	}
 
 	/*
-	 * @RequestMapping(value={"/payOrder.action"}) public String moreOrder(Model
-	 * model, @RequestParam("shopcartId") Integer shopcartId) {
+	 * 进入订单列表页面
 	 * 
-	 * Ordertable order = orderService.getOrder(id); model.addAttribute("order",
-	 * order); model.addAttribute("ordergoodslist", order.getOrdergoodsList());
-	 * System.out.println(order); for (Ordergoods ordergoods :
-	 * order.getOrdergoodsList()) { System.out.println(ordergoods); }
-	 * 
-	 * return "payOrder"; }
 	 */
-
-	/* getOrderListByPagination自定义分页 */
 	@RequestMapping(value = { "/orderList.action" })
 	public String getOrderListByPagination(Model model,
 			@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
 			@RequestParam(value = "rows", required = false, defaultValue = "5") Integer rows, HttpSession session) {
 
-		session.setAttribute("test", "测试session");
-		PageBean pageBean = new PageBean();
-		pageBean.setPage(page);
-
-		pageBean.setRows(rows);
-		List<Ordertable> orderList = orderService.getOrderListByPagination(pageBean);
-
-		int orderListSize = orderService.getOrderListSize();
-		System.out.println(orderList);
-		System.out.println(orderListSize);
-		/* 注意键值全部用小写 */
-		model.addAttribute("orderlist", orderList);
-		model.addAttribute("orderlistsize", orderListSize);
+		/*
+		 * session.setAttribute("test", "测试session"); PageBean pageBean = new
+		 * PageBean(); pageBean.setPage(page);
+		 * 
+		 * pageBean.setRows(rows); List<Ordertable> orderList =
+		 * orderService.getOrderListByPagination(pageBean);
+		 * 
+		 * int orderListSize = orderService.getOrderListSize();
+		 * System.out.println(orderList); System.out.println(orderListSize);
+		 * 注意键值全部用小写 model.addAttribute("orderlist", orderList);
+		 * model.addAttribute("orderlistsize", orderListSize);
+		 */
 		/*
 		 * for (Ordertable ordertable : orderList) {
 		 * orderService.getShop(ordertable.shopid); }
@@ -161,7 +111,12 @@ public class OrderController {
 		return "order/orderList";
 	}
 
-	/* 使用ajax */
+	/*
+	 * 
+	 * 使用ajax 获取分页订单数据
+	 * 
+	 * 
+	 */
 	@RequestMapping("/ajaxorderlist.action")
 	public @ResponseBody List<Ordertable> ajaxGetOrderListByPagination(@RequestBody PageBean pageBean) {
 		System.out.println(pageBean);
@@ -182,7 +137,7 @@ public class OrderController {
 		return orderList;
 	}
 
-	/* 使用ajax */
+	/* 使用ajax获取订单数量用于计算总页数 */
 	@RequestMapping("/ajaxorderlistsize.action")
 	public @ResponseBody Integer ajaxGetOrderListSize() {
 		return orderService.getOrderListSize();
@@ -204,7 +159,7 @@ public class OrderController {
 		/* 只查询addrss 表state=1的即默认地址,因此list里面只有一个address */
 		model.addAttribute("userfromtable", user);
 		model.addAttribute("addressfromtable", user.getAddresslist().get(0));
-
+		System.out.println("user.getAddresslist().get(0)" + user.getAddresslist().get(0).getAddress());
 		model.addAttribute("shopcartid", shopcartid);
 		model.addAttribute("userid", userid);
 		/* System.out.println(shopcart); */
@@ -213,12 +168,9 @@ public class OrderController {
 	}
 
 	/*
-	 * @RequestMapping("/submitOrder.action") public @ResponseBody String
-	 * sumitOrder(@RequestBody List<Shopcartlist> shopcartlist ){
+	 * 提交订单
 	 * 
-	 * System.out.println(shopcartlist); return "ok";
-	 * 
-	 * }
+	 * @param utilbean：对应订单页面的提交数据
 	 */
 
 	@RequestMapping("/submitOrder.action")
@@ -285,19 +237,12 @@ public class OrderController {
 
 		System.out.println("ordertable" + ordertable);
 
-		/*
-		 * System.out.println(shopcartlist);
-		 * System.out.println(utilbean.getRemark());
-		 */
-		return "order/orderList";
+		return "redirect:/orderList.action";
 
 	}
+
 	/*
-	 * @RequestMapping("evaluateOrder.action") public String toEvalueOrder(){
-	 * 
-	 * orderService.getOrder(id)
-	 * 
-	 * return "evaluateOrder"; }
+	 * 到评价订单页面 id：订单id
 	 */
 
 	@RequestMapping(value = { "/evaluateOrder.action" })
@@ -315,50 +260,50 @@ public class OrderController {
 
 		return "order/evaluateOrder";
 	}
+	/*
+	 * 提交订单评价
+	 * 
+	 * @param ordertable:订单
+	 */
 
 	@RequestMapping("/submitEvaluateOrder.action")
 	public String submitEvaluateOrder(Ordertable ordertable, HttpServletRequest request, RedirectAttributes attr) {
 		// 已评价订单
 		ordertable.setOrderstate(8);
 		orderService.updateOrder(ordertable);
-		String contextPath = request.getContextPath();
-		System.out.println("contextPath" + contextPath);
-		attr.addFlashAttribute("success", "评价成功!");
 
 		return "redirect:/orderList.action";
 	}
 
+	/*
+	 * 确认收货
+	 * 
+	 * @param id：订单id
+	 */
 	@RequestMapping("/confirmReceive.action")
 	public String updateOrderState(long id, Model model) {
 
-		/*
-		 * if(i==0){ tokenTime=System.currentTimeMillis();
-		 * System.out.println(tokenTime); model.addAttribute("token",tokenTime);
-		 * i++; }else if(i==1){ orderService.updateOrderState(id); }else
-		 * if(tokenTime!=token){
-		 * 
-		 * }
-		 */
 		orderService.updateOrderState(id);
-		return "order/orderList";
+		return "redirect:/orderList.action";
 	}
+	/*
+	 * 申请取消订单
+	 * 
+	 * @param id：订单id
+	 */
 
 	@RequestMapping("/applyCancelOrder.action")
 	public String applyCancelOrder(long id, HttpServletRequest request) {
-		/*
-		 * String uri=request.getRequestURI(); StringBuffer
-		 * url=request.getRequestURL(); Enumeration paramNames =
-		 * request.getParameterNames(); while (paramNames.hasMoreElements()) {
-		 * String paramName = (String) paramNames.nextElement();
-		 * 
-		 * String[] paramValues = request.getParameterValues(paramName); if
-		 * (paramValues.length == 1) { String paramValue = paramValues[0];
-		 * System.out.println(paramName+"="+paramValue); } }
-		 */
+
 		orderService.applyCancelOrder(id);
 
 		return "redirect:/orderList.action";
 	}
+	/*
+	 * 投诉
+	 * 
+	 * @param complain：投诉类
+	 */
 
 	@RequestMapping("/complain.action")
 	public String addComplain(Complain complain) {
@@ -366,6 +311,48 @@ public class OrderController {
 
 		return "redirect:/orderList.action";
 
+	}
+
+	/*
+	 * 下单页面 添加新地址
+	 * 
+	 * @param userForOrderAddress：地址类 attributes：重定向后要携带参数
+	 */
+
+	@RequestMapping("/addNewAddress.action")
+	public String addNewAddress(UserForOrderAddress userForOrderAddress, RedirectAttributes attributes) {
+
+		/*
+		 * UserForOrder userForOrder = new UserForOrder();
+		 * userForOrder.setId(userForOrderAddress.getUserid());
+		 * userForOrder.setUsername(userForOrderAddress.getUsername());
+		 * userForOrder.setSex(userForOrderAddress.getSex());
+		 * userForOrder.setPhone(userForOrderAddress.getPhone());
+		 */
+		/* 只添加地址 */
+		Address address = new Address();
+		address.setUserid(userForOrderAddress.getUserid());
+		address.setAddress(userForOrderAddress.getUsername() + " " + userForOrderAddress.getPhone() + " "
+				+ userForOrderAddress.getPosition() + " " + userForOrderAddress.getDetailaddress());
+
+		/* orderService.updateUser(userForOrder); */
+		/*先把其他地址state置0*/
+		orderService.modifyAddressState();
+		orderService.addAddress(address);
+		/* shopcartid=1&userid=1 */
+		attributes.addAttribute("shopcartid", userForOrderAddress.getShopcartid());
+		attributes.addAttribute("userid", userForOrderAddress.getUserid());
+
+		return "redirect:/payOrder.action";
+
+	}
+
+	public OrderService getOrderService() {
+		return orderService;
+	}
+
+	public void setOrderService(OrderService orderService) {
+		this.orderService = orderService;
 	}
 
 }

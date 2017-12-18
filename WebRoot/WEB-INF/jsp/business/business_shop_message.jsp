@@ -82,7 +82,7 @@
 							<span class="sr-only">(current)</span>
 					</a></li>
 					<li><a
-						href="${pageContext.request.contextPath }/getPassword.action"">修改密码</a></li>
+						href="${pageContext.request.contextPath }/getPassword.action">修改密码</a></li>
 
 				</ul>
 				<ul class="nav nav-sidebar">

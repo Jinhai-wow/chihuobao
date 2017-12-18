@@ -50,6 +50,11 @@ public interface ManagerShopMapper {
 	//保存审核建议
 	void auditShopDataAdvise(ShopData shopData);
 
+	//根据shopId找出storerId
+	Integer selectStorerIdByShopId(Integer shopId);
+
+	
+
 	
 
 	

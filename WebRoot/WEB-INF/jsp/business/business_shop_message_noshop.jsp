@@ -111,7 +111,7 @@
 					<hr>
 					<div>
 						<c:choose>
-							<c:when test="${business.shop.id != shopDta.shopId}">
+							<c:when test="${business.shop.id != shopData.shopId}">
 
 								<div class="panel panel-default"
 									style="text-align: center;vertical-align: middle;">
@@ -130,7 +130,7 @@
 									<div class="panel-heading">
 										<h3 class="panel-title">商店资格审核失败,已暂时封锁您的商店</h3>
 									</div>
-									<div class="panel-body">失败原因：</div>
+									<div class="panel-body">失败原因：${shopData.advice }</div>
 									<div class="panel-footer">
 										请<a href="${pageContext.request.contextPath }/toShopIn.action"
 											class="btn btn-default">重新填写商店审核资料</a>

@@ -15,8 +15,17 @@ import com.chihuobao.po.ShopData;
 public class ShopCustom {
 	private Shop shop;
 	private ShopData shopData;
+	private Integer orderCounts;
 	
 	
+	public Integer getOrderCounts() {
+		return orderCounts;
+	}
+
+	public void setOrderCounts(Integer orderCounts) {
+		this.orderCounts = orderCounts;
+	}
+
 	public Shop getShop() {
 		return shop;
 	}

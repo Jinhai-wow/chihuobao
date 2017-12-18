@@ -2,6 +2,7 @@ package com.chihuobao.service.order;
 
 import java.util.List;
 
+import com.chihuobao.po.Address;
 import com.chihuobao.po.Complain;
 import com.chihuobao.po.Ordergoods;
 import com.chihuobao.po.Ordertable;
@@ -37,4 +38,7 @@ public interface OrderService {
 	public List<Ordertable> getOrderNoPay();
 	public void modifyOrderState(List<Long> orderIdList);
 	public void addComplain(Complain complain);
+	public void updateUser(UserForOrder userForOrder);
+	public void addAddress(Address address);
+	public void modifyAddressState();
 }

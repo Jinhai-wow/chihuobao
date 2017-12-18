@@ -21,25 +21,35 @@ import com.chihuobao.po.Address;
 import com.chihuobao.po.ManagerOpera;
 
 import com.chihuobao.po.User;
+import com.chihuobao.po.UserMessage;
 import com.chihuobao.service.manager.ManageOperService;
+import com.chihuobao.service.manager.ManagerMessageService;
 import com.chihuobao.service.manager.ManagerUserService;
 import com.chihuobao.util.ExportUtils;
 
 import com.chihuobao.vo.UserVo;
 
+/**
+ * 系统管理下的用户管理控制类controller
+ * @author 谢韦烈
+ * 2017-12-10
+ */
 @Controller
 @RequestMapping(value="/manager")
 public class ManagerUserController {
 
 	@Autowired
-	private ManagerUserService mUserService;
+	private ManagerUserService mUserService; //系统管理下的用户管理接口
 	
 	@Autowired
-	private ManageOperService mOperService;
+	private ManageOperService mOperService;  //系统管理下的记录操作的接口
+	
+	@Autowired
+	private ManagerMessageService mMessageService; //消息管理的服务接口
 
-	ManagerOpera mOpera = new ManagerOpera();
+	ManagerOpera mOpera = new ManagerOpera(); //记录操作的实体类
 	
-	
+	UserMessage userMessage = new UserMessage(); //消息管理实体类
 	
 	@RequestMapping(value="user.action")
 	public String goManagerUserList(){
@@ -103,7 +113,12 @@ public class ManagerUserController {
 		// 将管理员更新操作存入表
 		mOpera.setOperation("更新用户id为"+user.getId()+"的操作");
 		mOperService.saveManageOper(mOpera);
-
+		
+		//将更改用户信息存入用户消息表
+		userMessage.setMessage("你好，管理员已帮你修改个人信息，请查看，如有问题可联系客服");
+		userMessage.setUserId(user.getId());
+		mMessageService.saveUestMessage(userMessage);
+		
 		return result;
 	}
 	
@@ -127,6 +142,11 @@ public class ManagerUserController {
 		mOpera.setOperation("冻结商家id为"+id+"的操作");
 		mOperService.saveManageOper(mOpera);
 		
+		//将冻结用户信息存入用户消息表
+		userMessage.setMessage("你好，你的账号已冻结，请查看，请联系客服解除冻结");
+		userMessage.setUserId(id);
+		mMessageService.saveUestMessage(userMessage);
+		
 		return result;
 	}
 	
@@ -148,6 +168,12 @@ public class ManagerUserController {
 		// 将管理员解除冻结操作存入表
 		mOpera.setOperation("解除冻结商家id为"+id+"的操作");
 		mOperService.saveManageOper(mOpera);
+		
+		//将解冻用户信息存入用户消息表
+		userMessage.setMessage("你好，你的账号已解冻，请查看，有事请联系客服");
+		userMessage.setUserId(id);
+		mMessageService.saveUestMessage(userMessage);
+		
 		return result;
 	}
 	

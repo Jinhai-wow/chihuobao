@@ -81,4 +81,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM address WHERE userid=#{id}
 	</select>
 	
+	<!-- 商家密码登陆 -->
+	<select id="findstoreraccountByPassword" parameterType="com.chihuobao.vo.StorerAccountEx" resultType="com.chihuobao.vo.StorerAccountEx">
+		<!-- SELECT * FROM user WHERE phone='${user.phone}' AND `password`='${user.password}' -->
+		SELECT * FROM storeraccount  WHERE telephone=#{telephone} AND  `password`=#{password}
+	</select>
+	
+	<!-- 商家短信注册 -->
+	<insert id="storeraccountmessageRegister" parameterType="com.chihuobao.vo.StorerAccountEx">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO storeraccount(storerName,telephone,storerRegistTime) 
+		VALUES(#{storerName},#{telephone},#{storerRegistTime})
+	</insert>
+	
+	<!-- 商家短信登陆 -->
+	<select id="findstoreraccountByPhone" parameterType="com.chihuobao.vo.StorerAccountEx" resultType="com.chihuobao.vo.StorerAccountEx">
+		SELECT * FROM storeraccount  WHERE telephone=#{telephone}
+	</select>
+	
 </mapper>

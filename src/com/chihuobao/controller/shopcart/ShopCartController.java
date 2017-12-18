@@ -29,7 +29,7 @@ public class ShopCartController {
 
 	// 添加商品
 		@RequestMapping(value = "shopCartAddGoods.action", method = { RequestMethod.GET, RequestMethod.POST },produces = "text/json;charset=UTF-8")
-		public @ResponseBody void shopCartAddGoods(@RequestBody String result ) {
+		public @ResponseBody String shopCartAddGoods(@RequestBody String result ) {
 			Gson gson=new Gson();
 			ShopCartMsgVo fromJson = gson.fromJson(result, ShopCartMsgVo.class);
 			//在数据库中查找 商店、用户、商品
@@ -60,6 +60,7 @@ public class ShopCartController {
 						System.out.println(shopCartList);
 						//创建购物车
 						shopCartService.createShopCartGoods(shopCartList);
+						shopCartService.selectLastShopCartId();
 					}
 				
 				}
@@ -67,12 +68,7 @@ public class ShopCartController {
 				// TODO: handle exception
 				e.printStackTrace();
 			}
-
+			return ""+shopCartService.selectLastShopCartId();
 		}
-	
-	//测试的时候跳转到购物页面用
-	@RequestMapping(value = "/pageJump.action", method = { RequestMethod.GET, RequestMethod.POST })
-	public String pageJump() {
-		return "shop/shop";
-	}
+
 }

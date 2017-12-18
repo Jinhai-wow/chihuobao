@@ -27,14 +27,14 @@ public class ShopData implements Serializable{
 	private String ownerIdUpPic;// 身份证正面照
 	private String ownerIdDownPic;// 身份证背面面照
 	private String serviceLicense;// 餐饮服务许可证照片
-	private String advise; //审核建议
+	private String advice; //审核建议
 	
 	
-	public String getAdvise() {
-		return advise;
+	public String getAdvice() {
+		return advice;
 	}
-	public void setAdvise(String advise) {
-		this.advise = advise;
+	public void setAdvice(String advice) {
+		this.advice = advice;
 	}
 	public int getShopId() {
 		return shopId;

@@ -68,6 +68,10 @@
 		});
 	}
 	;
+	
+	$(function (){
+    $("[data-toggle='popover']").popover();
+});
 </script>
 </head>
 
@@ -154,7 +158,9 @@
 									<label for="password" class="col-xs-2 control-label">原密码</label>
 									<div class="col-xs-5">
 										<input type="password" name="password" class="form-control"
-											id="password" value="" placeholder="请输入原密码">
+											id="password" value="" placeholder="请输入原密码" 
+											data-container="body" data-toggle="popover" data-placement="right" 
+											data-content="如果您未设置初始密码，账号默认初始密码为000000，请尽快修改密码；如已设置，请忽略">
 									</div>
 								</div>
 								<div class="form-group">

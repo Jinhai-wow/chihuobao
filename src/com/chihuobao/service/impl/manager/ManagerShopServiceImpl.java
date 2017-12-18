@@ -127,6 +127,13 @@ public class ManagerShopServiceImpl implements ManagerShopService {
 		managerShopMapper.auditShopDataAdvise(shopData);
 	}
 
+	//根据shopId找出storerId
+	@Override
+	public Integer selectStorerIdByShopId(Integer shopId) {
+		
+		return managerShopMapper.selectStorerIdByShopId(shopId);
+	}
+
 	
 	
 

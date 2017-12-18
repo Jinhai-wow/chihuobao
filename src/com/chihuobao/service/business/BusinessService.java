@@ -77,4 +77,6 @@ public interface BusinessService {
 	public int backAcceptOrder(Long id);//接受取消订单
 	public int refuseOrder(Ordertable ordertable);//不接订单
 
+	public ShopCustom selectShopMsgById(Integer shopId);//用户浏览商家
+
 }

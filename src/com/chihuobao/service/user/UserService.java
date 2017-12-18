@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.chihuobao.po.Address;
 import com.chihuobao.po.User;
+import com.chihuobao.vo.StorerAccountEx;
 import com.chihuobao.vo.UserVo;
 
 /**
@@ -37,4 +38,11 @@ public interface UserService {
 	
 	//查找用户地址
 	public List<Address> findUserAddress(Integer id) throws Exception;
+	
+	//商家密码登陆
+	public StorerAccountEx findstoreraccountByPassword(StorerAccountEx storerAccountVo) throws Exception;
+		
+	//商家通过短信登陆或注册
+	public StorerAccountEx storerAccountloginRegisterByMessage(StorerAccountEx storerAccountVo) throws Exception;
+	
 }

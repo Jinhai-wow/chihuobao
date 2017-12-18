@@ -157,10 +157,10 @@
 				<ul class="nav nav-sidebar">
 					<li><a
 						href="${pageContext.request.contextPath }/getUserComment.action">用户评论<span
-							class="badge">1</span></a></li>
+							class="badge"></span></a></li>
 					<li><a
 						href="${pageContext.request.contextPath }/getSysMsg.action">系统消息<span
-							class="badge">2</span></a></li>
+							class="badge"></span></a></li>
 
 				</ul>
 			</div>

@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" href="../../favicon.ico">
-<title>订单列表</title>
+<title>您好，${business.shop.shopName }</title>
 
 <link href="${pageContext.request.contextPath }/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -41,24 +41,71 @@
 </style>
 <script type="text/javascript">
 $(document).ready(function() {	
-	jQuery('#arrivetimePick').datetimepicker({
-                timeFormat: "HH:mm:ss",
-                dateFormat: "yy-mm-dd"
-            });
+	cuidan();
+/************************未读系统消息*****************************/
+			var shopId="${business.shop.id}";
+    	 /*    alert(shopId); */
+    	    var tmp = "0";
+    	    var i = setInterval(function() {
+    			var a = new Date().getMinutes();
+    					 $.post("${pageContext.request.contextPath}/selectMessageByStorerId.action",{'userId':shopId}, function(data) {
+    						var value = data.length;
+    						
+    						if(parseInt(value)  > parseInt(tmp) ){
+    							var noReadMsg = value-tmp;
+    							alert(noReadMsg);
+    							$("#sysMsg").html(noReadMsg);
+    						}
+    					}); 
+    		}, 10000);
+    
 
-var startTimeTextBox = $('#range_example_3_start');
-var endTimeTextBox = $('#range_example_3_end');
-$.timepicker.timeRange(
-	startTimeTextBox,
-	endTimeTextBox,
-	{
-		minInterval: (1000*60), // 1hr
-		timeFormat: 'HH:mm',
-		start: {}, // start picker options
-		end: {} // end picker options
-	}
-);
 });	
+
+/*************************催单*****************************/
+	function cuidan(){
+				var socket;
+				if(typeof(WebSocket) == "undefined") {
+					alert("您的浏览器不支持WebSocket");
+					return;
+				}
+
+				
+					//实现化WebSocket对象，指定要连接的服务器地址与端口
+					socket = new WebSocket("ws://127.0.0.1:8080/CHB/ws?username=${business.shop.id}");
+					
+					//打开事件
+					socket.onopen = function() {
+					
+						/* alert("Socket 已打开"); */
+						//socket.send("这是来自客户端的消息" + location.href + new Date());
+					};
+					//获得消息事件
+					socket.onmessage = function(msg) {
+						alert(msg.data);
+					};
+					//关闭事件
+					socket.onclose = function() {
+					/* socket.close(); */
+					
+						/* alert("Socket已关闭"); */
+					};
+					//发生了错误事件
+					socket.onerror = function() {
+						alert("发生了错误");
+					}
+				
+				
+				/*加用户名，订单号 */
+				$("#cuidan").click(function() {
+					socket.send("这是来自订单的催单消息");
+				});
+
+				/* $("#btnClose").click(function() {
+					socket.close();
+				}); */
+		}
+
 
 	/*************接单*******************/
 	function acceptOrder(obj) {
@@ -209,8 +256,8 @@ $.timepicker.timeRange(
 				alert("系统错误！");
 			}
 		});
-	}
-	;
+		
+	};
 	
 </script>
 <body>
@@ -278,10 +325,10 @@ $.timepicker.timeRange(
 				<ul class="nav nav-sidebar">
 					<li><a
 						href="${pageContext.request.contextPath }/getUserComment.action">用户评论<span
-							class="badge">1</span></a></li>
+							class="badge"></span></a></li>
 					<li><a
-						href="${pageContext.request.contextPath }/getSysMsg.action">系统消息<span
-							class="badge">2</span></a></li>
+						href="${pageContext.request.contextPath }/selectMessageByStorerId.action">系统消息<span
+							class="badge" id="sysMsg"></span></a></li>
 
 				</ul>
 			</div>
@@ -331,7 +378,7 @@ $.timepicker.timeRange(
 							<tbody>
 								<c:forEach items="${ordersList}" var="list">
 									<tr>
-										<td style="text-align: center;vertical-align: middle;"><fmt:formatDate
+										<td style="text-align: center;vertical-align: middle;">编号:${list.id }<br><fmt:formatDate
 												value="${list.createtime }" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 										<td style="text-align: center;vertical-align: middle;"><c:forEach
 												items="${list.ordergoodsList }" var="goods">

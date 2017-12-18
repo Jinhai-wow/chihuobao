@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.chihuobao.po.ManagerOpera;
 import com.chihuobao.po.Shop;
 import com.chihuobao.po.StorerAccount;
+import com.chihuobao.po.StorerMessage;
 import com.chihuobao.service.manager.ManageOperService;
+import com.chihuobao.service.manager.ManagerMessageService;
 import com.chihuobao.service.manager.ManagerStorerService;
 import com.chihuobao.util.ExportUtils;
 import com.chihuobao.vo.StorerAccountVo;
@@ -41,11 +43,15 @@ public class ManagerStorerController {
 
 	
 	@Autowired
-	private ManagerStorerService storerService;
+	private ManagerStorerService storerService; //管理员对商家管理的service接口类
 	@Autowired
-	private ManageOperService mOperService;
+	private ManageOperService mOperService;	//记录操作的service接口类
+	@Autowired
+	private ManagerMessageService mMessageService; //消息管理的服务接口
 
-	ManagerOpera mOpera = new ManagerOpera();
+	ManagerOpera mOpera = new ManagerOpera(); //记录操作实体类
+	
+	StorerMessage storerMessage = new StorerMessage(); //商家消息实体类
 
 	/**
 	 * 删除商家功能根据商家id
@@ -119,6 +125,11 @@ public class ManagerStorerController {
 		// 将管理员更新操作存入表
 		mOpera.setOperation("更新商家id为"+storeAccount.getId()+"的操作");
 		mOperService.saveManageOper(mOpera);
+		
+		//将更改商家信息存入用户消息表
+		storerMessage.setMessage("你好，管理员已帮你修改个人信息，请查看，如有问题可联系客服");
+		storerMessage.setStorerId(storeAccount.getId());
+		mMessageService.saveStorerMessage(storerMessage);
 
 		return result;
 	}
@@ -193,7 +204,7 @@ public class ManagerStorerController {
 	}
 	
 	//进入商家主页面
-	@RequestMapping(value = "/text.action")
+	@RequestMapping(value = "/storer.action")
 	public String text() {
 
 		return "manager/managerStorerList";
@@ -221,6 +232,12 @@ public class ManagerStorerController {
 		// 将管理员冻结操作存入表
 		mOpera.setOperation("冻结商家id为"+id+"的操作");
 		mOperService.saveManageOper(mOpera);
+		
+		//将冻结用户信息存入用户消息表
+		storerMessage.setMessage("你好，你的账号已冻结，请查看，请联系客服解除冻结");
+		storerMessage.setStorerId(id);
+		mMessageService.saveStorerMessage(storerMessage);
+		
 		return result;
 	}
 
@@ -243,6 +260,12 @@ public class ManagerStorerController {
 		// 将管理员解除冻结操作存入表
 		mOpera.setOperation("解除冻结商家id为"+id+"的操作");
 		mOperService.saveManageOper(mOpera);
+		
+		//将冻结用户信息存入用户消息表
+		storerMessage.setMessage("你好，你的账号已解除冻结，请查看，如有问题请联系客服");
+		storerMessage.setStorerId(id);
+		mMessageService.saveStorerMessage(storerMessage);
+		
 		return result;
 	}
 

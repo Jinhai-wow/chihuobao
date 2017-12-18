@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -8,1013 +10,1089 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
 <head>
 <base href="<%=basePath%>">
-     <title></title>
-    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
-    <link rel="stylesheet" href="icon/iconfont.css">
-    <link href="icon/icon.css" rel="stylesheet" type="text/css">
-    <style>
-        /*-------------全局设置 开始-------------------*/
-        a,
-        a:hover,
-        a:visited,
-        a:active,
-        a:link{
-            text-decoration: none;
-            color: black;
-        }
-        ul,li{
-            list-style: none;
-            text-decoration: none;
-        }
-        em{
-            font-style: normal;
-            font-weight: 400;
-            font-size: 14px;
-        }
-        /*-------------全局设置 结束-------------------*/
+<title>${shopMsg.shop.shopName }</title>
+<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="icon/iconfont.css">
+<link href="icon/icon.css" rel="stylesheet" type="text/css">
+<style>
+/*-------------全局设置 开始-------------------*/
+a, a:hover, a:visited, a:active, a:link {
+	text-decoration: none;
+	color: black;
+}
 
+ul, li {
+	list-style: none;
+	text-decoration: none;
+}
 
-        /*---------------head部分 开始-------------------*/
-        #head{
-            position: absolute;
-            width: 100%;
-        }
-        #head nav.navbar{
-            border: 0;
-        }
-        #head nav.navset{
-            margin-bottom: 0;
+em {
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+}
+/*-------------全局设置 结束-------------------*/
 
-        }
-        #head nav:first-of-type a{
-            color: #FFF;
-            font-size: 16px;
-            user-select: none;
-        }
-        /*font-color-black*/
-        #head .fc-black li a{
-            color: black;
-        }
-        .chb-logo{
-            position: relative;
-            top: -8px;
-        }
-        .bgcolor{
-       /*     background-color: #1e89e0;*/
-            background-color: transparent;
-        }
-        .navbar-default .navbar-nav>.open>a,
-        .navbar-default .navbar-nav>.open>a:focus,
-        .navbar-default .navbar-nav>.open>a:hover{
-            background-color: rgba(221,221,221,0.3);
-        }
-        .dropdown-menu{
-            min-width: 143px;
-        }
-        .dropdown-menu:hover{
-            background-color: rgba(221,221,221,1);
-        }
-        #navbar ul li:hover{
-            background-color: rgba(222,222,222,0.1);
-        }
+/*---------------head部分 开始-------------------*/
+#head {
+	position: absolute;
+	width: 100%;
+}
 
-        /*---------------head部分 结束-------------------*/
+#head nav.navbar {
+	border: 0;
+}
 
+#head nav.navset {
+	margin-bottom: 0;
+}
 
+#head nav:first-of-type a {
+	color: #FFF;
+	font-size: 16px;
+	user-select: none;
+}
+/*font-color-black*/
+#head .fc-black li a {
+	color: black;
+}
 
-        /*---------------main部分 开始-------------------*/
-        #main{
-            width: 100%;
-            height: 100%;
-            position: relative;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: transparent;
-        }
-        .bg-img{
-            width:100%;
-            background: 100% url(image/shop-bg.jpg) no-repeat;
-            background-size:cover ;
-        }
-        .shop{
-            position: relative;
-            display: table;
-            height: 192px;
-            padding: 0;
-            top:0px;
-            font-size: 0;
-        }
-        .shop .shop-info{
-            position: relative;
-            display: table-cell;
-            vertical-align: middle;
-            color: #fff;
-            z-index: 1;
-        }
-        .shop .shop-info>img{
-            margin-right: 15px;
-            width: 95px;
-            height: 95px;
-            border-radius: 50%;
-            border:4px solid rgba(255,255,255,0.3);
-            vertical-align: middle;
-        }
-        .shop .shop-info-wrapper{
-            display: inline-block;
-            vertical-align: middle;
-        }
-        .shop .shop-info-wrapper h1{
-            font-size: 20px;
-            max-width: 270px;
-            display: inline-block;
-            vertical-align: middle;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
-        }
-        .shop .shop-info-wrapper .shop-info-rate{
-            margin: 10px 0;
-            display: block;
-        }
-        .shop .shop-info-wrapper .starrating{
-            display: inline-block;
-            width: 150px;
-            font-size: 14px;
-            color: #FFF;
-            white-space: nowrap;
-            user-select: none;
-        }
-        .shop .shop-info-wrapper .starrating i{
-            color: #ffc30c;
-        }
-        .shop .shop-info-wrapper .starrating a{
-            color: #FFF;
-        }
-        .shop .shop-info-wrapper .monthsales{
-            margin-left: 5px;
-            display: inline-block;
-        }
-        .shop .shop-server{
-            width: 700px;
-            display: table-cell;
-            padding-right: 100px;
-            vertical-align: middle;
-            color: #FFF;
-            text-align: center;
-        }
-        .shop .shop-server span{
-            display: inline-block;
-            margin-left: 80px;
-            vertical-align: top;
-            text-align: center;
-        }
-        .shop .shop-server span:first-of-type{
-            margin-left: 0;
-        }
-        .shop .shop-server span em:last-of-type{
-            display: block;
-            margin-top: 12px;
-            margin-bottom: 3px;
-            font-size: 18px;
-        }
-        .shop .shop-favor{
-            position: absolute;
-            top: 50px;
-            right: 0;
-            padding: 10px 5px;
-            width: 80px;
-            text-align: center;
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 0 0 5px 5px;
-            color: #eee;
-            font-size: 14px;
-        }
-        .shop .shop-favor i{
-            font-size: 20px;
-        }
-        .shop .shop-favor span{
-            display: block;
-        }
-        .shop-nav .shop-nav-inner{
-            line-height: 57px;
-            background-color: rgba(0,0,0,0.1);
-        }
-        .shop-nav .shop-nav-left{
-            float: left;
-            width: 75%;
-            user-select: none;
-        }
-        .shop-nav .shop-nav-table{
-            width: 112px;
-            position: relative;
-            display: inline-block;
-            vertical-align: middle;
-            color: #333;
-            font-size: 16px;
-            text-align: center;
-        }
-        .shop-nav .active{
-            color: #0089dc;
-        }
-        .shop-nav .active:after{
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-top: 3px solid;
-        }
-        .shop-nav .shop-nav-left a:nth-of-type(n+2):before{
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 50%;
-            margin-top: -7px;
-            height: 14px;
-            width: 1px;
-            background-color: #CCC;
-        }
-        .shop-nav .shop-nav-filter{
-            float: right;
-        }
-        .shop-nav .shop-search{
-            display: inline-block;
-            margin: 10px 0;
-            height: 32px;
-            width: 260px;
-            line-height: 32px;
-            border: 1px solid #ccc;
-            background: #fff;
-            float: right;
-        }
-        .shop-search .search{
-            height: 30px;
-            width: 190px;
-            line-height: 24px;
-            font-size: 16px;
-            border: 0;
-            outline: 0;
-            padding: 4px 0;
-            margin: 0 8px;
-            cursor: auto;
-            background-color: #FFF;
-            vertical-align: text-bottom;
-        }
-        .shop-search .search-btn{
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            text-align: center;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            outline: 0;
-            background: transparent;
-            line-height: 24px;
-            padding: 4px 0;
-            margin: 0 8px;
-            vertical-align: text-bottom;
-        }
-        .shop-search .search-btn i{
-            font-size: 20px;
-        }
-        .shop-search .search-btn i:hover{
-            color: #5eaeeb;
-        }
+.chb-logo {
+	position: relative;
+	top: -8px;
+}
 
-        .shop-main{
-            margin-top: 20px;
-        }
-        .shop-main .shop-menu{
-            float: left;
-            width: 75%;
-        }
+.bgcolor {
+	/*     background-color: #1e89e0;*/
+	background-color: transparent;
+}
 
-        .shop-main .shop-menu-nav{
-            max-height: 249px;
-            padding: 10px 15px 5px;
-            background-color: rgba(0,0,0,0.1);
-            border: #eee;
-            z-index: 101;
-        }
-        .shop-main .shop-menu-nav>a{
-            display: inline-block;
-            margin: 5px;
-            padding: 3px 10px;
-            width: 18%;
-            border-radius: 2px;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            vertical-align: top;
-        }
-        .shop-main .shop-menu-nav>a:hover{
-            background-color: rgba(255,255,255,0.3);
-        }
-        .shop-main .shop-menu-main{
-            margin-top: 0;
-        }
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus,
+	.navbar-default .navbar-nav>.open>a:hover {
+	background-color: rgba(221, 221, 221, 0.3);
+}
 
-        .shop-right{
-            float: right;
-            width: 23.6%;
-        }
-        .shop-right .bulletin{
-            margin-bottom: 20px;
-            border-radius: 2px 2px 0 0;
-            background-color: #fff;
-            box-shadow: 0 1px 1px rgba(0,0,0,0.12);
-        }
-        .bulletin .bulletin-title{
-            padding:0 1em;
-            margin: 0;
-            line-height: 2.8em;
-            background-color: #0089dc;
-            color: #fff;
-            display: block;
-            font-size: 1.17em;
-        }
-        .bulletin .bulletin-content{
-            padding: 10px 13px;
-            line-height: 2;
-            margin: 0;
-            background-color: #f5f5f5;
-        }
-        .bulletin .delivery{
-            padding: 10px 13px;
-        }
-        .bulletin .delivery>h4{
-            font-weight: 700;
-            margin: 0 0 5px 0;
-            font-size: 14px;
+.dropdown-menu {
+	min-width: 143px;
+}
 
-        }
-        .bulletin .delivery>p{
-            margin: 0;
-        }
-        .bulletin>a:last-of-type{
-            display: block;
-            line-height: 3;
-            text-align: center;
-            font-size: 18px;
-            color: #666;
-            border-top: 1px solid #eee;
-            background-color: #eee;
-        }
+.dropdown-menu:hover {
+	background-color: rgba(221, 221, 221, 1);
+}
 
-        .menu-main-content h3{
-            padding: 20px 0 10px 15px;
-            font-size: 20px;
-            color: #333;
-        }
-        .menu-main-content h3>span{
-            font-size: 12px;
-            color: #999;
-        }
-        .menu-main-content .goods{
-            position: relative;
-            float: left;
-            margin-right: 2%;
-            padding-right: 10px;
-            width: 48%;
-            margin-bottom: 12px;
-            font-size: 12px;
-            background-color: #fff;
-            border: 1px solid #eee;
-            height: 102px;
-        }
-        .menu-main-content .goods-img img{
-            float: left;
-            margin-right: 14px;
-            width: 100px;
-            height: 100px;
-            border: 0;
-        }
-        .menu-main-content .goods-name{
-            display: block;
-            margin: 10px 0 0 0;
-            font-size: 16px;
-            font-weight: 700;
-            overflow: hidden;
-            white-space: normal;
-            text-overflow: ellipsis;
-        }
-        .menu-main-content .goods-msg p:first-of-type{
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            padding: 0;
-            margin: 0;
-            font-size: 12px;
-            color: #999;
-        }
-        .menu-main-content .goods-msg .starrating{
-            display: inline-block;
-            width: 150px;
-            font-size: 12px;
-            color: #ffc30c;
-            white-space: nowrap;
-        }
-        .menu-main-content .goods-msg .monthsales{
-            color: #999;
-            margin-left: 5px;
-            display: inline-block;
-        }
-        .menu-main-content .goods-price{
-            color: #f74342;
-            font-size: 14px;
-            font-weight: 700;
-            position: absolute;
-            bottom: 10px;
-        }
+#navbar ul li:hover {
+	background-color: rgba(222, 222, 222, 0.1);
+}
 
+/*---------------head部分 结束-------------------*/
 
+/*---------------main部分 开始-------------------*/
+#main {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	top: 0;
+	left: 0;
+	right: 0;
+	background: transparent;
+}
 
+.bg-img {
+	width: 100%;
+	background: 100% url(img/shop-bg.jpg) no-repeat;
+	background-size: cover;
+}
 
-        .goods .btn-wrapper {
-            float: right;
-            display: inline-block;
-            vertical-align: middle;
-        }
+.shop {
+	position: relative;
+	display: table;
+	height: 192px;
+	padding: 0;
+	top: 0px;
+	font-size: 0;
+}
 
-        .btn-wrapper .btn-control {
-            font-size: 0;
-        }
+.shop .shop-info {
+	position: relative;
+	display: table-cell;
+	vertical-align: middle;
+	color: #fff;
+	z-index: 1;
+}
 
-        .btn-control .cart-add, .cart-decrease {
-            display: inline-block;
-            padding: 6px;
-            line-height: 24px;
-            font-size: 24px;
-            color: rgb(0, 160, 220);
-        }
+.shop .shop-info>img {
+	margin-right: 15px;
+	width: 95px;
+	height: 95px;
+	border-radius: 50%;
+	border: 4px solid rgba(255, 255, 255, 0.3);
+	vertical-align: middle;
+}
 
-        .btn-control .cart-count {
-            display: inline-block;
-            padding-top: 6px;
-            vertical-align: top;
-            text-align: center;
-            font-size: 10px;
-            line-height: 24px;
-            color: rgb(147, 153, 159);
-        }
+.shop .shop-info-wrapper {
+	display: inline-block;
+	vertical-align: middle;
+}
 
+.shop .shop-info-wrapper h1 {
+	font-size: 20px;
+	max-width: 270px;
+	display: inline-block;
+	vertical-align: middle;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
 
+.shop .shop-info-wrapper .shop-info-rate {
+	margin: 10px 0;
+	display: block;
+}
 
+.shop .shop-info-wrapper .starrating {
+	display: inline-block;
+	width: 150px;
+	font-size: 14px;
+	color: #FFF;
+	white-space: nowrap;
+	user-select: none;
+}
 
+.shop .shop-info-wrapper .starrating i {
+	color: #ffc30c;
+}
 
+.shop .shop-info-wrapper .starrating a {
+	color: #FFF;
+}
 
-        .shop-main .shop-cart{
-            z-index: 102;
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            width: 320px;
-            height: 46px;
-            font-size: 14px;
-        }
-        .shop-cart .shop-cartbasket{
-            top:0px;
-            height: auto;
-            z-index: 1;
-            position: absolute;
-            width: 100%;
-            background-color: #fff;
-            box-shadow: 0 1px 15px #ccc;
-        }
-        .shop-cart .shop-grouphead{
-            padding: 12px 10px;
-            height: 45px;
-            position: relative;
-            border-bottom: 1px solid #eee;
-            font-size: 14px;
-        }
-        .shop-cart .single{
-            background-color: #FAFAFA;
-            border-top: 2px solid #0089dc;
-        }
-        .shop-cart .shop-grouphead-row{
-            height: 30px;
-        }
-        .shop-cart .shop-grouphead-row>a{
-            color: #0089dc;
-        }
-        .shop-cart .shop-cartbasket-empty{
-            color: #999;
-            text-align: center;
-        }
-        .shop-cart .shop-cartbasket-empty>p{
-            font-size: 14px;
-            padding: 0;
-            margin:0 0 40px 0;
-        }
-        .shop-cart .shop-cartbasket-tablerow{
-            display: table;
-            table-layout: fixed;
-            height: 45px;
-            width: 100%;
-            padding: 0 10px;
-            /*margin-top: -1px;*/
-            font-size: 14px;
-        }
-        .shop-cartbasket-tablerow .cell.itemname{
-            width: 50%;
-            margin-right: 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: #666;
-        }
-        .shop-cartbasket-tablerow .cell{
-            display: table-cell;
-            vertical-align: middle;
-            border-bottom: 1px solid #eee;
-        }
-        .shop-cartbasket-tablerow .cell.itemquantity{
-            width: 35%;
-            text-align: center;
-            font-size: 0;
-        }
-        .shop-cartbasket-tablerow .cell.itemquantity button{
-            background-color: #fff;
-            height: 20px;
-            width: 20px;
-            line-height: 18px;
-            vertical-align: top;
-            border: 1px solid #ddd;
-            outline: 0;
-            cursor: pointer;
-            color: #666;
-            margin: 0;
-            padding: 0;
-            font-size: 12px;
-        }
-        .shop-cartbasket-tablerow .cell.itemquantity input{
-            border: 0;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-            height: 20px;
-            width: 30px;
-            line-height: 20px;
-            font-size: 12px;
-            vertical-align: top;
-            text-align: center;
-            outline: 0;
-            color: #666;
-        }
-        .shop-cartbasket-tablerow .cell.itemquantity input:focus{
-            outline-offset: -2px;
-        }
-        .shop-cartbasket-tablerow  .cell.itemtotal{
-            text-align: center;
-            color: #f17530;
-        }
-        .shop-cart .shop-cartfooter{
-            z-index: 2;
-            position: relative;
-            cursor: pointer;
-            height: 46px;
-            background-color: #2c2c2c;
-            box-shadow: 0 1px 3px #2c2c2c;
-        }
-        .shop-cart .icon-cart{
-            position: relative;
-            width: 40px;
-            text-align: center;
-            color: #FFF;
-            font-size:20px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-        .shop-cart .shop-cartpieces{
-            position: absolute;
-            top: -6px;
-            left: 22px;
-            height: 16px;
-            line-height: 14px;
-            min-width: 16px;
-            border-radius: 50%;
-            font-size: 12px;
-            text-align: center;
-            background-color: #ff2828;
-            color: #FFF;
-            font-weight: 700;
-        }
-        .price{
-            font-size: 24px;
-            color: #FFF;
-            display: inline-block;
-            vertical-align: middle;
-        }
-        .shop-cart .shop-cartfooter-text{
-            position: relative;
-            font-size: 12px;
-            margin-left: 2px;
-            padding: 0 6px;
-            color: #999;
-            border-left: 1px solid #555;
-            line-height: 1;
-            display: inline-block;
-            vertical-align: middle;
-            box-sizing: border-box;
-        }
+.shop .shop-info-wrapper .monthsales {
+	margin-left: 5px;
+	display: inline-block;
+}
 
-        .shop-cart .shop-cartfooter-checkout.disabled{
-            background-color: #e4e4e4;
-            color: #333;
-            cursor: default;
-        }
-        .shop-cart .shop-cartfooter-checkout{
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            border: 0;
-            outline: 0;
-            width: 120px;
-            text-align: center;
-            font-weight: 700;
-            background-color: #51d862;
-            color: #FFF;
-            cursor: pointer;
-        }
-        /*---------------main部分 结束-------------------*/
+.shop .shop-server {
+	width: 700px;
+	display: table-cell;
+	padding-right: 100px;
+	vertical-align: middle;
+	color: #FFF;
+	text-align: center;
+}
 
-        /*---------------footer部分 开始-------------------*/
+.shop .shop-server span {
+	display: inline-block;
+	margin-left: 80px;
+	vertical-align: top;
+	text-align: center;
+}
 
-        #footer{
-            margin-top: 50px;
-        }
-        #footer .row .nav li:first-of-type{
-            font-size: 14px;
-            line-height: 30px;
-            font-weight: 400;
-        }
-        #footer .row .nav li a{
-            padding: 0;
-            margin: 0;
-            font-size: 12px;
-            color: #999;
-            display: block;
-            line-height: 24px;
-            text-decoration: none;
-            width: 50%;
-        }
-        .footer-copyright{
-            padding-top: 60px;
-        }
-        .footer-copyright .owner{
-            display: block;
-            text-align: center;
-            color: #0e0e0e;
-            font-weight: 400;
-            font-size: 12px;
-            margin: 0;
-            padding: 0;
-        }
-        .footer-copyright p{
-            margin: 0;
-            padding: 0 ;
-            color:#999;
-            text-align: center;
-        }
-        .footer-copyright p a{
-            text-decoration: none;
-            color:#999;
-        }
-        /*---------------footer部分 结束-------------------*/
-    </style>
+.shop .shop-server span:first-of-type {
+	margin-left: 0;
+}
+
+.shop .shop-server span em:last-of-type {
+	display: block;
+	margin-top: 12px;
+	margin-bottom: 3px;
+	font-size: 18px;
+}
+
+.shop .shop-favor {
+	position: absolute;
+	top: 50px;
+	right: 0;
+	padding: 10px 5px;
+	width: 80px;
+	text-align: center;
+	background-color: rgba(255, 255, 255, 0.1);
+	border-radius: 0 0 5px 5px;
+	color: #eee;
+	font-size: 14px;
+}
+
+.shop .shop-favor i {
+	font-size: 20px;
+}
+
+.shop .shop-favor span {
+	display: block;
+}
+
+.shop-nav .shop-nav-inner {
+	line-height: 57px;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.shop-nav .shop-nav-left {
+	float: left;
+	width: 75%;
+	user-select: none;
+}
+
+.shop-nav .shop-nav-table {
+	width: 112px;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	color: #333;
+	font-size: 16px;
+	text-align: center;
+}
+
+.shop-nav .active {
+	color: #0089dc;
+}
+
+.shop-nav .active:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	border-top: 3px solid;
+}
+
+.shop-nav .shop-nav-left a:nth-of-type(n+2):before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 50%;
+	margin-top: -7px;
+	height: 14px;
+	width: 1px;
+	background-color: #CCC;
+}
+
+.shop-nav .shop-nav-filter {
+	float: right;
+}
+
+.shop-nav .shop-search {
+	display: inline-block;
+	margin: 10px 0;
+	height: 32px;
+	width: 260px;
+	line-height: 32px;
+	border: 1px solid #ccc;
+	background: #fff;
+	float: right;
+}
+
+.shop-search .search {
+	height: 30px;
+	width: 190px;
+	line-height: 24px;
+	font-size: 16px;
+	border: 0;
+	outline: 0;
+	padding: 4px 0;
+	margin: 0 8px;
+	cursor: auto;
+	background-color: #FFF;
+	vertical-align: text-bottom;
+}
+
+.shop-search .search-btn {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	border: none;
+	color: #999;
+	cursor: pointer;
+	outline: 0;
+	background: transparent;
+	line-height: 24px;
+	padding: 4px 0;
+	margin: 0 8px;
+	vertical-align: text-bottom;
+}
+
+.shop-search .search-btn i {
+	font-size: 20px;
+}
+
+.shop-search .search-btn i:hover {
+	color: #5eaeeb;
+}
+
+.shop-main {
+	margin-top: 20px;
+}
+
+.shop-main .shop-menu {
+	float: left;
+	width: 75%;
+}
+
+.shop-main .shop-menu-nav {
+	max-height: 249px;
+	padding: 10px 15px 5px;
+	background-color: rgba(0, 0, 0, 0.1);
+	border: #eee;
+	z-index: 101;
+}
+
+.shop-main .shop-menu-nav>a {
+	display: inline-block;
+	margin: 5px;
+	padding: 3px 10px;
+	width: 18%;
+	border-radius: 2px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	vertical-align: top;
+}
+
+.shop-main .shop-menu-nav>a:hover {
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+.shop-main .shop-menu-main {
+	margin-top: 0;
+}
+
+.shop-right {
+	float: right;
+	width: 23.6%;
+}
+
+.shop-right .bulletin {
+	margin-bottom: 20px;
+	border-radius: 2px 2px 0 0;
+	background-color: #fff;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+}
+
+.bulletin .bulletin-title {
+	padding: 0 1em;
+	margin: 0;
+	line-height: 2.8em;
+	background-color: #0089dc;
+	color: #fff;
+	display: block;
+	font-size: 1.17em;
+}
+
+.bulletin .bulletin-content {
+	padding: 10px 13px;
+	line-height: 2;
+	margin: 0;
+	background-color: #f5f5f5;
+}
+
+.bulletin .delivery {
+	padding: 10px 13px;
+}
+
+.bulletin .delivery>h4 {
+	font-weight: 700;
+	margin: 0 0 5px 0;
+	font-size: 14px;
+}
+
+.bulletin .delivery>p {
+	margin: 0;
+}
+
+.bulletin>a:last-of-type {
+	display: block;
+	line-height: 3;
+	text-align: center;
+	font-size: 18px;
+	color: #666;
+	border-top: 1px solid #eee;
+	background-color: #eee;
+}
+
+.menu-main-content h3 {
+	padding: 20px 0 10px 15px;
+	font-size: 20px;
+	color: #333;
+}
+
+.menu-main-content h3>span {
+	font-size: 12px;
+	color: #999;
+}
+
+.menu-main-content .goods {
+	position: relative;
+	float: left;
+	margin-right: 2%;
+	padding-right: 10px;
+	width: 48%;
+	margin-bottom: 12px;
+	font-size: 12px;
+	background-color: #fff;
+	border: 1px solid #eee;
+	height: 102px;
+}
+
+.menu-main-content .goods-img img {
+	float: left;
+	margin-right: 14px;
+	width: 100px;
+	height: 100px;
+	border: 0;
+}
+
+.menu-main-content .goods-name {
+	display: block;
+	margin: 10px 0 0 0;
+	font-size: 16px;
+	font-weight: 700;
+	overflow: hidden;
+	white-space: normal;
+	text-overflow: ellipsis;
+}
+
+.menu-main-content .goods-msg p:first-of-type {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	padding: 0;
+	margin: 0;
+	font-size: 12px;
+	color: #999;
+}
+
+.menu-main-content .goods-msg .starrating {
+	display: inline-block;
+	width: 150px;
+	font-size: 12px;
+	color: #ffc30c;
+	white-space: nowrap;
+}
+
+.menu-main-content .goods-msg .monthsales {
+	color: #999;
+	margin-left: 5px;
+	display: inline-block;
+}
+
+.menu-main-content .goods-price {
+	color: #f74342;
+	font-size: 14px;
+	font-weight: 700;
+	position: absolute;
+	bottom: 10px;
+}
+
+.goods .btn-wrapper {
+	float: right;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.btn-wrapper .btn-control {
+	font-size: 0;
+}
+
+.btn-control .cart-add, .cart-decrease {
+	display: inline-block;
+	padding: 6px;
+	line-height: 24px;
+	font-size: 24px;
+	color: rgb(0, 160, 220);
+}
+
+.btn-control .cart-count {
+	display: inline-block;
+	padding-top: 6px;
+	vertical-align: top;
+	text-align: center;
+	font-size: 10px;
+	line-height: 24px;
+	color: rgb(147, 153, 159);
+}
+
+.shop-main .shop-cart {
+	z-index: 102;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	width: 320px;
+	height: 46px;
+	font-size: 14px;
+}
+
+.shop-cart .shop-cartbasket {
+	top: 0px;
+	height: auto;
+	z-index: 1;
+	position: absolute;
+	width: 100%;
+	background-color: #fff;
+	box-shadow: 0 1px 15px #ccc;
+}
+
+.shop-cart .shop-grouphead {
+	padding: 12px 10px;
+	height: 45px;
+	position: relative;
+	border-bottom: 1px solid #eee;
+	font-size: 14px;
+}
+
+.shop-cart .single {
+	background-color: #FAFAFA;
+	border-top: 2px solid #0089dc;
+}
+
+.shop-cart .shop-grouphead-row {
+	height: 30px;
+}
+
+.shop-cart .shop-grouphead-row>a {
+	color: #0089dc;
+}
+
+.shop-cart .shop-cartbasket-empty {
+	color: #999;
+	text-align: center;
+}
+
+.shop-cart .shop-cartbasket-empty>p {
+	font-size: 14px;
+	padding: 0;
+	margin: 0 0 40px 0;
+}
+
+.shop-cart .shop-cartbasket-tablerow {
+	display: table;
+	table-layout: fixed;
+	height: 45px;
+	width: 100%;
+	padding: 0 10px;
+	/*margin-top: -1px;*/
+	font-size: 14px;
+}
+
+.shop-cartbasket-tablerow .cell.itemname {
+	width: 50%;
+	margin-right: 10px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: #666;
+}
+
+.shop-cartbasket-tablerow .cell {
+	display: table-cell;
+	vertical-align: middle;
+	border-bottom: 1px solid #eee;
+}
+
+.shop-cartbasket-tablerow .cell.itemquantity {
+	width: 35%;
+	text-align: center;
+	font-size: 0;
+}
+
+.shop-cartbasket-tablerow .cell.itemquantity button {
+	background-color: #fff;
+	height: 20px;
+	width: 20px;
+	line-height: 18px;
+	vertical-align: top;
+	border: 1px solid #ddd;
+	outline: 0;
+	cursor: pointer;
+	color: #666;
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+}
+
+.shop-cartbasket-tablerow .cell.itemquantity input {
+	border: 0;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	height: 20px;
+	width: 30px;
+	line-height: 20px;
+	font-size: 12px;
+	vertical-align: top;
+	text-align: center;
+	outline: 0;
+	color: #666;
+}
+
+.shop-cartbasket-tablerow .cell.itemquantity input:focus {
+	outline-offset: -2px;
+}
+
+.shop-cartbasket-tablerow  .cell.itemtotal {
+	text-align: center;
+	color: #f17530;
+}
+
+.shop-cart .shop-cartfooter {
+	z-index: 2;
+	position: relative;
+	cursor: pointer;
+	height: 46px;
+	background-color: #2c2c2c;
+	box-shadow: 0 1px 3px #2c2c2c;
+}
+
+.shop-cart .icon-cart {
+	position: relative;
+	width: 40px;
+	text-align: center;
+	color: #FFF;
+	font-size: 20px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.shop-cart .shop-cartpieces {
+	position: absolute;
+	top: -6px;
+	left: 22px;
+	height: 16px;
+	line-height: 14px;
+	min-width: 16px;
+	border-radius: 50%;
+	font-size: 12px;
+	text-align: center;
+	background-color: #ff2828;
+	color: #FFF;
+	font-weight: 700;
+}
+
+.price {
+	font-size: 24px;
+	color: #FFF;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.shop-cart .shop-cartfooter-text {
+	position: relative;
+	font-size: 12px;
+	margin-left: 2px;
+	padding: 0 6px;
+	color: #999;
+	border-left: 1px solid #555;
+	line-height: 1;
+	display: inline-block;
+	vertical-align: middle;
+	box-sizing: border-box;
+}
+
+.shop-cart .shop-cartfooter-checkout.disabled {
+	background-color: #e4e4e4;
+	color: #333;
+	cursor: default;
+}
+
+.shop-cart .shop-cartfooter-checkout {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	border: 0;
+	outline: 0;
+	width: 120px;
+	text-align: center;
+	font-weight: 700;
+	background-color: #51d862;
+	color: #FFF;
+	cursor: pointer;
+}
+/*---------------main部分 结束-------------------*/
+
+/*---------------footer部分 开始-------------------*/
+#footer {
+	margin-top: 50px;
+}
+
+#footer .row .nav li:first-of-type {
+	font-size: 14px;
+	line-height: 30px;
+	font-weight: 400;
+}
+
+#footer .row .nav li a {
+	padding: 0;
+	margin: 0;
+	font-size: 12px;
+	color: #999;
+	display: block;
+	line-height: 24px;
+	text-decoration: none;
+	width: 50%;
+}
+
+.footer-copyright {
+	padding-top: 60px;
+}
+
+.footer-copyright .owner {
+	display: block;
+	text-align: center;
+	color: #0e0e0e;
+	font-weight: 400;
+	font-size: 12px;
+	margin: 0;
+	padding: 0;
+}
+
+.footer-copyright p {
+	margin: 0;
+	padding: 0;
+	color: #999;
+	text-align: center;
+}
+
+.footer-copyright p a {
+	text-decoration: none;
+	color: #999;
+}
+/*---------------footer部分 结束-------------------*/
+</style>
 </head>
 <body>
 
-<div id="big-box">
-    <div id="head">
-        <nav class="navbar navbar-default navbar-static-top bgcolor navset">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">
-                        <img class="chb-logo" src="image/chb-logo.jpg" alt="吃货宝">
-                    </a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#">首页</a></li>
-                        <li><a href="#">我的订单</a></li>
-                        <li><a href="#">加盟合作</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">规则中心</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                13729000000
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu fc-black">
-                                <li><a href="#">个人中心</a></li>
-                                <li><a href="#">我的收藏</a></li>
-                                <li><a href="#">我的地址</a></li>
-                                <li><a href="#">安全设置</a></li>
-                                <li><a href="#">退出登录</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
+	<div id="big-box">
+		<div id="head">
+			<nav class="navbar navbar-default navbar-static-top bgcolor navset">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#"> <img class="chb-logo"
+						src="img/chb-logo.png" alt="吃货宝">
+					</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="#">首页</a></li>
+						<li><a href="#">我的订单</a></li>
+						<li><a href="#">加盟合作</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">规则中心</a></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button" aria-haspopup="true"
+							aria-expanded="false"> 13729000000 <span class="caret"></span>
+						</a>
+							<ul class="dropdown-menu fc-black">
+								<li><a href="#">个人中心</a></li>
+								<li><a href="#">我的收藏</a></li>
+								<li><a href="#">我的地址</a></li>
+								<li><a href="#">安全设置</a></li>
+								<li><a href="#">退出登录</a></li>
+							</ul></li>
+					</ul>
+				</div>
+			</div>
+			</nav>
+		</div>
+
+		<div id="main">
+			<div class="bg-img">
+				<div class="container shop">
+					<div class="shop-info">
+						<img
+							src="${pageContext.request.contextPath}/upload/business/${shopMsg.shop.shopPic}"
+							alt="">
+						<div class="shop-info-wrapper">
+							<div>
+								<h1 title="农家咸骨粥第一店">${shopMsg.shop.shopName }</h1>
+							</div>
+							<p class="shop-info-rate">
+							<div class="starrating-content">
+								<span class="starrating"> </span> 
+								<a href="">( 645 )</a> 
+								<input id="shopScore" type="hidden" value="${shopMsg.shop.shopScore }">
+								<span class="monthsales">月售${shopMsg.orderCounts }单</span>
+							</div>
+							</p>
+						</div>
+					</div>
+					<div class="shop-server">
+						<span> <em>起送价</em> <em><span id="startPrice">${shopMsg.shop.startPrice }</span>元</em>
+						</span><span> <em>配送费</em> <c:choose>
+								<c:when test="${0.0 eq shopMsg.shop.deliveryCost}">
+									<em>免费配送</em>
+									<input type="hidden" id="deliveryCost" value="0.0">
+								</c:when>
+								<c:otherwise>
+									<em><span id="deliveryCost">${shopMsg.shop.deliveryCost }</span>元</em>
+								</c:otherwise>
+							</c:choose>
+							<input type="hidden" id="businessId"
+										value="${shopMsg.shop.id }">
+						</span><span> <em>平均送达速度</em> <em>49分钟</em>
+						</span>
+					</div>
+					<a href="#" class="shop-favor"> <i class="icon Hui-iconfont">&#xe648;</i>
+					<!--&#xe649;取消--> <span>收藏</span>
+					</a>
+				</div>
+			</div>
+			<div class="shop-nav">
+				<div class="shop-nav-inner">
+					<div class="container clearfix">
+						<div class="shop-nav-left">
+							<a class="shop-nav-table active" href="#">所有商品</a> <a
+								class="shop-nav-table" href="#">评价</a> <a class="shop-nav-table"
+								href="#">商家资质</a> <span class="shop-nav-filter"> </span>
+						</div>
+						<div class="shop-search">
+							<form>
+								<input class="search" type="text" maxlength="30"
+									placeholder="搜索商家,美食..."> <a href="#"
+									class="search-btn"><i class="icon Hui-iconfont">&#xe665;</i></a>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container shop-main">
+				<div class="shop-menu">
+					<div class="shop-menu-nav">
+						<a href="#">热销</a> <a href="#">优惠</a> <a href="#">配品</a> <a
+							href="#">店长热荐</a> <a href="#">必点</a>
+					</div>
+					<div class="shop-menu-main">
+						<div class="menu-main-content">
+							<div>
+								<h3>
+									新推商品 <span>NEW</span>
+								</h3>
+								<c:forEach items="${goodslist }" var="list">
+									<div class="goods">
+										<span class="goods-img"> <a id="${list.id}"
+											href="javascript:;" data-toggle="modal"
+											data-target="#myModal"> <img
+												src="${pageContext.request.contextPath}/upload/business/${list.goodPic}"
+												alt="">
+										</a>
+										</span> <span class="goods-name" data-id="1">${list.goodName}</span>
+										<div class="goods-msg">
+											<p>${list.goodIntro}</p>
+											<div class="">
+												<span class="starrating"> <i
+													class="icon Hui-iconfont">&#xe6ff;</i> <i
+													class="icon Hui-iconfont">&#xe6ff;</i> <i
+													class="icon Hui-iconfont">&#xe6ff;</i> <i
+													class="icon Hui-iconfont">&#xe701;</i> <i
+													class="icon Hui-iconfont">&#xe702;</i> <span
+													class="monthsales">(90)月售111份</span>
+												</span>
+											</div>
+										</div>
+										<span></span> <span class="goods-price">&yen;${list.price}</span>
+									</div>
+									<!-- goodslist -->
+								</c:forEach>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="shop-right">
+					<div>
+						<div class="bulletin">
+							<h3 class="bulletin-title">商家公告</h3>
+							<p class="bulletin-content">${shopMsg.shop.announce }</p>
+							<div class="delivery">
+								<h4>配送说明：</h4>
+								<p>免费配送</p>
+							</div>
+							<a href="">举报商家</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer id="footer">
+		<div class="container clearfix">
+			<div class="row">
+				<div class="col-xs-2">
+					<ul class="nav nav-sidebar">
+						<li><span>商务合作</span></li>
+						<li><a href="#">我要开店</a></li>
+						<li><a href="#">加盟指南</a></li>
+						<li><a href="#">市场合作</a></li>
+						<li><a href="#">开放平台</a></li>
+					</ul>
+				</div>
+				<div class="col-xs-2">
+					<ul class="nav nav-sidebar">
+						<li><span>商务合作</span></li>
+						<li><a href="#">我要开店</a></li>
+						<li><a href="#">加盟指南</a></li>
+						<li><a href="#">市场合作</a></li>
+						<li><a href="#">开放平台</a></li>
+					</ul>
+				</div>
+				<div class="col-xs-2">
+					<ul class="nav nav-sidebar">
+						<li><span>商务合作</span></li>
+						<li><a href="#">我要开店</a></li>
+						<li><a href="#">加盟指南</a></li>
+						<li><a href="#">市场合作</a></li>
+						<li><a href="#">开放平台</a></li>
+					</ul>
+				</div>
+				<div class="col-xs-3">
+					<ul class="nav nav-sidebar">
+						<li><span>商务合作</span></li>
+						<li><a href="#">我要开店</a></li>
+						<li><a href="#">加盟指南</a></li>
+						<li><a href="#">市场合作</a></li>
+						<li><a href="#">开放平台</a></li>
+					</ul>
+				</div>
+				<div class="col-xs-3">
+					<ul class="nav nav-sidebar">
+						<li><span>商务合作</span></li>
+						<li><a href="#">我要开店</a></li>
+						<li><a href="#">加盟指南</a></li>
+						<li><a href="#">市场合作</a></li>
+						<li><a href="#">开放平台</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="footer-copyright">
+				<span class="owner">所有方：广东九州有限公司</span>
+				<p>
+					增值电信业务许可证 : <a href="#">沪B2-20150033</a> | <a href="#">沪ICP备
+						09007032</a> | <a href="#">上海工商行政管理</a> Copyright ©2008-2017 ele.me,
+					All Rights Reserved.
+				</p>
+			</div>
+		</div>
+		</footer>
+	</div>
+
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" style="margin-right:21%" id="myModal"
+		tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog"">
+			<div class="modal-content" style="width: 150%;">
+				<%-- <form class="form-horizontal" role="form"
+						action="${pageContext.request.contextPath }/addGoodStyle.action"
+						method="post"> --%>
+				<div class="modal-header" style="margin-right:7%;border: none;">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body" style="margin-right:7%;height:300px;">
+					<div class="goodimg col-xs-8">
+						<img class="col-xs-12" height="300px" width="600px" alt="商品图片"
+							src="${pageContext.request.contextPath}/img/null.png"
+							id="good_img">
+					</div>
+					<div class="goodmsg col-xs-4">
+						<table>
+							<tbody>
+								<tr>
+									<td colspan="2"><p id="good_name"
+											style="font-size: 1.3em;margin-bottom: 25px;">商品名商品名商品名</p></td>
+								</tr>
+								<tr>
+									<td><p id="good_price"
+										style="color:red;font-size: 2em;margin-bottom: 10px;">￥20</p></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td colspan="2" style="color:#ccc">用户评价：</td>
+								</tr>
+								<tr>
+									<td colspan="2" style="color:#FFC30C"> 
+										<span class="starrating">
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe701;</i> 
+										<i class="icon Hui-iconfont">&#xe702;</i> 
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" style="color:#FFC30C"> 
+										<span class="starrating">
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe701;</i> 
+										<i class="icon Hui-iconfont">&#xe702;</i> 
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" style="color:#FFC30C"> 
+										<span class="starrating">
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe701;</i> 
+										<i class="icon Hui-iconfont">&#xe702;</i> 
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" style="color:#FFC30C"> 
+										<span class="starrating">
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe701;</i> 
+										<i class="icon Hui-iconfont">&#xe702;</i> 
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" style="color:#FFC30C"> 
+										<span class="starrating">
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe6ff;</i> 
+										<i class="icon Hui-iconfont">&#xe701;</i> 
+										<i class="icon Hui-iconfont">&#xe702;</i> 
+										</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer" style="margin-right:7%;border: none;">
+					<button id="addGoodStyle" type="submit" class="btn btn-primary"
+						onclick="">立即购买</button>
+				</div>
+				<!-- </form> -->
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
 
 
-    <div id="main">
-        <div class="bg-img">
-            <div class="container shop">
-                <div class="shop-info">
-                    <img src="http://fuss10.elemecdn.com/a/a3/eae669b26333f77ccf58202ac3273jpeg.jpeg?imageMogr2/thumbnail/95x95/format/webp/quality/85" alt="">
-                    <div class="shop-info-wrapper">
-                        <div>
-                            <h1 title="农家咸骨粥第一店">农家咸骨粥第一店</h1>
-                        </div>
-                        <p class="shop-info-rate">
-                        <div class="starrating">
-                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                            <i class="icon Hui-iconfont">&#xe701;</i>
-                            (
-                            <a href="">645</a>
-                            )
-                            <span class="monthsales">月售5809单</span>
-                        </div>
-                        </p>
-                    </div>
-                </div>
-                <div class="shop-server">
-                <span>
-                    <em>起送价</em>
-                    <em>8元</em>
-                </span><span>
-                    <em>配送费</em>
-                    <em>免费配送</em>
-                </span><span>
-                    <em>平均送达速度</em>
-                    <em>49分钟</em>
-                </span>
-                </div>
-                <a href="#" class="shop-favor">
-                    <i class="icon Hui-iconfont">&#xe648;</i><!--&#xe649;取消-->
-                    <span>收藏</span>
-                </a>
-            </div>
-        </div>
-        <div class="shop-nav">
-            <div class="shop-nav-inner">
-                <div class="container clearfix">
-                    <div class="shop-nav-left">
-                        <a class="shop-nav-table active" href="#">所有商品</a>
-                        <a class="shop-nav-table" href="#">评价</a>
-                        <a class="shop-nav-table" href="#">商家资质</a>
-                        <span class="shop-nav-filter">
-                            （排序类型放这里）
-                        </span>
-                    </div>
-                    <div class="shop-search">
-                        <form>
-                            <input class="search" type="text" maxlength="30" placeholder="搜索商家,美食...">
-                            <a href="#" class="search-btn"><i class="icon Hui-iconfont">&#xe665;</i></a>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container shop-main">
-            <div class="shop-menu">
-                <div class="shop-menu-nav">
-                    <a href="#">热销</a>
-                    <a href="#">优惠</a>
-                    <a href="#">免费韩式泡菜</a>
-                    <a href="#">配品</a>
-                    <a href="#">店长热荐</a>
-                    <a href="#">必点</a>
-                </div>
-                <div class="shop-menu-main">
-                    <div class="menu-main-content">
-                        <div>
-                            <h3>测试系列 <span>纯测试</span></h3>
-                            <div class="goods">
-                                <span class="goods-img">
-                                    <a href="javascript:">
-                                        <img src="http://fuss10.elemecdn.com/d/03/7288c8e4da156666553239f034f15jpeg.jpeg?imageMogr2/thumbnail/100x100/format/webp/quality/85" alt="">
-                                    </a>
-                                </span>
-                                <span class="goods-name" data-id="1">青菜</span>
-                                <div class="goods-msg">
-                                    <p>加药的超给力</p>
-                                    <div>
-                                        <span class="starrating">
-                                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                                            <i class="icon Hui-iconfont">&#xe701;</i>
-                                            <i class="icon Hui-iconfont">&#xe702;</i>
-                                            <i class="icon Hui-iconfont">&#xe702;</i>
-                                            <span class="monthsales">(90)月售5809份</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <span></span>
-                                <span class="goods-price">&yen;10</span>
-                            </div>
-                            <div class="goods">
-                                <span class="goods-img">
-                                    <a href="javascript:">
-                                        <img src="http://fuss10.elemecdn.com/d/03/7288c8e4da156666553239f034f15jpeg.jpeg?imageMogr2/thumbnail/100x100/format/webp/quality/85" alt="">
-                                    </a>
-                                </span>
-                                <span class="goods-name" data-id="2">白菜菜</span>
-                                <div class="goods-msg">
-                                    <p>加药的超给力</p>
-                                    <div>
-                                        <span class="starrating">
-                                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                                            <i class="icon Hui-iconfont">&#xe701;</i>
-                                            <i class="icon Hui-iconfont">&#xe702;</i>
-                                            <i class="icon Hui-iconfont">&#xe702;</i>
-                                            <span class="monthsales">(90)月售5809份</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <span></span>
-                                <span class="goods-price">&yen;11</span>
-                            </div>
-                            <div class="goods">
-                                <span class="goods-img">
-                                    <a href="javascript:">
-                                        <img src="http://fuss10.elemecdn.com/d/03/7288c8e4da156666553239f034f15jpeg.jpeg?imageMogr2/thumbnail/100x100/format/webp/quality/85" alt="">
-                                    </a>
-                                </span>
-                                <span class="goods-name" data-id="3">西瓜</span>
-                                <div class="goods-msg">
-                                    <p>加药的超给力</p>
-                                    <div>
-                                        <span class="starrating">
-                                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                                            <i class="icon Hui-iconfont">&#xe701;</i>
-                                            <i class="icon Hui-iconfont">&#xe702;</i>
-                                            <i class="icon Hui-iconfont">&#xe702;</i>
-                                            <span class="monthsales">(90)月售5809份</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <span></span>
-                                <span class="goods-price">&yen;90</span>
-                            </div>
-                            <div class="goods">
-                                <span class="goods-img">
-                                    <a href="javascript:">
-                                        <img src="http://fuss10.elemecdn.com/d/03/7288c8e4da156666553239f034f15jpeg.jpeg?imageMogr2/thumbnail/100x100/format/webp/quality/85" alt="">
-                                    </a>
-                                </span>
-                                <span class="goods-name" data-id="4">蛋糕</span>
-                                <div class="goods-msg">
-                                    <p>加药的超给力</p>
-                                    <div>
-                                        <span class="starrating">
-                                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                                            <i class="icon Hui-iconfont">&#xe701;</i>
-                                            <i class="icon Hui-iconfont">&#xe702;</i>
-                                            <i class="icon Hui-iconfont">&#xe702;</i>
-                                            <span class="monthsales">(90)月售5809份</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <span></span>
-                                <span class="goods-price">&yen;999</span>
-                            </div>
-                            <div class="goods">
-                                <span class="goods-img">
-                                    <a href="javascript:">
-                                        <img src="http://fuss10.elemecdn.com/d/03/7288c8e4da156666553239f034f15jpeg.jpeg?imageMogr2/thumbnail/100x100/format/webp/quality/85" alt="">
-                                    </a>
-                                </span>
-                                <span class="goods-name" data-id="5">特殊商品</span>
-                                <div class="goods-msg">
-                                    <p>魔力瓜</p>
-                                    <div>
-                                        <span class="starrating">
-                                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                                            <i class="icon Hui-iconfont">&#xe6ff;</i>
-                                            <i class="icon Hui-iconfont">&#xe701;</i>
-                                            <i class="icon Hui-iconfont">&#xe702;</i>
-                                            <i class="icon Hui-iconfont">&#xe702;</i>
-                                            <span class="monthsales">(90)月售5809份</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <span></span>
-                                <span class="goods-price">&yen;666</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="shop-right">
-                <div>
-                    <div class="bulletin">
-                        <h3 class="bulletin-title">商家公告</h3>
-                        <p class="bulletin-content">温馨提示:因近段时间学校管制特严，所有外卖不能送上楼，请保持电话畅通以便联系，谢谢！需要帮助请电13536404753（69）</p>
-                        <div class="delivery">
-                            <h4>配送说明：</h4>
-                            <p>免费配送</p>
-                        </div>
-                        <a href="">举报商家</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <footer id="footer">
-        <div class="container clearfix">
-            <div class="row">
-                    <div class="col-xs-2">
-                        <ul class="nav nav-sidebar">
-                            <li><span>商务合作</span></li>
-                            <li><a href="#">我要开店</a></li>
-                            <li><a href="#">加盟指南</a></li>
-                            <li><a href="#">市场合作</a></li>
-                            <li><a href="#">开放平台</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-xs-2">
-                        <ul class="nav nav-sidebar">
-                            <li><span>商务合作</span></li>
-                            <li><a href="#">我要开店</a></li>
-                            <li><a href="#">加盟指南</a></li>
-                            <li><a href="#">市场合作</a></li>
-                            <li><a href="#">开放平台</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-xs-2">
-                        <ul class="nav nav-sidebar">
-                            <li><span>商务合作</span></li>
-                            <li><a href="#">我要开店</a></li>
-                            <li><a href="#">加盟指南</a></li>
-                            <li><a href="#">市场合作</a></li>
-                            <li><a href="#">开放平台</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-xs-3">
-                        <ul class="nav nav-sidebar">
-                            <li><span>商务合作</span></li>
-                            <li><a href="#">我要开店</a></li>
-                            <li><a href="#">加盟指南</a></li>
-                            <li><a href="#">市场合作</a></li>
-                            <li><a href="#">开放平台</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-xs-3">
-                        <ul class="nav nav-sidebar">
-                            <li><span>商务合作</span></li>
-                            <li><a href="#">我要开店</a></li>
-                            <li><a href="#">加盟指南</a></li>
-                            <li><a href="#">市场合作</a></li>
-                            <li><a href="#">开放平台</a></li>
-                        </ul>
-                    </div>
-            </div>
-            <div class="footer-copyright">
-                <span class="owner">所有方：广东九州有限公司</span>
-                <p>
-                    增值电信业务许可证 :
-                    <a href="#">沪B2-20150033</a>
-                    |
-                    <a href="#">沪ICP备 09007032</a>
-                    |
-                    <a href="#">上海工商行政管理</a>
-                    Copyright ©2008-2017 ele.me, All Rights Reserved.
-                </p>
-            </div>
-        </div>
-    </footer>
-</div>
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-
-<script>
+	<script>
 $(document).ready(function(){
     var getUserId = 1;
-    var getShopId = 8;
+    var getShopId = $("#businessId").val();
+    
     //起送价
-    var minPrice = 20;
+    var minPrice = $("#startPrice").html();
     //记录商品总价
     var totalPrice = 0;
     //配送费
-    var freight = 10;
+    var freight = $("#deliveryCost").val();
+    var shopScore = $("#shopScore").val();
+    /* alert(shopScore); */
     createShopcart(getUserId,getShopId,minPrice);
     showList(getUserId,getShopId);
 
@@ -1238,7 +1316,7 @@ $(document).ready(function(){
             function refreshShopCart() {
                 //用来记录用户购买了多少件商品
                 var count = 0;
-
+				totalPrice = 0;
                 if (shopCartFoods.length == 0) {
                     shopCartEl.cartList.style.top = 0;
                 }
@@ -1374,7 +1452,11 @@ $(document).ready(function(){
 	            data:JSON.stringify(data),
 	            /* traditional:true, */
 	            success:function(result){
-					alert("ok");
+					/* alert(result); */
+					var shopId = parseInt(result);
+					if(shopId > 0){
+					window.location.href="${pageContext.request.contextPath}/payOrder.action?shopcartid="+shopId+"&userid=1";
+					}
 	            },
 	            error:function(XMLResponse){alert(XMLResponse.responseText)}
 	        });
@@ -1418,6 +1500,54 @@ $(document).ready(function(){
         }
     }
     
+    //星星评分工具方法
+        function createEle(eleName,className,parent) {
+            var create  = document.createElement(eleName);
+            className ? create.className = className:'';
+            parent? parent.appendChild(create):'';
+            return create;
+        }
+        //writeStar 第一个是分数 支持 大于等于0，小于等于5，第二个是一个 <span class="starrating">
+        //0-0.49分 5个空星星
+        //0.5-0.9 一个半星星，其余为空
+        //以此类推
+        writeStar(shopScore,document.getElementsByClassName("starrating")[0]);
+
+        function writeStar(getShopScore,spanStar) {
+            //对分数进行取整（0，0.5，1，1.5之类的）
+            var shopScore = Math.floor(getShopScore * 2)/2;
+            //分数向上取整
+            var shopScoreCeil = Math.ceil(shopScore);
+            //分数向下取整
+            var shopScoreFloor = Math.floor(shopScore);
+            //向上取整的分数大于向下取整的分数，则有一个0.5分
+            if(shopScoreCeil>shopScoreFloor){
+                //写填满的星星
+                for(var i=0;i<shopScoreFloor;i++){
+                    var iFull = createEle("i","icon Hui-iconfont",spanStar);
+                    iFull.innerHTML = "&#xe6ff;";
+                }
+                //写一半的星星
+                var iHalf = createEle("i","icon Hui-iconfont",spanStar);
+                iHalf.innerHTML = "&#xe701;";
+                //写空的星星
+                for(var j=0;j<(5-shopScoreCeil);j++){
+                    var iNone = createEle("i","icon Hui-iconfont",spanStar);
+                    iNone.innerHTML = "&#xe702;";
+                }
+            }else{
+                //写填满的星星
+                for(var i=0;i<shopScore;i++){
+                    var iFull = createEle("i","icon Hui-iconfont",spanStar);
+                    iFull.innerHTML = "&#xe6ff;";
+                }
+                //写空的星星
+                for(var j=0;j<(5-shopScoreCeil);j++){
+                    var iNone = createEle("i","icon Hui-iconfont",spanStar);
+                    iNone.innerHTML = "&#xe702;";
+                }
+            }
+        }
 })
 	
 

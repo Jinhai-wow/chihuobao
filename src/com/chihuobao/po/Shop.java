@@ -43,7 +43,7 @@ public class Shop implements Serializable{
 
     private Double deliveryCost;//商店配送费
 
-    private Integer shopScore;//商店评分
+    private Double shopScore;//商店评分
 
     private Integer openState;//商店状态
 
@@ -165,11 +165,11 @@ public class Shop implements Serializable{
         this.deliveryCost = deliverycost;
     }
 
-    public Integer getShopScore() {
+    public Double getShopScore() {
         return shopScore;
     }
 
-    public void setShopScore(Integer shopscore) {
+    public void setShopScore(Double shopscore) {
         this.shopScore = shopscore;
     }
 

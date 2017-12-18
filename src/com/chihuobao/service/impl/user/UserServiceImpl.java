@@ -13,6 +13,7 @@ import com.chihuobao.po.Address;
 import com.chihuobao.po.User;
 import com.chihuobao.service.user.UserService;
 import com.chihuobao.util.MessageVerification;
+import com.chihuobao.vo.StorerAccountEx;
 import com.chihuobao.vo.UserVo;
 
 
@@ -128,5 +129,49 @@ public class UserServiceImpl implements UserService {
 		List<Address> addressList=userMapper.findUserAddress(id);
 		
 		return addressList;
+	}
+
+	//商家密码登陆
+	public StorerAccountEx findstoreraccountByPassword(StorerAccountEx storerAccountVo)
+			throws Exception {
+		StorerAccountEx storerAccount=userMapper.findstoreraccountByPassword(storerAccountVo);
+		if(storerAccount==null){
+			throw new CustomException("用户名或密码错误！");
+		}
+		return storerAccount;
+	}
+
+	//商家通过短信登陆或注册
+	public StorerAccountEx storerAccountloginRegisterByMessage(StorerAccountEx storerAccountVo)
+			throws Exception{
+
+		//输入的验证码为空
+		if(storerAccountVo.getCaptcha()==null){
+			throw new CustomException("输入的验证码不能为空！");
+		}
+		//验证输入的验证码
+		if(storerAccountVo.getCaptcha().equals(this.captcha)!=true){
+			throw new CustomException("输入的验证码错误");
+		}
+		
+		//查找数据库，如果用户已注册就直接返回user对象并登陆状态写1
+		StorerAccountEx storerAccount=userMapper.findstoreraccountByPhone(storerAccountVo);
+		if(storerAccount==null){           //用户未注册，进行用户注册
+			//随机生成11位用户名
+			char[] cha ={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
+			StringBuilder busername=new StringBuilder();
+			for(int i=0;i<11;i++){
+				busername.append(cha[(int)(Math.random()*16)]);
+			}
+			String username=busername.toString();
+			//生成注册时间
+			Date registertime=new Date();
+				
+			storerAccountVo.setStorerName(username);
+			storerAccountVo.setStorerRegistTime(registertime);
+			userMapper.storeraccountmessageRegister(storerAccountVo);
+			return storerAccountVo;
+		}
+		return storerAccount;
 	}
 }

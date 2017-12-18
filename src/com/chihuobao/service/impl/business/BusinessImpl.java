@@ -144,17 +144,21 @@ public class BusinessImpl implements BusinessService {
 
 	@Override
 	public int insertGoodStyle(GoodsStyle goodStyle,Integer shopId) {
-		if (goodStyle.getStyleName()==null) {
-			return -3;
-		}
-		List<GoodsStyle> list = goodsMapper.selectStyleByShopId(shopId);
-		for (GoodsStyle style : list) {
-			if (style.getStyleName()==goodStyle.getStyleName()) {
-				return -2;
+		int record =0;
+		if (goodStyle.getStyleName()==null || goodStyle.getStyleName()=="") {
+			record = -2;
+		}else{
+			List<GoodsStyle> list = goodsMapper.selectStyleByShopId(shopId);
+			for (GoodsStyle style : list) {
+				if (style.getStyleName().equals(goodStyle.getStyleName())) {
+					record = -3;
+				}
 			}
 		}
-		
-		return goodsMapper.insertGoodStyle(goodStyle);
+		if (record != -3 && record != -2){
+			record = goodsMapper.insertGoodStyle(goodStyle);
+		}
+		return record;
 	}
 
 	@Override
@@ -373,6 +377,17 @@ public class BusinessImpl implements BusinessService {
 	public int updateAccontEmail(StorerAccount account) throws Exception {
 		// TODO Auto-generated method stub
 		return storerAccountMapper.updateByPrimaryKeySelective(account);
+	}
+
+	@Override
+	public ShopCustom selectShopMsgById(Integer shopId) {
+		// TODO Auto-generated method stub
+		ShopCustom shopCustom = new ShopCustom();
+		Shop shop = shopMapper.selectByPrimaryKey(shopId);
+		int orderCounts = shopMapper.countOrdersByShopId(shopId);
+		shopCustom.setShop(shop);
+		shopCustom.setOrderCounts(orderCounts);
+		return shopCustom;
 	}
 
 }

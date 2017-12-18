@@ -220,5 +220,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 		</foreach>
 		</where> 
 	</delete>
+	
+	<!-- 根据shopId找出storerId -->
+	<select id="selectStorerIdByShopId" parameterType="Integer" resultType="Integer">
+		select storerId from shop where id = #{shopId}
+	</select>
 	 
 </mapper>

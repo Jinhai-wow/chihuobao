@@ -33,9 +33,9 @@
 
 <script type="text/javascript">
 	$(function() {
-	
-	connectServer();
-	
+
+		connectServer();
+
 		/*  $("#cb1").attr("checked","checked"); */
 		$("#optionsRadios3").click(function() {
 			/* radio jquery1.6要用  prop*/
@@ -65,64 +65,72 @@
 			}
 		});
 
-})
-	
-	function connectServer(){
-	           var socket;
-				if(typeof(WebSocket) == "undefined") {
-					alert("您的浏览器不支持WebSocket");
-					return;
-				}
+	})
 
-				
-					//实现化WebSocket对象，指定要连接的服务器地址与端口
-					socket = new WebSocket("ws://127.0.0.1:8080/CHB/ws?username="+$("#orderid").val());
-					//打开事件
-					socket.onopen = function() {
-				
-						/*  alert("Socket 已打开");  */
-						//socket.send("这是来自客户端的消息" + location.href + new Date());
-					};
-					//获得消息事件
-					socket.onmessage = function(msg) {
-					
-						alert(msg.data); 
-					};
-					//关闭事件
-					socket.onclose = function() {
-					/* socket.close(); */
-						alert("Socket已关闭");
-					};
-					//发生了错误事件
-					socket.onerror = function() {
-						alert("发生了错误");
-					}
-				
-				
-				/*加用户名，订单号 */
-				$("#cuidan").click(function() {
-				/* $("#shopname").val() */
-					socket.send("123");
-				});
+	function connectServer() {
+		var socket;
+		if (typeof (WebSocket) == "undefined") {
+			alert("您的浏览器不支持WebSocket");
+			return;
+		}
 
-				/* $("#btnClose").click(function() {
-					socket.close();
-				}); */
-			
-	
+
+		//实现化WebSocket对象，指定要连接的服务器地址与端口
+		socket = new WebSocket("ws://127.0.0.1:8080/CHB/ws?username=" + $("#orderid").val());
+		//打开事件
+		socket.onopen = function() {
+
+			/*  alert("Socket 已打开");  */
+			//socket.send("这是来自客户端的消息" + location.href + new Date());
+		};
+		//获得消息事件
+		socket.onmessage = function(msg) {
+
+			alert(msg.data);
+		};
+		//关闭事件
+		socket.onclose = function() {
+			/* socket.close(); */
+			alert("Socket已关闭");
+		};
+		//发生了错误事件
+		socket.onerror = function() {
+			alert("发生了错误");
+		}
+
+
+		/*加用户名，订单号 */
+		$("#cuidan").click(function() {
+			/* $("#shopname").val() */
+			socket.send($("#shopid").val());
+		});
+
+		/* $("#btnClose").click(function() {
+			socket.close();
+		}); */
+
+
 	}
-	
-	
-	
 </script>
 
 </head>
 
 <body>
+	<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid" style="background-color:#1e89e0;">
+		<div class="navbar-header">
+			<a class="navbar-brand"
+				href="${pageContext.request.contextPath }/home.jsp"><img
+				class="chb-logo"
+				src="${pageContext.request.contextPath }/img/chb-logo.jpg" alt="吃货宝"></a>
+		</div>
+
+	</div>
+	</nav>
 	<div class="container-fluid containerDiv">
-	<input type="hidden" id="orderid" value="${order.id}">
-	<input type="hidden" id="shopname" value="${order.shopname}">
-		<strong style="font-size:20px;">订单详情</strong><br>
+		<input type="hidden" id="orderid" value="${order.id}"> <input
+			type="hidden" id="shopid" value="${order.shopid}"> <strong
+			style="font-size:20px;">订单详情</strong><br>
 
 		<div class="row orderStateDiv">
 			<!--  <h2>商家已接单</h2>  -->
@@ -194,7 +202,7 @@
 					<a class="btn btn-info"
 						href="${pageContext.request.contextPath}/confirmReceive.action?id=${order.id}"
 						onclick="if(confirm('确定收货?')==false)return false;" />确认收货</a>
-						<a class="btn btn-info" id="cuidan">催单</a>
+					<a class="btn btn-info" id="cuidan">催单</a>
 				</c:if>
 				&nbsp;
 				<c:if test="${order.orderstate==1||order.orderstate==2}">
@@ -217,8 +225,9 @@
 		<div class="row topDiv">
 			<!--上面左  -->
 			<div class="col-md-4 topDivLeft">
-				<img src="img/luna.jpg" class="img-circle goods"> <span>
-					<span>${order.shopname}</span><br>
+				<img
+					src="${pageContext.request.contextPath}/upload/business/${order.shoppic}"
+					class="img-circle goods"> <span> <span>${order.shopname}</span><br>
 
 					<p class="text-muted">订单号:${order.id}</p>
 				</span>
@@ -247,10 +256,11 @@
 				</c:if>
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 					aria-labelledby="myModalLabel" aria-hidden="true">
-					<form action="${pageContext.request.contextPath}/complain.action" method="post"> 
-				<input type="hidden" name="userid" value="${order.userid}">
-	             <input type="hidden" name="shopid" value="${order.shopid}">
-	<input type="hidden" name="orderid" value="${order.id}">
+					<form action="${pageContext.request.contextPath}/complain.action"
+						method="post">
+						<input type="hidden" name="userid" value="${order.userid}">
+						<input type="hidden" name="shopid" value="${order.shopid}">
+						<input type="hidden" name="orderid" value="${order.id}">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -304,8 +314,8 @@
 							<!-- /.modal-content -->
 
 						</div>
-						</form>
-						<!-- /.modal -->
+					</form>
+					<!-- /.modal -->
 				</div>
 
 
@@ -332,9 +342,7 @@
 
 				</thead>
 
-				<!--  <c:forEach items="${ordergoodslist}" var="ordergoods">
-					<p class="text-muted">${ordergoods.goodsname}</p>
-					</c:forEach>-->
+				
 				<c:forEach items="${ordergoodslist}" var="ordergoods">
 					<tr>
 						<td>${ordergoods.goodsname}</td>

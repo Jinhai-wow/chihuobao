@@ -24,6 +24,17 @@ public class GoodsCustom extends Goods{
 	    private GoodsCustom goodsCustom;
 	    
 		private List<GoodsStyle> goodStyles;
+		
+		private GoodsCustom goodCounts;
+		
+
+		public GoodsCustom getGoodCounts() {
+			return goodCounts;
+		}
+
+		public void setGoodCounts(GoodsCustom goodCounts) {
+			this.goodCounts = goodCounts;
+		}
 
 		public Goods getGoods() {
 			return goods;

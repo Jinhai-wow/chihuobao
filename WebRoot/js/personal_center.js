@@ -152,7 +152,7 @@ $(document).ready(function(){
 					contentType:'application/json;charset=utf-8',
 					data:'{"id":'+id+',"password":"'+newpassword+'"}',
 					success:function(data){
-						window.location.href="/user/personalCenter.action";   //跳转到个人中心默认页面
+						window.location.href="user/index.action";   //跳转到个人中心默认页面
 					},
 					error:function(){
 						alert("修改密码失败！");

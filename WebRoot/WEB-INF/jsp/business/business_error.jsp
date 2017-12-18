@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <meta http-equiv="refresh"
-	content="3;url=${pageContext.request.contextPath }/getBusiness.action" />
+	content="3;url=${pageContext.request.contextPath }/user/StorerLoginPage.action" />
 <link rel="icon" href="../../favicon.ico">
 <title>商店信息</title>
 
@@ -60,7 +60,6 @@
 								尚未申请商店
 								</c:otherwise>
 								</c:choose> <span class="caret"></span></a>
-							
 					</ul>
 				</div>
 				<!--/.nav-collapse -->
@@ -69,10 +68,11 @@
 	</div>
 
 	<div class="container">
-		
-					<div>
-						系统错误！3秒后返回登录界面
-					</div>
+
+		<div class="panel panel-default">
+			<div class="panel-body">系统错误！3秒后返回登录界面</div>
+		</div>
+
 	</div>
-</body>
+	</body>
 </html>

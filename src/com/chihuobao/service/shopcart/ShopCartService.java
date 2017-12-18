@@ -16,4 +16,6 @@ public interface ShopCartService {
 	public void createShopCart(Shopcart shopCart);
 	//创建购物车的商品列表
 	public void createShopCartGoods(Shopcartlist shopCartList);
+	//获取最新的购物车id
+	public int selectLastShopCartId();
 }
