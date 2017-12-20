@@ -38,26 +38,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="#">首页</a></li>
-					<li><a href="${pageContext.request.contextPath }/orderList.action">我的订单</a></li>
-					<li><a href="#">加盟合作</a></li>
+					<li><a href="javascript:;">首页</a></li>
+					<li><a href="javascript:;">我的订单</a></li>
+					<li><a href="javascript:;">加盟合作</a></li>
 					</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">规则中心</a></li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${user.user.username }<span class="caret"></span></a>
-						<ul class="dropdown-menu fc-black">
-							<li><a href="${pageContext.request.contextPath}/user/personalCenter.action">个人中心</a></li>
-							<li><a href="#">我的收藏</a></li>
-							<li><a href="#">我的地址</a></li>
-							<li><a href="#">安全设置</a></li>
-							<li><a href="${pageContext.request.contextPath}/user/logout.action">退出登录</a></li>
-							</ul>
-						</li>
-					</ul>
-				</div><!--/.nav-collapse -->
-			</div>
-		</nav>
+					<li><a href="javascript:;">规则中心</a></li>
+					<c:choose>
+   						<c:when test="${user!=null }">
+   							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${user.user.username }<span class="caret"></span></a>
+									<ul class="dropdown-menu fc-black">
+										<li><a href="${pageContext.request.contextPath}/user/personalCenter.action">个人中心</a></li>
+										<li><a href="javascript:;">我的收藏</a></li>
+										<li><a href="javascript:;">我的地址</a></li>
+										<li><a href="javascript:;">安全设置</a></li>
+										<li><a href="${pageContext.request.contextPath}/user/logout.action">退出登录</a></li>
+									</ul>
+							</li>
+   						</c:when>
+   						<c:otherwise> 
+   							<li>
+   								<a href="${pageContext.request.contextPath}/user/loginPage.action">注册&nbsp;|&nbsp;登陆</a>					
+   							</li> 
+   						</c:otherwise>
+					</c:choose>
+				</ul>
+			</div><!--/.nav-collapse -->
+		</div>
+	</nav>
 	</div>
 	<div class="msg-box"><!-- msg-box 只用来定位-->
 		<div class="new-msg">
@@ -73,11 +82,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="container path">
 			<span>当前位置：</span>
 			<span id="user-location">广东海洋大学</span>
-			<span id><a href="${pageContext.request.contextPath}/home.jsp">[切换地址]</a></span>
+			<span id><a href="${pageContext.request.contextPath}/user/home.action">[切换地址]</a></span>
 			<div class="place-search">
 				<form>
 					<input class="search" type="text" maxlength="30" placeholder="搜索商家,美食...">
-					<a href="#" class="place-search-btn"><i class="icon Hui-iconfont">&#xe665;</i></a>
+					<a href="javascript:;" class="place-search-btn"><i class="icon Hui-iconfont">&#xe665;</i></a>
 				</form>
 			</div>
 		</div>
@@ -149,46 +158,46 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="col-xs-2">
 					<ul class="nav nav-sidebar">
 						<li><span>商务合作</span></li>
-						<li><a href="#">我要开店</a></li>
-						<li><a href="#">加盟指南</a></li>
-						<li><a href="#">市场合作</a></li>
-						<li><a href="#">开放平台</a></li>
+						<li><a href="javascript:;">我要开店</a></li>
+						<li><a href="javascript:;">加盟指南</a></li>
+						<li><a href="javascript:;">市场合作</a></li>
+						<li><a href="javascript:;">开放平台</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-2">
 					<ul class="nav nav-sidebar">
 						<li><span>商务合作</span></li>
-						<li><a href="#">我要开店</a></li>
-						<li><a href="#">加盟指南</a></li>
-						<li><a href="#">市场合作</a></li>
-						<li><a href="#">开放平台</a></li>
+						<li><a href="javascript:;">我要开店</a></li>
+						<li><a href="javascript:;">加盟指南</a></li>
+						<li><a href="javascript:;">市场合作</a></li>
+						<li><a href="javascript:;">开放平台</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-2">
 					<ul class="nav nav-sidebar">
 						<li><span>商务合作</span></li>
-						<li><a href="#">我要开店</a></li>
-						<li><a href="#">加盟指南</a></li>
-						<li><a href="#">市场合作</a></li>
-						<li><a href="#">开放平台</a></li>
+						<li><a href="javascript:;">我要开店</a></li>
+						<li><a href="javascript:;">加盟指南</a></li>
+						<li><a href="javascript:;">市场合作</a></li>
+						<li><a href="javascript:;">开放平台</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-3">
 					<ul class="nav nav-sidebar">
 						<li><span>商务合作</span></li>
-						<li><a href="#">我要开店</a></li>
-						<li><a href="#">加盟指南</a></li>
-						<li><a href="#">市场合作</a></li>
-						<li><a href="#">开放平台</a></li>
+						<li><a href="javascript:;">我要开店</a></li>
+						<li><a href="javascript:;">加盟指南</a></li>
+						<li><a href="javascript:;">市场合作</a></li>
+						<li><a href="javascript:;">开放平台</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-3">
 					<ul class="nav nav-sidebar">
 						<li><span>商务合作</span></li>
-						<li><a href="#">我要开店</a></li>
-						<li><a href="#">加盟指南</a></li>
-						<li><a href="#">市场合作</a></li>
-						<li><a href="#">开放平台</a></li>
+						<li><a href="javascript:;">我要开店</a></li>
+						<li><a href="javascript:;">加盟指南</a></li>
+						<li><a href="javascript:;">市场合作</a></li>
+						<li><a href="javascript:;">开放平台</a></li>
 					</ul>
 				</div>
 			</div>
@@ -196,16 +205,73 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<span class="owner">所有方：广东九州有限公司</span>
 				<p>
 					增值电信业务许可证 :
-					<a href="#">沪B2-20150033</a>
+					<a href="javascript:;">沪B2-20150033</a>
 					|
-					<a href="#">沪ICP备 09007032</a>
+					<a href="javascript:;">沪ICP备 09007032</a>
 					|
-					<a href="#">上海工商行政管理</a>
+					<a href="javascript:;">上海工商行政管理</a>
 					Copyright ©2008-2017 ele.me, All Rights Reserved.
 				</p>
 			</div>
 		</div>
 	</footer>
 </div>
+
+<!-- 搜索功能实现 -->
+<script>
+  $(function () {
+	  var $searchBtn = $(".place-search .place-search-btn");
+	  $searchBtn.on("click",function () {
+		  var input_ =  this.previousElementSibling;
+		  var searchMsg = input_.value;
+		  //getShowShopId从session中获取 目前显示的商家id ，获取到的类型 [1,2,3,4,5]
+		  /* var getShowShopId = JSON.parse( localStorage.getItem("nearbyShopIdList") ); */
+		  var getShowShopId =[];
+			var shopStr=localStorage.getItem("nearbyShopIdList")
+		    var shopItems=shopStr.split(",");
+			for(var i=0;i<shopItems.length;i++){
+				var shopItem=shopItems[i].split(":");
+				var shopId=shopItem[0];
+				getShowShopId.push(shopId-0);
+			}
+		  if(searchMsg.trim().length>0 && getShowShopId.length>0){
+			  $.ajax({
+	              url: "${pageContext.request.contextPath}/shopAndGoodsSearch.action",
+	              type: "post",
+	              contentType: "application/json",
+	              dataType: "json",
+	              data: JSON.stringify({searchMsg:searchMsg,nearbyShopIdList:getShowShopId}),
+	              success: function (result) {
+	                  //跳转页面 location.replace("pageJump.action");
+	                if(result == []){
+	                	alert("请先选定需要配送到的地址");
+	                }
+					if(result != []){
+					  localStorage.setItem("searchShopsAndGoodsList", JSON.stringify(result));
+	                  self.location = "jumpToSearchResultPage.action";
+					}
+	              },error: function (XMLResponse) {
+	                  alert("内部错误");
+	              }
+	          });
+		  }
+      })
+      
+         
+      	//监控键盘输入
+    $(document).on("keydown",function (event) {
+        event = event || window.event;
+
+        var input_ =  $searchBtn[0].previousElementSibling;
+        var hasFocus = document.hasFocus() && document.activeElement === input_;
+        if(event.which == 13 && hasFocus){
+            $searchBtn[0].click();
+            return false;
+        }
+    })
+      
+  })
+			
+</script>
   </body>
 </html>

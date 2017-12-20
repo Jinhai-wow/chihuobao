@@ -21,9 +21,14 @@
 	rel="stylesheet">
 <link href="${pageContext.request.contextPath }/css/business.css"
 	rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/css/normalize.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/css/animate.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/css/jquery.gDialog.css">
 <script src="${pageContext.request.contextPath }/js/jquery-3.2.1.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="${pageContext.request.contextPath }/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath }/js/jquery.js"></script>
+<script src="${pageContext.request.contextPath }/js/jquery.gDialog.js"></script>
 <script src="${pageContext.request.contextPath }/js/business.js"></script>
 <script
 	src="${pageContext.request.contextPath }/js/ie-emulation-modes-warning.js"></script>
@@ -105,18 +110,15 @@
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="container-fluid">
 					<div class="path">
-						<span>当前位置：</span> <span><a
-							href="${pageContext.request.contextPath }" class="normal">广东海洋大学</a></span>
-						<span><a href="${pageContext.request.contextPath }">[切换地址]</a>
-						</span>
+						
 					</div>
 					<!-- 选择工具栏 -->
 						<div class="row list-menu">
 							<ul class="nav nav-tabs">
 								<li class="active"><a
 									href="${pageContext.request.contextPath }/getGoodsList.action">全部商品</a></li>
-								<li><a
-									href="${pageContext.request.contextPath }/getHotSellGoods.acton">热卖商品</a></li>
+								<%-- <li><a
+									href="${pageContext.request.contextPath }/getHotSellGoods.acton">热卖商品</a></li> --%>
 								<li><a
 									href="${pageContext.request.contextPath }/toAddGood.action">新品上架</a></li>
 							</ul>
@@ -149,6 +151,7 @@
 											<a class="btn btn-primary btn-xs"
 												href="${pageContext.request.contextPath }/deleteGood.action?id=${goods.id}"
 												onclick="if(!delConfirm())return false">删除</a>
+												
 										</div>
 									</div>
 								</div>

@@ -324,8 +324,8 @@ label {
 
 		/*把订单信息弄成json,放到隐藏inpt  */
 		$("#ordergoodsinfo").val(totalJson);
-alert(totalJson);
-		console.log($("#ordergoodsinfo").val());
+/* alert(totalJson); */
+		/* console.log($("#ordergoodsinfo").val()); */
 
 
 		/* 提交表单发送ajax 传输json */
@@ -359,7 +359,7 @@ alert(totalJson);
 	<div class="container-fluid" style="background-color:#1e89e0;">
 		<div class="navbar-header">
 			<a class="navbar-brand"
-				href="${pageContext.request.contextPath }/home.jsp"><img
+				href="${pageContext.request.contextPath }/user/index.action"><img
 				class="chb-logo"
 				src="${pageContext.request.contextPath }/img/chb-logo.jpg" alt="吃货宝"></a>
 		</div>
@@ -371,7 +371,7 @@ alert(totalJson);
 		method="post">
 		<!--     下左 -->
 		<input type="hidden" name="ordergoodsinfo" id="ordergoodsinfo">
-		<input type="hidden" name="userid" value="${userid}" id="userid">
+		<input type="hidden" name="userid" value="${user.user.id}" id="userid">
 		<input type="hidden" name="shopcartid" value="${shopcart.shopcartid}"
 			id="shopcartid"> <input type="hidden" name="shopid"
 			value="${shopcart.shopid}">

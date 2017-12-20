@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	window.onload= ws_init;
 			
 	    function  ws_init(){
-				 var target="ws://172.16.9.211:8080/CHB/chat?username="+admin;
+				 var target="ws://172.16.12.159:8080/CHB/chat?username="+admin;
 		   		  if ('WebSocket' in window) {
 		                 ws = new WebSocket(target);
 		             } else if ('MozWebSocket' in window) {
@@ -33,7 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		             }
 		             
 		   		  ws.onopen=function(){
-			    			
+			    		alert("进入");	
 		   		  };
 		   		   
 		   		  window.onbeforeunload=function(){

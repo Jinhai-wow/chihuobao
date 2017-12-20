@@ -1,5 +1,53 @@
 $(document).ready(function(){
 	
+	var userLocation=localStorage.getItem("userPoint");
+    //地址
+    $("#center-user-addr").text(userLocation)
+	/**
+	 * 我的消息
+	 */
+	var userId=$("#input-hid").val();
+	$.ajax({
+  		 type:'get',
+  		 url:'selectMessageByUserId.action?userId='+userId+'',
+  		 contentType:'application/json;charset=utf-8',
+  		 success:function(data){
+  			$("#my-message-size").addClass("badge");
+  			$("#my-message-size")[0].innerHTML=''+data.length+'';
+  		},
+  	 	 error: function(data){
+  	 		 alert("加载消息失败！");
+        }
+  	  });
+	$("#my-message")[0].addEventListener('click', function(){
+		$(".messagn-panel")[0].innerHTML='<div class="profile"><div class="profileinfo" id="myMessage"><h3 ng-if="pageTitleVisible" class="profile-paneltitle ng-scope"><span ng-bind="pageTitle" class="ng-binding">我的消息</span> <span class="subtitle ng-binding" ng-bind-html="pageSubtitle | toTrusted"></span></h3></div></div>';
+		$("#my-message-size").removeClass();
+		$("#my-message-size")[0].innerHTML='';
+		$("#center-item")[0].innerHTML='我的消息';
+		var id=$("#input-hid").val();
+		 $.ajax({
+       		 type:'get',
+       		 url:'selectMessageByUserId.action?userId='+id+'',
+       		 contentType:'application/json;charset=utf-8',
+       		 success:function(data){
+       			 for(var i=0;i<data.length;i++){
+       				 var d=new Date(data[i].messageDate);
+       				 var year=d.getFullYear(); 
+       				 var month=d.getMonth()+1; 
+       				 var date=d.getDate(); 
+       				 var hour=d.getHours(); 
+       				 var minute=d.getMinutes(); 
+       				 var second=d.getSeconds(); 
+       				 var da=year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
+       				 $("#myMessage").append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4>消息!</h4>'+data[i].message+'&nbsp;&nbsp;'+da+'</div>');
+       			 }
+       		 },
+       	 	 error: function(data){
+       	 		 alert("加载消息失败！");
+             }
+       	  });
+	});
+	
 	/**
 	 * 
 	 * 
@@ -15,6 +63,7 @@ $(document).ready(function(){
 			+'<div class="container message-item"><div class="row clearfix"><div class="col-md-1 column"><div class="profileinfo-label">我的邮箱</div></div><div class="col-md-2 column"><div id="profile-email" class="profileinfo-value nf-binding">未绑定</div></div><div class="col-md-1 column"><a class="unbind" href="javascript:;">[立即绑定]</a></div></div></div></div></div>';
 		$(".setfontcolor").removeClass("fontlink-color");
 		$("#personal-data").addClass("fontlink-color"); 
+		$("#center-item")[0].innerHTML='个人资料';
 		//加载数据库中存到的头像图片
 		//图片编辑框
 		$("#user-img-block").mouseover(function(){
@@ -141,6 +190,7 @@ $(document).ready(function(){
 				+'<div class="form-group formfield ng-isolate-scope" form-field=""><label ng-bind="label" class="ng-binding"></label><button id="modifypassword-button" type="button" class="btn-primary btn-lg ng-scope">确认</button><div class="formfield-hint"><span class="ng-binding"></span></div></div></form></div></div></div>';		
 		$(".setfontcolor").removeClass("fontlink-color");
 		$("#modify-password").addClass("fontlink-color");
+		$("#center-item")[0].innerHTML='修改密码';
 		$("#modifypassword-button")[0].addEventListener('click',function(){
 			var newpassword=$("#newPassword1").val();
 			var confirmpassword=$("#newPassword2").val();
@@ -164,33 +214,59 @@ $(document).ready(function(){
 		});
 	})
 	
-	
-	/**
+		/**
 	 * 
 	 * 
 	 * 我的资料-地址管理
 	 */
-	//密码登陆
-/*   $("#password")[0].addEventListener('click',function(){
-		$("#note").removeClass("font-color");
-		$("#password").addClass("font-color");
-        $(".from-option")[0].innerHTML='<form class="form-horizontal" action="/CHB/user/loginByPassword.action" method="post"><div class="form-group has-warning"><input type="text" class="form-control input-lg" placeholder="手机/邮箱/用户名" name="user.phone" value=""/></div><div class="form-group has-error"><input type="password" class="form-control input-lg" placeholder="密码" name="user.password" value=""/></div><button class="btn btn-success btn-lg btn-block">登陆</button></form>';
-        $("button").click(function(){
-         var str=$("form").serialize();
-       	 $.ajax({
-       		 type:'post',
-       		 url:'user/loginByPassword.action',
-       		 //contentType:'application/json;charset=utf-8',
-       		 data:str,
-       		 datatype:'json',
-       		 success:function(data){
-       			 evil("var msg="+data+";");
-       			alert(data.user.username);
-       			 console.info(msg);
-       		 },
-       	 	 error: function() {
-             alert("加载失败");
-             }
-       	  });
-        });*/
+	$("#address-management")[0].addEventListener('click', function(){
+		$(".messagn-panel")[0].innerHTML='<div class="profile"><div class="profileinfo">'
+				+'<h3 id="address-manage" ng-if="pageTitleVisible" class="profile-paneltitle ng-scope"><span ng-bind="pageTitle" class="ng-binding">地址管理</span> <span class="subtitle ng-binding" ng-bind-html="pageSubtitle | toTrusted"></span></h3></div></div>';
+		$(".setfontcolor").removeClass("fontlink-color");
+		$("#address-management").addClass("fontlink-color");
+		$("#center-item")[0].innerHTML='地址管理';
+		var id=$("#input-hid").val();
+		//添加地址
+		var addbtn='<button class="desktop-addressblock desktop-addressblock-addblock" type="button" data-toggle="modal" data-target="#exampleModal">添加新地址</button>'
+				   +'<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"><div id="modal-dialog-address" class="modal-dialog" role="document"><div class="modal-content-address"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h3 class="modal-title" id="exampleModalLabel">添加地址</h3></div>'
+		           +'<div class="modal-body"><form action="user/addAddress.action" method="post"><div class="form-group"><label for="recipient-name" class="control-label">姓名:</label><input type="text" class="form-control" name="username"></div>'
+		           +'<div class="form-group"><label for="message-text" class="control-label">电话号码:</label><input type="text" class="form-control" name="phone"></div><div class="form-group"><label for="message-text" class="control-label">位置:</label><input type="text" class="form-control" name="location"></div>'
+		           +'<div class="form-group"><label for="message-text" class="control-label">详细地址:</label><input type="text" class="form-control" name="detailedAddress"></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><button type="submit" class="btn btn-primary">添加</button></div></form></div></div></div></div>';
+		$.ajax({
+			type:'post',
+			url:'user/findUserAddress.action?id='+id+'',
+			success:function(data){
+				$("#address-manage").after(addbtn);   //添加地址
+				//加载地址
+				for(var i=0;i<data.length;i++){
+					var address= data[i].address;
+					var adr=address.split(" ");
+					var username=adr[0];
+					var addre=adr[2]+adr[3];
+					var phone=adr[1];
+					$("#address-manage").after('<input id="address-id" type="hidden" value="'+data[i].id+'">'
+							+'<div class="desktop-addressblock ng-scope"><div class="desktop-addressblock-buttons"><button type="button" class="desktop-addressblock-button" data-toggle="modal" data-target="#exampleModal1">修改</button><button type="button" id="delete-address'+i+'" class="desktop-addressblock-button">删除</button></div>'
+							+'<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">' 
+							+'<div id="modal-dialog-address1" class="modal-dialog" role="document"><div class="modal-content-address"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h3 class="modal-title" id="exampleModalLabel">添加地址</h3></div><div class="modal-body">'
+							+'<form action="user/updateAddress.action" method="post"><input id="address-id" type="hidden" name="id" value="'+data[i].id+'"><div class="form-group"><label for="recipient-name" class="control-label">姓名:</label><input type="text" class="form-control" name="username" value="'+username+'"></div>'
+							+'<div class="form-group"><label for="message-text" class="control-label">电话号码:</label><input type="text" class="form-control" name="phone" value="'+phone+'"></div>'
+							+'<div class="form-group"><label for="message-text" class="control-label">位置:</label><input type="text" class="form-control" name="location" value="'+adr[2]+'"></div>'
+							+'<div class="form-group"><label for="message-text" class="control-label">详细地址:</label><input type="text" class="form-control" name="detailedAddress" value="'+adr[3]+'">'
+							+'</div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><button type="submit" class="btn btn-primary">添加</button></div></form></div></div></div></div>'
+							+'<div class="desktop-addressblock-name ng-binding">'+username+'<span class="ng-binding"></span></div>'
+							+'<div class="desktop-addressblock-address ng-binding">'+addre+'</div>'			
+							+'<div class="desktop-addressblock-mobile ng-binding" >'+phone+'</div></div>');
+					var id=$("#address-id").val();
+					$("#delete-address"+i+"")[0].addEventListener('click', function(){
+						$.get("user/deleteAddress.action?id="+id,function(reponseText,status,xhr){
+							window.location.href="user/personalCenter.action"; 
+						});
+					});
+				}
+			},
+			error:function(){
+				alert("地址加载失败！");
+			}
+		});
+	});
 });

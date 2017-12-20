@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chihuobao.mapper.manager.CommentMapper">
+
+	<cache/>
+	
+	<!-- 一对多一对多查询 -->
+	<resultMap type="com.chihuobao.vo.ManagerOrderVo" id="comment">  
+        <id property="id" column="id" />  
+        <result column="shopName" property="shopName"/>
+        <result column="createTime" property="createTime"/>
+        <result column="userId" property="userId"/>
+        <result column="usercomment" property="usercomment"/>
+        <result column="userName" property="userName"/>
+        <collection property="orderGoodsList" ofType="com.chihuobao.po.Ordergoods">  
+          <!--   <id property="id" column="id" />   -->
+            <result property="goodsname" column="goodsname"/>  
+        </collection>  
+    </resultMap>  
+    <select id="storerComment" resultMap="comment" parameterType="Integer">  
+        select ot.id,u.userName,ot.shopName,ot.createTime,ot.userId,ot.usercomment,og.goodsname 
+        from ordertable ot,ordergoods og ,user u
+        where ot.id = og.orderId and ot.userId = u.id and ot.shopId = #{shopId}   
+    </select>
+	
+	
+</mapper>

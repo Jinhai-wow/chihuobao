@@ -25,6 +25,7 @@ import com.chihuobao.po.ShopData;
 import com.chihuobao.po.ShopExample;
 import com.chihuobao.po.ShopStyle;
 import com.chihuobao.po.StorerAccount;
+import com.chihuobao.po.StorerMessage;
 import com.chihuobao.po.UserComment;
 import com.chihuobao.service.business.BusinessService;
 import com.chihuobao.vo.BusinessCustom;
@@ -118,7 +119,7 @@ public class BusinessImpl implements BusinessService {
 		
 		 if (goodsMapper.selectByGoodName(goods.getGoodName())==null) {
 			 return goodsMapper.insertSelective(goods);
-		}else if(!styleIdList.contains(goods.getGoodStyleId())){
+		}else if(!styleIdList.contains(goodsMapper.selectByGoodName(goods.getGoodName()).getGoodStyleId())){
 			return goodsMapper.insertSelective(goods);
 		}
 		return -2;
@@ -198,7 +199,7 @@ public class BusinessImpl implements BusinessService {
 		Double income = 0.00;//收入
 		Double disbursement = 0.00;//支出
 		Integer count=0;
-		List<Ordertable> ordertables = shopMapper.selectOrdersByShopId(id);
+		List<Ordertable> ordertables = shopMapper.selectPaiedOrdersByShopId(id);
 		for (Ordertable ordertable : ordertables) {
 			income = income + ordertable.getTotalmoney();
 			count += 1; 
@@ -340,6 +341,11 @@ public class BusinessImpl implements BusinessService {
 	@Override
 	public int sendOrder(Ordertable ordertable) {
 		// TODO Auto-generated method stub
+		Ordertable order = ordertableDao.getOrder(ordertable.getId());
+		Shop shop = shopMapper.selectByPrimaryKey(order.getShopid());
+		StorerAccount account = storerAccountMapper.selectByPrimaryKey(shop.getStorerId());
+		account.setStorerMoney(account.getStorerMoney()+order.getTotalmoney());
+		storerAccountMapper.updateByPrimaryKeySelective(account);//发货后订单资金加进商家资金
 		return goodsMapper.updateOrderStateSend(ordertable);
 	}
 
@@ -388,6 +394,12 @@ public class BusinessImpl implements BusinessService {
 		shopCustom.setShop(shop);
 		shopCustom.setOrderCounts(orderCounts);
 		return shopCustom;
+	}
+
+	@Override
+	public List<StorerMessage> selectSysMsgByAccountId(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

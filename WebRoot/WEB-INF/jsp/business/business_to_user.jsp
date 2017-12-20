@@ -756,6 +756,20 @@ em {
 	color: #999;
 }
 /*---------------footer部分 结束-------------------*/
+
+/*----------------写举报内容的textarea-----------------*/
+.bulletin .modal-dialog {
+    margin: 15% auto 0;
+}
+.bulletin .modal-content .report-msg{
+    width: 100%;
+    height: 100px;
+    resize: none;
+}
+.bulletin .modal-content .modal-footer button:last-child{
+    display: none;
+}
+/*----------------写举报内容的textarea-----------------*/
 </style>
 </head>
 <body>
@@ -771,22 +785,24 @@ em {
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-						<li><a href="#">首页</a></li>
-						<li><a href="#">我的订单</a></li>
-						<li><a href="#">加盟合作</a></li>
+						<li><a href="${pageContext.request.contextPath}/user/index.action">首页</a></li>
+						<li><a href="${pageContext.request.contextPath }/orderList.action">我的订单</a></li>
+						<li><a href="javascript:;">加盟合作</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">规则中心</a></li>
+						<li><a href="javascript:;">规则中心</a></li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown" role="button" aria-haspopup="true"
-							aria-expanded="false"> 13729000000 <span class="caret"></span>
+							aria-expanded="false"> ${user.user.username } <span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu fc-black">
-								<li><a href="#">个人中心</a></li>
-								<li><a href="#">我的收藏</a></li>
-								<li><a href="#">我的地址</a></li>
-								<li><a href="#">安全设置</a></li>
-								<li><a href="#">退出登录</a></li>
+							 <li><a href="${pageContext.request.contextPath}/user/personalCenter.action">个人中心</a></li>
+						  <li><a href="javascript:;">我的收藏</a></li>
+						  <li><a href="javascript:;">我的地址</a></li>
+						  <li><a href="${pageContext.request.contextPath}/userChat.action" target="view_window">客服中心</a>
+						  
+						  <li><a href="javascript:;">安全设置</a></li>
+						  <li><a href="${pageContext.request.contextPath}/user/logout.action">退出登录</a></li>
 							</ul></li>
 					</ul>
 				</div>
@@ -800,10 +816,10 @@ em {
 					<div class="shop-info">
 						<img
 							src="${pageContext.request.contextPath}/upload/business/${shopMsg.shop.shopPic}"
-							alt="">
+							alt="${shopMsg.shop.shopName }">
 						<div class="shop-info-wrapper">
 							<div>
-								<h1 title="农家咸骨粥第一店">${shopMsg.shop.shopName }</h1>
+								<h1 title="${shopMsg.shop.shopName }">${shopMsg.shop.shopName }</h1>
 							</div>
 							<p class="shop-info-rate">
 							<div class="starrating-content">
@@ -840,16 +856,14 @@ em {
 				<div class="shop-nav-inner">
 					<div class="container clearfix">
 						<div class="shop-nav-left">
-							<a class="shop-nav-table active" href="#">所有商品</a> <a
-								class="shop-nav-table" href="#">评价</a> <a class="shop-nav-table"
+							<a class="shop-nav-table active" href="${pageContext.request.contextPath}/user/getBusiness.action?shopId=${shopMsg.shop.id}">所有商品</a> <a
+								class="shop-nav-table" href="${pageContext.request.contextPath}/storerComment.action?shopId=${shopMsg.shop.id}">评价</a> <a class="shop-nav-table"
 								href="#">商家资质</a> <span class="shop-nav-filter"> </span>
 						</div>
 						<div class="shop-search">
-							<form>
 								<input class="search" type="text" maxlength="30"
-									placeholder="搜索商家,美食..."> <a href="#"
+									placeholder="搜索商家,美食..."> <a href="javascript:;"
 									class="search-btn"><i class="icon Hui-iconfont">&#xe665;</i></a>
-							</form>
 						</div>
 					</div>
 				</div>
@@ -874,7 +888,7 @@ em {
 												src="${pageContext.request.contextPath}/upload/business/${list.goodPic}"
 												alt="">
 										</a>
-										</span> <span class="goods-name" data-id="1">${list.goodName}</span>
+										</span> <span class="goods-name" data-id="${list.id}">${list.goodName}</span>
 										<div class="goods-msg">
 											<p>${list.goodIntro}</p>
 											<div class="">
@@ -905,7 +919,26 @@ em {
 								<h4>配送说明：</h4>
 								<p>免费配送</p>
 							</div>
-							<a href="">举报商家</a>
+							<a id="modal-517103" href="#mark" role="button" class="btn" data-toggle="modal">举报商家</a>
+                        <div class="modal fade" id="mark" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            	举报商家
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <textarea class="report-msg" maxlength="500" minlength="10" placeholder="最多输入500字"></textarea>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary">提交</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 						</div>
 					</div>
 				</div>
@@ -988,7 +1021,7 @@ em {
 				<div class="modal-body" style="margin-right:7%;height:300px;">
 					<div class="goodimg col-xs-8">
 						<img class="col-xs-12" height="300px" width="600px" alt="商品图片"
-							src="${pageContext.request.contextPath}/img/null.png"
+							src="${pageContext.request.contextPath}/img/food.jpg"
 							id="good_img">
 					</div>
 					<div class="goodmsg col-xs-4">
@@ -996,7 +1029,7 @@ em {
 							<tbody>
 								<tr>
 									<td colspan="2"><p id="good_name"
-											style="font-size: 1.3em;margin-bottom: 25px;">商品名商品名商品名</p></td>
+											style="font-size: 1.3em;margin-bottom: 25px;">煲仔饭</p></td>
 								</tr>
 								<tr>
 									<td><p id="good_price"
@@ -1082,7 +1115,7 @@ em {
 
 	<script>
 $(document).ready(function(){
-    var getUserId = 1;
+    var getUserId = $("#userid").val();
     var getShopId = $("#businessId").val();
     
     //起送价
@@ -1095,7 +1128,7 @@ $(document).ready(function(){
     /* alert(shopScore); */
     createShopcart(getUserId,getShopId,minPrice);
     showList(getUserId,getShopId);
-
+	report();
    	function createShopcart(getUserId,getShopId,minPrice) {
          //创建元素方法
          function createEle(eleName,className,parent) {
@@ -1453,9 +1486,10 @@ $(document).ready(function(){
 	            /* traditional:true, */
 	            success:function(result){
 					/* alert(result); */
-					var shopId = parseInt(result);
-					if(shopId > 0){
-					window.location.href="${pageContext.request.contextPath}/payOrder.action?shopcartid="+shopId+"&userid=1";
+					var shopcartid = parseInt(result);
+					if(shopcartid > 0){
+				
+					window.location.href="${pageContext.request.contextPath}/payOrder.action?shopcartid="+shopcartid;
 					}
 	            },
 	            error:function(XMLResponse){alert(XMLResponse.responseText)}
@@ -1481,7 +1515,7 @@ $(document).ready(function(){
     	<!--模拟用户操作-->
 	function showList(_UserId,_ShopId) {
         var getLocalStorage = JSON.parse( localStorage.getItem("shopcart"+_UserId) );
-        if(getLocalStorage && getLocalStorage!=[]){
+        if(getLocalStorage && getLocalStorage!=[] && getLocalStorage.length>0 ){
 	        if(_ShopId == getLocalStorage[0].shopId){
 		        for(var i=0;i<getLocalStorage.length;i++){
 	                var id = getLocalStorage[i].id ;
@@ -1548,9 +1582,90 @@ $(document).ready(function(){
                 }
             }
         }
+        
+                /*举报*/
+        function report() {
+            var str = ".bulletin .modal-dialog .modal-content";
+            var $modalHeader = $(str+" .modal-header");
+            var $modalBody = $(str+" .modal-body");
+            var $modelFooter = $(str+" .modal-footer");
+            //点击提交触发
+            $(str+" .modal-footer>button:first-child").on("click",function () {
+                $modalHeader.find("h4").hide();
+                $modalBody[0].innerHTML = "感谢您的投诉";
+                $modelFooter.find("button:first-child").hide();
+                $modelFooter.find("button:last-child").show();
+            })
+            //点击确定触发
+            $(str+" .modal-footer>button:last-child").on("click",function () {
+                setTimeout(function () {
+                    $modalHeader.find("h4").show();
+                    $modalBody.html('<textarea class="report-msg" maxlength="500" minlength="10" placeholder="最多输入500字"></textarea>');
+                    $modelFooter.find("button:first-child").show();
+                    $modelFooter.find("button:last-child").hide();
+                },200);
+            });
+        }
 })
 	
 
 </script>
+
+<!-- 搜索功能实现 -->
+<script>
+  $(function () {
+	  var $searchBtn = $(".shop-search .search-btn");
+	  $searchBtn.on("click",function () {
+		  var input_ =  this.previousElementSibling;
+		  var searchMsg = input_.value;
+		  //getShowShopId从session中获取 目前显示的商家id ，获取到的类型 [1,2,3,4,5]
+		  /* var getShowShopId = JSON.parse( localStorage.getItem("nearbyShopIdList") ); */
+		  var getShowShopId =[];
+			var shopStr=localStorage.getItem("nearbyShopIdList")
+		    var shopItems=shopStr.split(",");
+			for(var i=0;i<shopItems.length;i++){
+				var shopItem=shopItems[i].split(":");
+				var shopId=shopItem[0];
+				getShowShopId.push(shopId-0);
+			}
+		  if(searchMsg.trim().length>0 && getShowShopId.length>0){
+			  $.ajax({
+	              url: "${pageContext.request.contextPath}/shopAndGoodsSearch.action",
+	              type: "post",
+	              contentType: "application/json",
+	              dataType: "json",
+	              data: JSON.stringify({searchMsg:searchMsg,nearbyShopIdList:getShowShopId}),
+	              success: function (result) {
+	                  //跳转页面 location.replace("pageJump.action");
+	                if(result == []){
+	                	alert("请先选定需要配送到的地址");
+	                }
+					if(result != []){
+					  localStorage.setItem("searchShopsAndGoodsList", JSON.stringify(result));
+	                  self.location = "jumpToSearchResultPage.action";
+					}
+	              },error: function (XMLResponse) {
+	                  alert("内部错误");
+	              }
+	          });
+		  }
+      })
+      
+      	//监控键盘输入
+    $(document).on("keydown",function (event) {
+        event = event || window.event;
+
+        var input_ =  $searchBtn[0].previousElementSibling;
+        var hasFocus = document.hasFocus() && document.activeElement === input_;
+        if(event.which == 13 && hasFocus){
+            $searchBtn[0].click();
+            return false;
+        }
+    })
+  })
+			
+</script>
+
+<input id="userid" value="${user.user.id}" type="hidden"> 
 </body>
 </html>

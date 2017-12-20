@@ -239,14 +239,13 @@
 							+ "'>订单详情</a><br />";
 
 						if (data[i].orderstate == 0) {
-							contentAdd = contentAdd + "<a class='btn btn-primary btnPos' href='${pageContext.request.contextPath}/payOrder.action?shopcartid="
-								+ data[i].shopcartid + "&userid=" + data[i].userid
+							contentAdd = contentAdd + "<a class='btn btn-primary btnPos' href='${pageContext.request.contextPath}/pay.action?orderId="
+								+ data[i].id + "&money=" + data[i].totalmoney+ "&FrpId=CCB-NET-B2C"
 
 								+ "'>去付款</a></td></tr>";
 						} else {
 							contentAdd = contentAdd + "<a class='btn btn-primary btnPos' href='${pageContext.request.contextPath}/payOrder.action?shopcartid="
-								+ data[i].shopcartid + "&userid=" + data[i].userid
-
+								+ data[i].shopcartid 
 								+ "'>再来一单</a></td></tr>";
 						}
 
@@ -288,7 +287,7 @@
 	<div class="container-fluid" style="background-color:#1e89e0;">
 		<div class="navbar-header">
 			<a class="navbar-brand"
-				href="${pageContext.request.contextPath }/home.jsp"><img
+				href="${pageContext.request.contextPath }/user/index.action"><img
 				class="chb-logo"
 				src="${pageContext.request.contextPath }/img/chb-logo.jpg" alt="吃货宝"></a>
 		</div>

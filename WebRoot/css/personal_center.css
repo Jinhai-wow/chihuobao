@@ -397,4 +397,138 @@ a, ins {
 	color: #428bca;
 	background-color: #ffffff;
 }
-
+//µÿ÷∑π‹¿Ì
+.desktop-addressblock {     
+    position: relative;
+    display: inline-block;
+    width: 242px;
+    height: 110px;
+    padding: 16px 12px 16px 20px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+}
+.desktop-addressblock-buttons {
+    position: absolute;
+    right: 12px;
+    top: 14px;
+}
+.desktop-addressblock-button {
+    font-size: 12px;
+    color: #bbb;
+    border: 0;
+    background: 0 0;
+    cursor: pointer;
+}
+.desktop-addressblock-address, .desktop-addressblock-mobile, .desktop-addressblock-name {
+    height: 22px;
+    cursor: default;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.desktop-addressblock-name {
+    color: #333;
+    margin-bottom: 10px;
+    padding-right: 60px;
+}
+.desktop-addressblock-name span {
+    margin-left: 5px;
+}
+.desktop-addressblock-address, .desktop-addressblock-mobile {
+    color: #666;
+}
+.desktop-addressblock-mask {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #000;
+    opacity: .5;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide {
+    display: none !important;
+}
+.desktop-addressblock-removebuttons {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin-top: 23px;
+}
+.desktop-addressblock-removebuttons p {
+    color: #fff;
+    vertical-align: top;
+    font-size: 14px;
+    line-height: 26px;
+}
+.desktop-addressblock-removebuttons .confirmdelete {
+    background: #0089dc;
+    color: #fff;
+}
+.desktop-addressblock-removebuttons .canceldelete, .desktop-addressblock-removebuttons .confirmdelete {
+    cursor: pointer;
+    border: 0; 
+    border-radius: 2px;
+    margin-top: 5px;
+    width: 60px;
+    height: 24px;
+    padding: 0 10px;
+    line-height: 24px;
+}
+.desktop-addressblock-removebuttons .canceldelete {
+    margin-left: 10px;
+    background-color: #fff;
+}
+.desktop-addressblock-addblock:hover {
+    color: #0089dc;
+}
+.desktop-addressblock:hover {
+    border: 1px solid #0089dc;
+}
+desktop-addressblock-addblock {
+    vertical-align: top;
+    padding: 0;
+    text-align: center;
+    background: #fcfcfc;
+    color: #999;
+    cursor: pointer;
+}
+.desktop-addressblock {
+    position: relative;
+    display: inline-block;
+    width: 200px;
+    height: 110px;
+    padding: 16px 12px 16px 20px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+}
+.desktop-addressblock-addblock {
+    vertical-align: top;
+    padding: 0;
+    text-align: center;
+    background: #fcfcfc;
+    color: #999;
+    cursor: pointer;
+}
+.desktop-addressblock:hover .desktop-addressblock-button {
+    color: #0089dc;
+}
+.modal-content-address{
+	background-color: #fff;
+}
+#modal-dialog-address{
+    margin-top: 30px;
+}
+#modal-dialog-address1{
+    margin-top: 30px;
+}
+.badge{
+	background-color: #fff;
+	color: #777;
+}

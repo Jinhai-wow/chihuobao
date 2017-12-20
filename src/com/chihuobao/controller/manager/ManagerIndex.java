@@ -17,16 +17,16 @@ public class ManagerIndex {
 		return "manager/index";
 	}
 	
-	@RequestMapping(value="/go.action")
+	/*@RequestMapping(value="/go.action")
 	public String user(){
 		
 		return "manager/login";
-	}
+	}*/
 	
 	
-	@RequestMapping(value="/login.action")
-	public  String login(String admin,HttpSession session){
-		
+	@RequestMapping(value="/go.action")
+	public  String login(HttpSession session){
+		String admin = "aaa";
 		session.setAttribute("admin", admin);
 		return "manager/chat";
 	}
@@ -46,9 +46,17 @@ public class ManagerIndex {
 		return "manager/text";
 	}
 	
-	@RequestMapping(value="/paytest.action")
-	public String paytest(){
+	/*//管理员登录
+	@RequestMapping(value="/Managerlogin.action")
+	public String managerLogin(){
 		
-		return "manager/paytest";
+		
+		return "";
+	}*/
+	
+	@RequestMapping(value="/sendMessage.action")
+	public String sendMessage(){
+		
+		return "manager/sendMessage";
 	}
 }

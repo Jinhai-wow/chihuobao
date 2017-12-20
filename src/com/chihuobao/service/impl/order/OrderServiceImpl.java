@@ -45,8 +45,8 @@ public class OrderServiceImpl implements OrderService {
 
 	
 	@Override
-	public int getOrderListSize() {
-		int orderListSize=ordertableDao.getOrderListSize();
+	public int getOrderListSize(Integer userid) {
+		int orderListSize=ordertableDao.getOrderListSize(userid);
 		return orderListSize;
 	}
 
@@ -138,8 +138,14 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public void modifyAddressState() {
-		ordertableDao.modifyAddressState();
+	public void modifyAddressState(Integer userid) {
+		ordertableDao.modifyAddressState(userid);
+		
+	}
+
+	@Override
+	public void updateOrderStateNoTakeOrder(long id) {
+		ordertableDao.updateOrderStateNoTakeOrder(id);
 		
 	}
 

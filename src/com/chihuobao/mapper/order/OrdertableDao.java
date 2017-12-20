@@ -32,7 +32,7 @@ public interface OrdertableDao {
 	public List<Ordertable> getOrderListByPagination(PageBean pageBean);
 
 	/* 获取数据库订单的数量 */
-	public int getOrderListSize();
+	public int getOrderListSize(Integer userid);
 
 	/*根据购物车id 获取购物车数据
 	 * @param shopcartid:购物车id
@@ -88,9 +88,10 @@ public interface OrdertableDao {
 	 * @param  id :订单id
 	 *  
 	 *  */
-	
+	/*确认收货*/
 	public void updateOrderState(long id);
-
+/* 支付成功后更改为未接单状态*/
+	public void updateOrderStateNoTakeOrder(long id);
 	/*
 	 * 申请取消订单
 	 * 
@@ -99,6 +100,9 @@ public interface OrdertableDao {
 	
 	public void applyCancelOrder(long id);
 
+	
+	
+	
 	/* 
 	 * 查询该用户id，下所有未付款订单（即ordertable的state为0）
 	 * 
@@ -142,7 +146,7 @@ public interface OrdertableDao {
 
 	public void addAddress(Address address);
 	/*把其他地址state先置为0*/
-	public void modifyAddressState();
+	public void modifyAddressState(Integer userid);
 	
 	
 

@@ -146,6 +146,10 @@
   	select * from orderTable where shopId = #{shopId,jdbcType=INTEGER} order by createTime desc
   </select>
   
+  <select id="selectPaiedOrdersByShopId" resultType="com.chihuobao.po.Ordertable" parameterType="java.lang.Integer">
+  	select * from orderTable where shopId = #{shopId,jdbcType=INTEGER} and (orderstate =3 or orderstate=5 or orderstate=8) order by createTime desc
+  </select>
+  
   <select id="selectShopStyle" resultType="com.chihuobao.po.ShopStyle">
   	select * from shopStyle
   </select>

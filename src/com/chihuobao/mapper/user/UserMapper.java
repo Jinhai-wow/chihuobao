@@ -50,4 +50,13 @@ public interface UserMapper {
 	
 	//商家短信登陆
 	public StorerAccountEx findstoreraccountByPhone(StorerAccountEx storerAccountVo)throws Exception;
+	
+	//添加地址
+	public void addAddress(Address address) throws Exception;
+	
+	//删除地址
+	public void deleteAddress(Integer id) throws Exception;
+	
+	//修改地址
+	public void updateAddress(Address address) throws Exception;
 }

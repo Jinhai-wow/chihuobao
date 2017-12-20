@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.chihuobao.po.Ordergoods;
 import com.chihuobao.po.Shop;
 import com.chihuobao.po.User;
 
@@ -25,6 +26,7 @@ public class ManagerOrderVo implements Serializable{
 	
 	private Long id;
 	private Integer userId;
+	private String userName;  //用户名称
 	private Integer shopId;
 	private String shopName;
 	private String arriveTime;
@@ -36,13 +38,32 @@ public class ManagerOrderVo implements Serializable{
 	private Double totalMoney;
 	private String evaluate;
 	private String remark;
+	private String usercomment;  //用户评论
+	
+	private List<Ordergoods> orderGoodsList;
 	
 	private Shop shop;      //商家实体类
 	private User user;      //用户实体类
 	
 	
-	
-	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public List<Ordergoods> getOrderGoodsList() {
+		return orderGoodsList;
+	}
+	public void setOrderGoodsList(List<Ordergoods> orderGoodsList) {
+		this.orderGoodsList = orderGoodsList;
+	}
+	public String getUsercomment() {
+		return usercomment;
+	}
+	public void setUsercomment(String usercomment) {
+		this.usercomment = usercomment;
+	}
 	public List<Long> getIds() {
 		return ids;
 	}

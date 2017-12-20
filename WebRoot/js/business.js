@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
 	$('#businessForm').bootstrapValidator({
 		message : '值不可用',
 		feedbackIcons : {
@@ -52,24 +53,35 @@ $(document).ready(function() {
 		},
 	});
 
-	$("#serviceinput").onblur(function(){
-		if($("#serviceinput").val()>10){
-			alert("服务范围不可超过10公里");
-			$("#serviceinput").val(10.0);
-		}
-	})
 
 });
 
+function alertBox(str,title){
+	  $.gDialog.alert(str, {
+	    title: title,
+	    animateIn: "bounceIn",
+	    animateOut: "bounceOut"
+	  }); 
+	};
+function confirmBox(str,title){
+	$.gDialog.confirm(str, {
+		title: title,
+		animateIn : "bounceInDown",
+		animateOut: "bounceOutUp"
+	});
+}
+
+
 function delConfirm() {
-	if (confirm("确定删除该商品？")) {
+	if(confirmBox("确定删除该商品？","提示")){
 		return true;
 	}
 	return false;
-}
+	};
+
 /*********************************商店尚未审核**********************************/
 function noAudit() {
-	alert("您的商店正在审核中，不可编辑！");
+	alertBox("您的商店正在审核中，不可编辑！","警告");
 }
 /******************************添加商品****************************/
 
@@ -84,12 +96,20 @@ function servicenumUp() {
 	var invalue = parseFloat($("#serviceinput").val()) + 1.0;
 	if (invalue <= 10)
 		$("#serviceinput").val(invalue);else {
-		alert("服务范围不可超过10公里");
+		alertBox("服务范围不可超过10公里","警告");
 		$("#serviceinput").val(10.0);
 	}
 
 }
 ;
+
+$("#serviceinput").onblur(function(){
+	if($("#serviceinput").val()>10){
+		alertBox("服务范围不可超过10公里","警告");
+		$("#serviceinput").val(10.0);
+	}
+})
+
 function servicenumDown() {
 	if ($("#serviceinput").val() > 0) {
 		$("#serviceinput").val(parseFloat($("#serviceinput").val()) - 1.0);

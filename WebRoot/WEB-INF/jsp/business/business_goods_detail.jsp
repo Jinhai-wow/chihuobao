@@ -113,16 +113,13 @@
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="container-fluid">
 					<div class="path">
-						<span>当前位置：</span> <span><a
-							href="${pageContext.request.contextPath }" class="normal">广东海洋大学</a></span>
-						<span><a href="${pageContext.request.contextPath }">[切换地址]</a>
-						</span>
+						
 					</div>
 
 					<form class="form-horizontal" role="form">
 						<div class="detail-con row">
-							<div class="goods-img col-sm-12 col-md-4 col-lg-4">
-								<img style="width: 300px" src="${pageContext.request.contextPath }/upload/business/${good.goodPic }"
+							<div class="goods-img col-sm-12 col-md-4 col-lg-4" >
+								<img style="width: 300px;"  src="${pageContext.request.contextPath }/upload/business/${good.goodPic }"
 									class="img-thumbnail img-responsive">
 							</div>
 							<div class="col-sm-12 col-md-8 col-lg-8">

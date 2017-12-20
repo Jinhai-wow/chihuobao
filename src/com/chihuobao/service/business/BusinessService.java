@@ -12,6 +12,7 @@ import com.chihuobao.po.Shop;
 import com.chihuobao.po.ShopData;
 import com.chihuobao.po.ShopStyle;
 import com.chihuobao.po.StorerAccount;
+import com.chihuobao.po.StorerMessage;
 import com.chihuobao.po.UserComment;
 import com.chihuobao.vo.BusinessCustom;
 import com.chihuobao.vo.BusinessExtend;
@@ -78,5 +79,7 @@ public interface BusinessService {
 	public int refuseOrder(Ordertable ordertable);//不接订单
 
 	public ShopCustom selectShopMsgById(Integer shopId);//用户浏览商家
+
+	public List<StorerMessage> selectSysMsgByAccountId(Integer id);//
 
 }

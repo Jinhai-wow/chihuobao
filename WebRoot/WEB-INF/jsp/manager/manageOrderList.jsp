@@ -57,41 +57,82 @@
     <script type="text/javascript">
     	$(function() {
     
-    
-    	
-    	
-    		
-     /* $.post("${pageContext.request.contextPath }/xiala.action", function(data){
 
-                     success : function(data) {
-    				 //var member = eval("("+data+")"); 
-    				//data = eval("("+data+")");
-    				 alert(666);
-    				
-    			}
-
-         });  */
-    
-    
     
     		$("#list").datagrid({
+    		
+    			title:'数据列表',
+				resizable:true,
+				striped: true ,	
+    			height:400 ,
+    			rownumbers:true ,
+    			
 				url:"${pageContext.request.contextPath }/manager/selectOrderList.action",  
     			columns:[[
-    				 {field:"id",title:"id",width:100}, 
-    				{field:"deliverMethod",title:"配送方式",width:300},
-    				{field:"username",title:"用户名",width:200,formatter: function(value,row,index){
+    				 {field:"id",title:"id",width:150}, 
+    				{field:"deliverMethod",title:"配送方式",width:100},
+    				{field:"username",title:"用户名",width:100,formatter: function(value,row,index){
                           if (row.user){
                         return row.user.username;
                      }}},    
-    				{field:"shopName",title:"商店名",width:200,formatter:function(value,row,index){
+    				{field:"shopName",title:"商店名",width:110,formatter:function(value,row,index){
     						if(row.shop){
     						return row.shop.shopName;
     						}
     				}},
-    				{field:"orderState",title:"订单状态",width:150,formatter:function(value,row,index){
+    				
+    				{field:"totalMoney",title:"费用",width:80},
+    				{field:"userAddress",title:"用户地址",width:170},
+    				{field:"usercomment",title:"用户评论",width:270},
+    				
+    				{field:"createTime",title:"开始时间",width:150,formatter:function(value,row,index){
+    						if(value != null) {
+    								da = new Date(value) ;
+    								var year = da.getFullYear() ;
+    								var month = da.getMonth() ;
+    								var date = da.getDate();
+	    							var hours = da.getHours();
+	    							var minutes = da.getMinutes();
+	    							var seconds = da.getSeconds();
+    							return year+"-"+month+"-"+date+"-"+hours+"-"+minutes+"-"+seconds;
+    								}
+    				}},
+    				
+    				{field:"orderState",title:"订单状态",width:120,formatter:function(value,row,index){
     						if(value != null){
-    						return value=="1"?"<font color='red'>已结单</font>":"<font color='green'>未收货</font>";
+    						
+    						if(value == 0){
+    						return value="<font color='red'>未付款</font>";
     						}
+    						if(value == 1){
+    						return value="<font color='#FFDEAD'>未接单</font>";
+    						}
+    						if(value == 2){
+    						return value="<font color='#EE7621'>已接单</font>";
+    						}
+    						if(value == 3){
+    						return value="<font color='#FF7256'>已接单并发货</font>";
+    						}
+    						if(value == 4){
+    						return value="<font color='#FF3030'>已取消</font>";
+    						}
+    						if(value == 5){
+    						return value="<font color='green'>确认收货</font>";
+    						}
+    						if(value == 6){
+    						return value="<font color='#CDAA7D'>删除订单</font>";
+    						}
+    						if(value == 7){
+    						return value="<font color='#CD853F'>申请取消未接单</font>";
+    						}
+    						if(value == 8){
+    						return value="<font color='#CD853F'>确认收货且已评价</font>";
+    						}
+    						if(value == 9){
+    						return value="<font color=''>失效订单</font>";
+    						}
+    					}	
+    						
     				}},
     				
     				/* {field:"id",title:"id",width:100,}, 

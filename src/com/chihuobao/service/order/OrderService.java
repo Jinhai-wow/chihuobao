@@ -22,7 +22,7 @@ public interface OrderService {
 
 	/*public PageInfo<Ordertable> getOrderListByPagination(Integer page,Integer rows);*/
 	public List<Ordertable> getOrderListByPagination(PageBean pageBean);
-	public int getOrderListSize();
+	public int getOrderListSize(Integer userid);
 	public  Shopcart getShopCart(Integer shopcartid);
 	public UserForOrder  getUser(Integer userid);
 	public Shop getShop(Integer shopid);
@@ -33,6 +33,8 @@ public interface OrderService {
 	public List<Ordergoods> getOrdergoodsListByOrderID(long orderid);
 	public void updateOrder(Ordertable ordertable);
 	public void updateOrderState(long id);
+	
+	public void updateOrderStateNoTakeOrder(long id);
 	public void applyCancelOrder(long id);
 	
 	public List<Ordertable> getOrderNoPay();
@@ -40,5 +42,5 @@ public interface OrderService {
 	public void addComplain(Complain complain);
 	public void updateUser(UserForOrder userForOrder);
 	public void addAddress(Address address);
-	public void modifyAddressState();
+	public void modifyAddressState(Integer userid);
 }

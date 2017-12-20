@@ -47,7 +47,14 @@
 						<li class="dropdown"><a
 							href="${pageContext.request.contextPath }"
 							class="dropdown-toggle" data-toggle="dropdown" role="button"
-							aria-haspopup="true" aria-expanded="false">${business.shop.shopName }<span
+							aria-haspopup="true" aria-expanded="false"><c:choose>
+									<c:when test="${business.shop.shopName != ''} ">
+									${business.shop.shopName } 
+								</c:when>
+									<c:otherwise>
+								尚未申请商店
+								</c:otherwise>
+								</c:choose><span
 								class="caret"></span></a>
 							<ul class="dropdown-menu fc-black">
 								<li><a

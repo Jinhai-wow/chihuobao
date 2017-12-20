@@ -15,28 +15,28 @@ public class Address implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int id;
-	private int userid;
+	private Integer id;
+	private Integer userid;
 	private String address;
-	private int state;
+	private Integer state;
 	
 	
-	public int getState() {
+	public Integer getState() {
 		return state;
 	}
-	public void setState(int state) {
+	public void setState(Integer state) {
 		this.state = state;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	public int getUserid() {
+	public Integer getUserid() {
 		return userid;
 	}
-	public void setUserid(int userid) {
+	public void setUserid(Integer userid) {
 		this.userid = userid;
 	}
 	public String getAddress() {

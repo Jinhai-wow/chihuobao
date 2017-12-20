@@ -174,4 +174,31 @@ public class UserServiceImpl implements UserService {
 		}
 		return storerAccount;
 	}
+
+	//添加地址
+	public void addAddress(Address address) throws Exception {
+		if(address.getAddress()==null){
+			throw new CustomException("输入的地址值为空！");
+		}
+		if(address.getUserid()==null){
+			throw new CustomException("用户未登陆！");
+		}
+		userMapper.addAddress(address);	
+	}
+
+	//删除地址
+	public void deleteAddress(Integer id) throws Exception {
+		if(id==null){
+			throw new CustomException("删除地址异常！");
+		}
+		userMapper.deleteAddress(id);
+	}
+
+	//修改地址
+	public void updateAddress(Address address) throws Exception {
+		if(address==null){
+			throw new CustomException("修改地址异常！");
+		}
+		userMapper.updateAddress(address);
+	}
 }

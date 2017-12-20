@@ -25,6 +25,7 @@ import com.chihuobao.exception.CustomException;
 import com.chihuobao.po.Address;
 import com.chihuobao.po.User;
 import com.chihuobao.service.user.UserService;
+import com.chihuobao.vo.AddressVo;
 import com.chihuobao.vo.StorerAccountEx;
 import com.chihuobao.vo.UserVo;
 
@@ -53,7 +54,7 @@ public class UserController {
 		//指定视图
 //		modelAndView.setViewName("public/index");
 		session.setAttribute("user", user);
-		return "user/index"; 
+		return "user/home"; 
 	}
 	
 	
@@ -79,6 +80,17 @@ public class UserController {
 		return modelAndView; 
 	}
 	
+	//进入home页
+	@RequestMapping("/home")
+	public ModelAndView home() throws Exception{
+			
+		ModelAndView modelAndView=new ModelAndView();
+
+		modelAndView.setViewName("user/home");
+				
+		return modelAndView; 
+	}
+	
 	//进入个人中心
 	@RequestMapping("/personalCenter")
 	public ModelAndView personalCenter() throws Exception{
@@ -94,7 +106,7 @@ public class UserController {
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) throws Exception{
 		session.invalidate();
-		return "user/index";
+		return "user/home";
 	}
 	
 	//用户登录或注册
@@ -102,7 +114,7 @@ public class UserController {
 	public String loginRegisterByMessage(UserVo userVo,HttpSession session) throws Exception{
 		UserVo user=userService.loginRegisterByMessage(userVo);
 		session.setAttribute("user", user);
-		return "user/index";
+		return "user/home";
 	}
 	
 	//用户获取手机验证码
@@ -159,8 +171,8 @@ public class UserController {
 			userImg.transferTo(newFile);
 			
 			BufferedImage src = ImageIO.read(new File(imgPath+newImgName)); // 读入图片文件
-			int imgSrcWidth=src.getWidth();    //得到源图片的宽度
-			int imgSrcHeight=src.getHeight();  //得到源图片的高度
+//			int imgSrcWidth=src.getWidth();    //得到源图片的宽度
+//			int imgSrcHeight=src.getHeight();  //得到源图片的高度
 			//重新指定图片大小
 			int imgWidth=340;
 			int imgHeight=340;
@@ -247,10 +259,46 @@ public class UserController {
 	}
 	
 	//商家退出登录
-	/*@RequestMapping("/StorerLogout")
+	@RequestMapping("/StorerLogout")
 	public String StorerLogout(HttpSession session) throws Exception{
 		session.invalidate();
-		return "home";
-	}*/
+		return "user/home";
+	}
+	
+	//添加用户地址
+	@RequestMapping("/addAddress")
+	public String addAddress(AddressVo addressVo,HttpSession session) throws Exception{
+		Address address=new Address();
+		//添加地址
+		String addre=addressVo.getUsername()+" "+addressVo.getPhone()+" "+addressVo.getLocation()
+				+" "+addressVo.getDetailedAddress();
+		address.setAddress(addre);
+		//添加用户id
+		UserVo user=(UserVo) session.getAttribute("user");
+		int id=user.getUser().getId();
+		address.setUserid(id);
+		userService.addAddress(address);
+		return "user/personal_center";
+	}
+	
+	//删除地址
+	@RequestMapping("/deleteAddress")
+	public @ResponseBody String deleteAddress(Integer id) throws Exception {
+		userService.deleteAddress(id);
+		return "success";
+	}
+	
+	//修改地址
+	@RequestMapping("/updateAddress")
+	public String updateAddress(AddressVo addressVo) throws Exception {
+		Address address=new Address();
+		//添加地址
+		String addre=addressVo.getUsername()+" "+addressVo.getPhone()+" "+addressVo.getLocation()
+				+" "+addressVo.getDetailedAddress();
+		address.setAddress(addre);
+		address.setId(addressVo.getId());
+		userService.updateAddress(address);
+		return "user/personal_center";
+	}
 	
 }

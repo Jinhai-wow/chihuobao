@@ -11,15 +11,24 @@ public class Ordertable implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long id;
-
-
-
 	public long getId() {
 		return id;
 	}
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	private String usercomment; //用户对订单的评论 --谢韦烈
+	
+	
+
+	public String getUsercomment() {
+		return usercomment;
+	}
+
+	public void setUsercomment(String usercomment) {
+		this.usercomment = usercomment;
 	}
 
 	private Integer userid;

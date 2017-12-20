@@ -32,6 +32,7 @@
 <!-- 星级提示修改为中文，只修改 star-rating.js，star-rating.min.js没有修改-->
 <script src="js/star-rating.js"></script>
 <script src="js/jquery-ui.js"></script>
+<script src="js/jquery.validate.js"></script>
 
 
 <style type="text/css">
@@ -93,10 +94,39 @@
 
 	$(function() {
 
-		/* 获取星星的值
-		var stars=$('#shopservice').val();
 
-		 */
+
+		/*表单校验  */
+
+		$("#evaluateForm").validate({
+			rules : {
+				usercomment : {
+					required : true,
+					maxlength : 100
+				}
+			},
+			messages : {
+				usercomment : {
+					required : "请评价，评价不能为空",
+					maxlength : "评价字数不能超过100字"
+				}
+			}
+		});
+
+
+		
+		$("#evaluateForm").validate({
+			submitHandler : function(form) {
+			
+				form.submit();
+			}
+		});
+ 
+
+
+
+
+
 		$(function() {
 			$("#slider").slider({
 				range : "min",
@@ -120,7 +150,7 @@
 	<div class="container-fluid" style="background-color:#1e89e0;">
 		<div class="navbar-header">
 			<a class="navbar-brand"
-				href="${pageContext.request.contextPath }/home.jsp"><img
+				href="${pageContext.request.contextPath }/user/index.action"><img
 				class="chb-logo"
 				src="${pageContext.request.contextPath }/img/chb-logo.jpg" alt="吃货宝"></a>
 		</div>
@@ -128,7 +158,7 @@
 	</div>
 	</nav>
 	<div class="container containerDiv">
-		<form
+		<form id="evaluateForm"
 			action="${pageContext.request.contextPath}/submitEvaluateOrder.action"
 			method="post">
 			<input type="hidden" name="id" value="${order.id}">
@@ -138,7 +168,7 @@
 			<div class="row topDiv">
 				<!--上面左  -->
 				<div class="col-md-4 topDivLeft">
-					<img src="img/luna.jpg" class="img-circle goods"> <span>
+					<img src="${pageContext.request.contextPath }/upload/business/${order.shoppic}" class="img-circle goods"> <span>
 						${order.shopname}<br> <c:forEach items="${ordergoodslist}"
 							var="ordergoods">
 							<p class="text-muted">${ordergoods.goodsname}</p>
@@ -163,7 +193,7 @@
 				<div class="shopServiceStar">
 					<!-- 使用 data-show-caption="false"取消右边注释-->
 					<input id="shopservice" data-show-clear="false"
-						class="rating rating-loading" value="0" data-min="0" data-max="5"
+						class="rating rating-loading" value="1" data-min="0" data-max="5"
 						data-step="0.5" data-size="xs" name="shopservice">
 				</div>
 			</div>
@@ -187,10 +217,20 @@
 				<div class="col-md-3 shopServiceStar">
 					<!-- 使用 data-show-caption="false"取消右边注释-->
 					<input id="evaluatefood" data-show-clear="false"
-						class="rating rating-loading" value="0" data-min="0" data-max="5"
+						class="rating rating-loading" value="1" data-min="0" data-max="5"
 						data-step="0.5" data-size="xs" name="evaluatefood">
 				</div>
 			</div>
+
+			<hr>
+			<!--文字评论  -->
+
+			<h2 style="margin-top:25px;margin-left:50px;">评价:</h2>
+			<textarea class="form-control" rows="3" name="usercomment"
+				id="usercomment"></textarea>
+
+
+
 
 			<div class="row pull-right">
 				<input type="submit" class="btn btn-primary " value="提交评价" />

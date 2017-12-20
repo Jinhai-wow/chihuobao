@@ -5,6 +5,13 @@ public class PageBean {
 	
 	private Integer page;
 	private Integer rows;
+	private Integer userid;
+	public Integer getUserid() {
+		return userid;
+	}
+	public void setUserid(Integer userid) {
+		this.userid = userid;
+	}
 	public Integer getPage() {
 		return page;
 	}

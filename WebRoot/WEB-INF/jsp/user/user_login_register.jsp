@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
-			<img src="" alt="logo">
+			<img src="${pageContext.request.contextPath}/img/chb-logo-l.png" alt="logo">
 			<div class="login-type">
 				<a id="note" class="font-color" href="javascript:;">短信登陆</a>
 				<a id="password" href="javascript:;">密码登陆</a>

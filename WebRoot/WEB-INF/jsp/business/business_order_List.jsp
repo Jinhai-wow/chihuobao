@@ -43,21 +43,25 @@
 $(document).ready(function() {	
 	cuidan();
 /************************未读系统消息*****************************/
-			var shopId="${business.shop.id}";
+			var storerId="${business.storerAccount.id}";
     	 /*    alert(shopId); */
     	    var tmp = "0";
+    	    /* alert(shopId); */
     	    var i = setInterval(function() {
     			var a = new Date().getMinutes();
-    					 $.post("${pageContext.request.contextPath}/selectMessageByStorerId.action",{'userId':shopId}, function(data) {
+    					 $.post("${pageContext.request.contextPath}/selectMessageByStorerId.action",{'storerId':storerId}, function(data) {
     						var value = data.length;
     						
     						if(parseInt(value)  > parseInt(tmp) ){
     							var noReadMsg = value-tmp;
-    							alert(noReadMsg);
     							$("#sysMsg").html(noReadMsg);
+    							tmp = value;
+    						/* tmp = value;
+    							
+    							alert(tmp); */
     						}
     					}); 
-    		}, 10000);
+    		}, 3000);
     
 
 });	
@@ -283,7 +287,7 @@ $(document).ready(function() {
 							<ul class="dropdown-menu fc-black">
 								<li><a
 									href="${pageContext.request.contextPath }/getShopMsg.action">个人中心</a></li>
-								<li><a href="${pageContext.request.contextPath }">退出登录</a></li>
+								<li><a href="${pageContext.request.contextPath }/StorerLogout.action">退出登录</a></li>
 							</ul></li>
 					</ul>
 				</div>
@@ -336,10 +340,7 @@ $(document).ready(function() {
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="container-fluid">
 					<div class="path">
-						<span>当前位置：</span> <span><a
-							href="${pageContext.request.contextPath }" class="normal">广东海洋大学</a></span>
-						<span><a href="${pageContext.request.contextPath }">[切换地址]</a>
-						</span> <span><i>&gt;</i>&nbsp;&nbsp;近三个月订单</span>
+						<span><i>&gt;</i>&nbsp;&nbsp;近三个月订单</span>
 					</div>
 					<!-- 选择工具栏 -->
 						<div class="row list-menu">
@@ -387,7 +388,7 @@ $(document).ready(function() {
 										<td style="text-align: center;vertical-align: middle;">${list.remark }</td>
 										<td style="text-align: center;vertical-align: middle;">￥&nbsp;${list.totalmoney }</td>
 										<td style="text-align: center;vertical-align: middle;"><c:choose>
-												<c:when test="${0 eq list.orderstate }">已拒绝接单</c:when>
+												<%-- <c:when test="${0 eq list.orderstate }">已拒绝接单</c:when>
 												<c:when test="${1 eq list.orderstate }">未接单</c:when>
 												<c:when test="${2 eq list.orderstate }">已接单，待发货</c:when>
 												<c:when test="${3 eq list.orderstate }">已发货</c:when>
@@ -396,11 +397,27 @@ $(document).ready(function() {
 												<c:when test="${6 eq list.orderstate }">申请取消订单</c:when>
 												<c:when test="${7 eq list.orderstate }">客户已评价</c:when>
 												<c:when test="${8 eq list.orderstate }">取消失败，待发货</c:when>
+												<c:when test="${9 eq list.orderstate }">该订单已失效</c:when> --%>
+												<c:when test="${-1 eq list.orderstate }">已拒绝接单</c:when>
+												<c:when test="${0 eq list.orderstate }">未付款</c:when>
+												<c:when test="${1 eq list.orderstate }">未接单</c:when>
+												<c:when test="${2 eq list.orderstate }">已接单，待发货</c:when>
+												<c:when test="${3 eq list.orderstate }">已发货</c:when>
+												<c:when test="${4 eq list.orderstate }">订单已取消</c:when>
+												<c:when test="${5 eq list.orderstate }">已确认收货</c:when>
+												<c:when test="${7 eq list.orderstate }">申请取消订单</c:when>
+												<c:when test="${8 eq list.orderstate }">客户已评价</c:when>
+												<c:when test="${10 eq list.orderstate }">取消失败，待发货</c:when>
 												<c:when test="${9 eq list.orderstate }">该订单已失效</c:when>
 											</c:choose></td>
 										<td
 											style="text-align: center;vertical-align: middle;line-height: 2em;">
 											<c:choose>
+												<c:when test="${-1 eq list.orderstate }">
+													<a
+														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
+														class="btn btn-primary btn-xs">查看</a>
+												</c:when>
 												<c:when test="${0 eq list.orderstate }">
 													<a
 														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
@@ -443,29 +460,30 @@ $(document).ready(function() {
 														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
 														class="btn btn-primary btn-xs">查看</a>
 												</c:when>
-												<c:when test="${6 eq list.orderstate }">
+												<c:when test="${7 eq list.orderstate }">
 													<a id="${list.id }"
-														href="${pageContext.request.contextPath }"
-														class="btn btn-primary btn-xs">接受</a>
+														href="javascript:;"
+														class="btn btn-primary btn-xs"
+														onclick="backAcceptOrder(this)">接受</a>
 													<br>
 													<a id="${list.id }" href="javascript:;"
 														class="btn btn-primary btn-xs" data-toggle="modal"
-														data-target="#sendOrderModal"
+														data-target="#backRefuseModal"
 														onclick="backRefuseSetId(this)">拒绝</a>
 													<br>
 													<a
 														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
 														class="btn btn-primary btn-xs">查看</a>
 												</c:when>
-												<c:when test="${7 eq list.orderstate }">
+												<c:when test="${8 eq list.orderstate }">
 													<a
 														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
 														class="btn btn-primary btn-xs">查看</a>
 												</c:when>
-												<c:when test="${8 eq list.orderstate }">
+												<c:when test="${10 eq list.orderstate }">
 													<a id="${list.id }" href="javascript:;"
 														class="btn btn-primary btn-xs" data-toggle="modal"
-														data-target="#backRefuseModal"
+														data-target="#sendOrderModal"
 														onclick="sendOrderSetId(this)">发货</a><br>
 													<a
 														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
@@ -569,8 +587,7 @@ $(document).ready(function() {
 						<div class="">
 							<input id="arrivetimePick" name="arrivetime" value=""
 								class="form-control" type="text"></input>
-							<input name="range_example_3_start" id="range_example_3_start" value="" class="hasDatepicker" type="text"> 
-	 						<input name="range_example_3_end" id="range_example_3_end" value="" class="hasDatepicker" type="text">
+							
 						</div>
 					</div>
 				</div>

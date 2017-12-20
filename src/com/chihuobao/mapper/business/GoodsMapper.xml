@@ -388,15 +388,15 @@
 	</select>
 	<select id="selectCancelingOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
 		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 
-		where shopid = #{shopid,javaType=INTEGER} and orderstate =6  order by createtime desc
+		where shopid = #{shopid,javaType=INTEGER} and orderstate =7  order by createtime desc
 	</select>
 	<select id="selectFinishOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
 		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 
-		where shopid = #{shopid,javaType=INTEGER} and (orderstate =5 or orderstate=7) order by createtime desc
+		where shopid = #{shopid,javaType=INTEGER} and (orderstate =5 or orderstate=8) order by createtime desc
 	</select>
 	<select id="selectNoSendOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
 		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 
-		where shopid = #{shopid,javaType=INTEGER} and (orderstate =2 or orderstate=8) order by createtime desc
+		where shopid = #{shopid,javaType=INTEGER} and (orderstate =2 or orderstate=10) order by createtime desc
 	</select>
 	<select id="selectSendOrderByShopId" resultMap="ordertable" parameterType="java.lang.Integer">
 		select * from ordertable LEFT JOIN ordergoods on ordertable.id=ordergoods.orderId 
@@ -409,16 +409,16 @@
 		update ordertable set orderstate=3,delivermethod=#{delivermethod},arrivetime=#{arrivetime} where id=#{id}
 	</update>
 	<update id="updateOrderStateBackRefuse" parameterType="Ordertable">
-		update ordertable set orderstate=8,shopremark=#{shopremark} where id=#{id}
+		update ordertable set orderstate=10,shopremark=#{shopremark} where id=#{id}
 	</update>
 	<update id="updateOrderStateBackAccept" parameterType="Long">
 		update ordertable set orderstate=4 where id=#{id}
 	</update>
 	<update id="updateOrderRefuse" parameterType="Ordertable">
-		update ordertable set orderstate=0,shopremark=#{shopremark} where id=#{id}
+		update ordertable set orderstate=-1,shopremark=#{shopremark} where id=#{id}
 	</update>
 	<!-- 查找用户 -->
 	<select id="getUser" parameterType="Integer" resultType="user">
-		SELECT * from User u LEFT JOIN Address a on u.id=a.userid where a.state=1
+		SELECT * from User u LEFT JOIN Address a on u.id=a.userid where (a.state=1 and u.id=#{id})
 	</select>
 </mapper>

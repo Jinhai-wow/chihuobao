@@ -34,7 +34,7 @@
 		var styleId = $(obj).attr("id");
 		$.ajax({
 			type : "post",
-			url : "${pageContext.request.contextPath }/deleteGoodStyle.action?id=" + styleId,
+			url : "${pageContext.request.contextPath }/deleteGoodsStyle.action?id=" + styleId,
 			dataType : "json",
 			success : function(data) {
 				if (data == -1)
@@ -48,8 +48,7 @@
 				alert("系统错误！");
 			}
 		});
-	}
-	;
+	};
 	/******************************添加商品类型****************************/
 	function addGoodStyle() {
 		var shopId = $("#shopId").val();
@@ -58,7 +57,7 @@
 		/* alert(JSON.stringify(jsonData)); */
 		$.ajax({
 			type : "post",
-			url : "${pageContext.request.contextPath }/addGoodStyle.action",
+			url : "${pageContext.request.contextPath }/addGoodsStyle.action",
 			dataType : "json",
 			data : {
 				"shopId" : shopId,
@@ -168,10 +167,7 @@
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="container-fluid">
 					<div class="path">
-						<span>当前位置：</span> <span><a
-							href="${pageContext.request.contextPath }" class="normal">广东海洋大学</a></span>
-						<span><a href="${pageContext.request.contextPath }">[切换地址]</a>
-						</span>
+						
 					</div>
 
 					<form id="businessForm" class="form-horizontal" role="form"

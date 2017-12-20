@@ -93,21 +93,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">
 				  <!--<li class="active"><a href="#">首页</a></li>-->
-	            <li><a href="#">首页</a></li>
-	            <li><a href="${pageContext.request.contextPath }/orderList.action">我的订单</a></li>
-	            <li><a href="#">加盟合作</a></li>
+	            <li><a href="${pageContext.request.contextPath}/user/index.action">首页</a></li>
+	            <li><a href="javascript:;">我的订单</a></li>
+	            <li><a href="javascript:;">加盟合作</a></li>
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
-	            <li><a href="#">规则中心</a></li>
+	            <li><a href="javascript:;">规则中心</a></li>
 	            <li class="dropdown">
 					  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="center-username">${user.user.username}</span><span class="caret"></span></a>
 					  <ul class="dropdown-menu fc-black">
-						  <li><a href="#">个人中心</a></li>
-						  <li><a href="#">我的收藏</a></li>
-						  <li><a href="#">我的地址</a></li>
-						  <li><a href="#">安全设置</a></li>
-						  <li><a href="#">退出登录</a></li>
+						  <li><a href="${pageContext.request.contextPath}/user/personalCenter.action">个人中心</a></li>
+						  <li><a href="javascript:;">我的收藏</a></li>
+						  <li><a href="javascript:;">我的地址</a></li>
+						  <li><a href="${pageContext.request.contextPath}/userChat.action" target="view_window">客服中心</a>
+						  
+						  <li><a href="javascript:;">安全设置</a></li>
+						  <li><a href="${pageContext.request.contextPath}/user/logout.action">退出登录</a></li>
 					  </ul>
+				</li>
+				<li>
+					<a id="my-message" href="javascript:;">我的消息<span id="my-message-size"></span></a>
 				</li>
 	          </ul>
 	        </div><!--/.nav-collapse -->
@@ -118,9 +123,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div id="main">
 		<div class="container path">
 			<span>当前位置：</span>
-			<span><a href="#" class="normal">广东海洋大学</a></span>
-			<span><a href="#">[切换地址]</a> </span>
-			<span><i>&gt;</i>&nbsp;&nbsp;近三个月订单</span>
+			<span id="center-user-addr">未定位</span>
+			<span><a href="${pageContext.request.contextPath}/user/home.action">[切换地址]</a> </span>
+			<span id="center-item"></span>
 		</div>
 		<div class="container main-content">
 			<div class="row">
@@ -133,15 +138,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</ul>
 					<ul class="nav nav-sidebar">
 						<li><i class="icon Hui-iconfont">&#xe63a;</i><span>我的资产</span></li>
-						<li><a class="setfontcolor" href="#">我的红包</a></li>
-						<li><a class="setfontcolor" href="#">账户余额</a></li>
-						<li><a class="setfontcolor" href="#">我的金币</a></li>
+						<li><a class="setfontcolor" href="javascript:;">我的红包</a></li>
+						<li><a class="setfontcolor" href="javascript:;">账户余额</a></li>
+						<li><a class="setfontcolor" href="javascript:;">我的金币</a></li>
 					</ul>
 					<ul class="nav nav-sidebar">
 						<li><i class="icon Hui-iconfont">&#xe60d;</i><span>我的资料</span></li>
 						<li><a class="setfontcolor" id="personal-data" href="javascript:;">个人资料</a></li>
-						<li><a class="setfontcolor" href="#">地址管理</a></li>
-						<li><a class="setfontcolor" href="#">安全中心</a></li>
+						<li><a class="setfontcolor" id="address-management" href="javascript:;">地址管理</a></li>
+						<li><a class="setfontcolor" href="javascript:;">安全中心</a></li>
 						<li><a class="setfontcolor" id="modify-password" href="javascript:;">修改密码</a></li>
 					</ul>
 					<ul class="nav nav-sidebar">
@@ -163,46 +168,46 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="col-xs-2">
 					<ul class="nav nav-sidebar">
 						<li><span>商务合作</span></li>
-						<li><a href="#">我要开店</a></li>
-						<li><a href="#">加盟指南</a></li>
-						<li><a href="#">市场合作</a></li>
-						<li><a href="#">开放平台</a></li>
+						<li><a href="javascript:;">我要开店</a></li>
+						<li><a href="javascript:;">加盟指南</a></li>
+						<li><a href="javascript:;">市场合作</a></li>
+						<li><a href="javascript:;">开放平台</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-2">
 					<ul class="nav nav-sidebar">
 						<li><span>商务合作</span></li>
-						<li><a href="#">我要开店</a></li>
-						<li><a href="#">加盟指南</a></li>
-						<li><a href="#">市场合作</a></li>
-						<li><a href="#">开放平台</a></li>
+						<li><a href="javascript:;">我要开店</a></li>
+						<li><a href="javascript:;">加盟指南</a></li>
+						<li><a href="javascript:;">市场合作</a></li>
+						<li><a href="javascript:;">开放平台</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-2">
 					<ul class="nav nav-sidebar">
 						<li><span>商务合作</span></li>
-						<li><a href="#">我要开店</a></li>
-						<li><a href="#">加盟指南</a></li>
-						<li><a href="#">市场合作</a></li>
-						<li><a href="#">开放平台</a></li>
+						<li><a href="javascript:;">我要开店</a></li>
+						<li><a href="javascript:;">加盟指南</a></li>
+						<li><a href="javascript:;">市场合作</a></li>
+						<li><a href="javascript:;">开放平台</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-3">
 					<ul class="nav nav-sidebar">
 						<li><span>商务合作</span></li>
-						<li><a href="#">我要开店</a></li>
-						<li><a href="#">加盟指南</a></li>
-						<li><a href="#">市场合作</a></li>
-						<li><a href="#">开放平台</a></li>
+						<li><a href="javascript:;">我要开店</a></li>
+						<li><a href="javascript:;">加盟指南</a></li>
+						<li><a href="javascript:;">市场合作</a></li>
+						<li><a href="javascript:;">开放平台</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-3">
 					<ul class="nav nav-sidebar">
 						<li><span>商务合作</span></li>
-						<li><a href="#">我要开店</a></li>
-						<li><a href="#">加盟指南</a></li>
-						<li><a href="#">市场合作</a></li>
-						<li><a href="#">开放平台</a></li>
+						<li><a href="javascript:;">我要开店</a></li>
+						<li><a href="javascript:;">加盟指南</a></li>
+						<li><a href="javascript:;">市场合作</a></li>
+						<li><a href="javascript:;">开放平台</a></li>
 					</ul>
 				</div>
 			</div>
@@ -210,11 +215,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<span class="owner">所有方：广东九州有限公司</span>
 				<p>
 					增值电信业务许可证 :
-					<a href="#">沪B2-20150033</a>
+					<a href="javascript:;">沪B2-20150033</a>
 					|
-					<a href="#">沪ICP备 09007032</a>
+					<a href="javascript:;">沪ICP备 09007032</a>
 					|
-					<a href="#">上海工商行政管理</a>
+					<a href="javascript:;">上海工商行政管理</a>
 					Copyright ©2008-2017 ele.me, All Rights Reserved.
 				</p>
 			</div>
@@ -222,13 +227,52 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</footer>
 </div>
 
-<script src="js/personal_center.js"></script>
 <script type="text/javascript" language="javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/jquery-3.2.1.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/jquery.Jcrop.js"></script>
 <script src="js/personal_center.js"></script>
 <script>
+
+var userbroadname='${user.user.phone }';
+    	/* alert(userbroadname); */
+    	
+    	var ws;  // 管理登陆，退出，用户列表的 socket
+    	
+    	
+    	window.onload= ws_init;
+			
+	    function  ws_init(){
+				 var target="ws://172.16.12.159:8080/CHB/broadcast?username="+userbroadname;
+		   		  if ('WebSocket' in window) {
+		                 ws = new WebSocket(target);
+		             } else if ('MozWebSocket' in window) {
+		                 ws = new MozWebSocket(target);
+		             } else {
+		                 alert('WebSocket is not supported by this browser.');
+		                 return;
+		             }
+		             
+		   		  ws.onopen=function(){
+			    	alert("进入了");	
+		   		  };
+		   		   
+		   		  window.onbeforeunload=function(){
+		   		  		ws.close();
+		   		  	
+		   		  }
+		   		  
+		   		  ws.onmessage=function(event){
+		   			  		
+		   			  	eval("var msg="+event.data+";"); 
+							
+							 if(msg.content!=undefined){
+								alert(msg.content);
+							}	 
+		   		  } 	 
+	   	}
+
+
 </script>
   </body>
 </html>

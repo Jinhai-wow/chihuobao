@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.chihuobao.util.Utils;
+import com.chihuobao.vo.UserVo;
 import com.chihuobao.po.Address;
 import com.chihuobao.po.Complain;
 import com.chihuobao.po.Ordergoods;
@@ -32,6 +33,7 @@ import com.chihuobao.po.UtilBean;
 import com.chihuobao.po.Shop;
 import com.chihuobao.po.Shopcart;
 import com.chihuobao.po.Shopcartlist;
+import com.chihuobao.po.User;
 import com.chihuobao.po.UserForOrder;
 import com.chihuobao.po.UserForOrderAddress;
 import com.chihuobao.service.order.OrderService;
@@ -63,7 +65,10 @@ public class OrderController {
 	public String getOrder(Model model, @RequestParam("id") long id) {
 
 		Ordertable order = orderService.getOrder(id);
+		System.out.println("order.getUserid()==="+order.getUserid());
 		UserForOrder user = orderService.getUser(order.getUserid());
+		System.out.println("user========"+user);
+		model.addAttribute("user", user);
 		model.addAttribute("username", user.getUsername());
 		model.addAttribute("order", order);
 		model.addAttribute("ordergoodslist", order.getOrdergoodsList());
@@ -118,9 +123,11 @@ public class OrderController {
 	 * 
 	 */
 	@RequestMapping("/ajaxorderlist.action")
-	public @ResponseBody List<Ordertable> ajaxGetOrderListByPagination(@RequestBody PageBean pageBean) {
+	public @ResponseBody List<Ordertable> ajaxGetOrderListByPagination(@RequestBody PageBean pageBean, HttpSession session) {
 		System.out.println(pageBean);
 		/* 先查ordertable的，再查ordergoods的 */
+		UserVo uservo=(UserVo) session.getAttribute("user");
+		pageBean.setUserid(uservo.getUser().getId());
 		List<Ordertable> orderList = orderService.getOrderListByPagination(pageBean);
 
 		for (int i = 0; i < orderList.size(); i++) {
@@ -139,8 +146,9 @@ public class OrderController {
 
 	/* 使用ajax获取订单数量用于计算总页数 */
 	@RequestMapping("/ajaxorderlistsize.action")
-	public @ResponseBody Integer ajaxGetOrderListSize() {
-		return orderService.getOrderListSize();
+	public @ResponseBody Integer ajaxGetOrderListSize(HttpSession session) {
+		UserVo uservo=(UserVo) session.getAttribute("user");
+		return orderService.getOrderListSize(uservo.getUser().getId());
 	}
 
 	/* 不加@RequestParam("shopcartId")也行，因为Integer shopcartid的shopcartid与传递的相同 */
@@ -148,10 +156,13 @@ public class OrderController {
 	/* 下单则从shopcart和shopcartlist表查 */
 	@RequestMapping("/payOrder.action")
 	public String getShopCart(Model model, @RequestParam("shopcartid") Integer shopcartid,
-			@RequestParam("userid") Integer userid) {
+			HttpSession session) {
+		System.out.println("shopcartid============="+shopcartid);
 		Shopcart shopcart = orderService.getShopCart(shopcartid);
-		System.out.println(shopcartid);
-		UserForOrder user = orderService.getUser(userid);
+		
+		
+		UserVo uservo=(UserVo) session.getAttribute("user");
+		UserForOrder user = orderService.getUser(uservo.getUser().getId());
 		Shop shop = orderService.getShop(shopcart.getShopid());
 		/* model.addAttribute("shop",shop); */
 		model.addAttribute("shopcart", shopcart);
@@ -161,7 +172,7 @@ public class OrderController {
 		model.addAttribute("addressfromtable", user.getAddresslist().get(0));
 		System.out.println("user.getAddresslist().get(0)" + user.getAddresslist().get(0).getAddress());
 		model.addAttribute("shopcartid", shopcartid);
-		model.addAttribute("userid", userid);
+		model.addAttribute("userid", uservo.getUser().getId());
 		/* System.out.println(shopcart); */
 		/* System.out.println(user); */
 		return "order/payOrder";
@@ -174,10 +185,11 @@ public class OrderController {
 	 */
 
 	@RequestMapping("/submitOrder.action")
-	public String sumitOrder(UtilBean utilbean, Model model) {
+	public String sumitOrder(UtilBean utilbean, Model model,RedirectAttributes attributes) {
 
 		/* json转成shopcartlist lib 12月7日加入了几个json依赖的包 */
-
+		
+      System.out.println("userid===="+utilbean.getUserid());
 		List<Shopcartlist> shopcartlist = new ArrayList<Shopcartlist>();
 		JSONArray jsonArray = JSONArray.fromObject(utilbean.getOrdergoodsinfo());
 
@@ -200,7 +212,7 @@ public class OrderController {
 		/* 3设置ordertable里面的值 对着ordertable表的列设置 */
 		long orderid = Utils.getOrderID();
 		ordertable.setId(orderid);
-		ordertable.setUserid(user.getId());
+		ordertable.setUserid(utilbean.getUserid());
 		ordertable.setShopid(utilbean.getShopid());
 		ordertable.setShoppic(shop.getShopPic());
 		ordertable.setShopcartid(utilbean.getShopcartid());
@@ -213,8 +225,8 @@ public class OrderController {
 
 		ordertable.setCreatetime(new Date());
 
-		/* 订单状态 0未付款 1已付款并接单，2送货中，3订单完成，4订单取消（申请退款） */
-		ordertable.setOrderstate(1);
+		/* 订单状态 0未付款 1未接单 默认未付款，付款后才更改状态未未接单 */
+		ordertable.setOrderstate(0);
 		ordertable.setTotalmoney(utilbean.getTotalMoney());
 		ordertable.setRemark(utilbean.getRemark());
 		ordertable.setShopphone(shop.getTelephone());
@@ -236,8 +248,13 @@ public class OrderController {
 		}
 
 		System.out.println("ordertable" + ordertable);
-
-		return "redirect:/orderList.action";
+		
+		attributes.addAttribute("orderId", ordertable.getId());
+		attributes.addAttribute("money", "0.1");
+		attributes.addAttribute("FrpId", "CCB-NET-B2C");
+		
+		
+		return "redirect:/pay.action";
 
 	}
 
@@ -337,7 +354,7 @@ public class OrderController {
 
 		/* orderService.updateUser(userForOrder); */
 		/*先把其他地址state置0*/
-		orderService.modifyAddressState();
+		orderService.modifyAddressState(userForOrderAddress.getUserid());
 		orderService.addAddress(address);
 		/* shopcartid=1&userid=1 */
 		attributes.addAttribute("shopcartid", userForOrderAddress.getShopcartid());
@@ -346,6 +363,17 @@ public class OrderController {
 		return "redirect:/payOrder.action";
 
 	}
+	
+	//支付临时跳转
+		@RequestMapping(value="/tmp.action")
+		public String tmp(Long id){
+			
+			orderService.updateOrderStateNoTakeOrder(id);
+			System.out.println(id+"------------++++++++++++---------------");
+			return "redirect:/orderList.action";
+		}
+	
+	
 
 	public OrderService getOrderService() {
 		return orderService;

@@ -33,6 +33,7 @@ public class ShopCartController {
 			Gson gson=new Gson();
 			ShopCartMsgVo fromJson = gson.fromJson(result, ShopCartMsgVo.class);
 			//在数据库中查找 商店、用户、商品
+			int shocatid = -1;
 			try {
 				Shop shop = shopCartService.findShopByShopId(fromJson.getShopId());
 				User user = shopCartService.findUserByUserId(fromJson.getUserId());
@@ -62,13 +63,13 @@ public class ShopCartController {
 						shopCartService.createShopCartGoods(shopCartList);
 						shopCartService.selectLastShopCartId();
 					}
-				
+					shocatid = shopCart.getShopcartid();
 				}
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
 			}
-			return ""+shopCartService.selectLastShopCartId();
+			return ""+shocatid;
 		}
 
 }

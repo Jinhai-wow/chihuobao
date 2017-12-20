@@ -33,6 +33,7 @@ import com.chihuobao.po.Shop;
 import com.chihuobao.po.ShopData;
 import com.chihuobao.po.ShopStyle;
 import com.chihuobao.po.StorerAccount;
+import com.chihuobao.po.StorerMessage;
 import com.chihuobao.po.UserComment;
 import com.chihuobao.service.business.BusinessService;
 import com.chihuobao.util.MailUtil;
@@ -177,7 +178,7 @@ public class BusinessController {
 		try {
 			ordertables = businessService.seleteCancelingOrderByShopId(shop.getId());
 			model.addAttribute("ordersList", ordertables);
-			model.addAttribute("orderState", 6);
+			model.addAttribute("orderState", 7);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -430,7 +431,7 @@ public class BusinessController {
 		} catch (Exception e) {
 			record = -1;
 		}
-		return "redirect:/toGoodEdit.action?id=" + good.getGoods().getId();
+		return "redirect:/getGoodsList.action";
 	}
 
 	/**
@@ -559,7 +560,7 @@ public class BusinessController {
 			if (shop == null || shop.getAuditState() == 2 || shopData == null) {
 				return "business/business_noshopOrwaitingaudit";
 			}
-			List<ManInfo> manInfos = businessService.selectSysMsgByShopId(businessCustom.getShop().getId());
+			List<StorerMessage> manInfos = businessService.selectSysMsgByAccountId(businessCustom.getStorerAccount().getId());
 			model.addAttribute("sysMsgs", manInfos);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -958,7 +959,7 @@ public class BusinessController {
 				if (shop!=null) {
 					ShopData shopData = businessService.selectShopDataByShopId(shop.getId());
 					if (shopData == null) {
-						return "business/business_noshopOrwaitingaudit";
+						return "business/business_shop_message_noshop";
 					}
 					model.addAttribute("shopData", shopData);
 				}
@@ -1059,20 +1060,22 @@ public class BusinessController {
 		Shop shop = businessCustom.getShop();
 		
 		try {
-			ShopData shopData = businessService.selectShopDataByShopId(shop.getId());
-			if (shop == null || shop.getAuditState() == 2 || shopData == null) {
-				if (shop!=null) {
-					if (shopData == null) {
-						model.addAttribute("shopData", shopData);
-						return "business/business_noshopOrwaitingaudit";
-					}
-					model.addAttribute("shopData", shopData);
-				}
+			if (shop == null || shop.getAuditState() == 2) {
 				return "business/business_shop_message_noshop";
+			}else {
+				ShopData shopData = businessService.selectShopDataByShopId(shop.getId());
+				if (shopData == null) {
+					model.addAttribute("shopData", shopData);
+					return "business/business_shop_message_noshop";
+				}
+				model.addAttribute("shopData", shopData);
 			}
-			model.addAttribute("shopData", shopData);
+			
+//			model.addAttribute("shopData", shopData);
 		} catch (Exception e) {
 			// TODO: handle exception
+//			System.out.println("");
+			return "business/business_shop_message_noshop";
 		}
 
 		return "business/business_shopData_message";
@@ -1264,10 +1267,11 @@ public class BusinessController {
 	public String getBusiness(Model model, BusinessCustom business, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) {
 		StorerAccount account = (StorerAccount) session.getAttribute("storerAccount");
+		
 		String record;
 		try {
-//			StorerAccount account = businessService.selectAccountById(4);
-			if (account == null) {
+			StorerAccount storerAccount = businessService.selectAccountById(account.getId());
+			if (storerAccount == null) {
 				return "user/storer_login_register";
 			}
 			Shop shop = businessService.selectShopByAccountId(account.getId());
@@ -1306,4 +1310,11 @@ public class BusinessController {
 		return "business/business_order_List";
 	}
 
+	
+	//退出登录
+		@RequestMapping(value="/StorerLogout.action")
+		public String StorerLogout(HttpSession session) throws Exception{
+			session.invalidate();
+			return "user/storer_login_register";
+		}
 }

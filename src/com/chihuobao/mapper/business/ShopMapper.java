@@ -53,4 +53,6 @@ public interface ShopMapper {
 	int insertShopData(ShopData shopData);//
 
 	int countOrdersByShopId(Integer shopId);//商家订单数
+
+	List<Ordertable> selectPaiedOrdersByShopId(Integer id);//已完成订单
 }

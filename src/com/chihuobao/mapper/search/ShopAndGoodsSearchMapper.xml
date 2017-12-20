@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chihuobao.mapper.search.ShopAndGoodsSearchMapper">
+
+
+
+	<select id="shopSearch" parameterType="String" resultType="com.chihuobao.po.Shop">
+		select * from shop where shopname like "%"#{shopname}"%"
+	</select>
+	
+	<!-- 根据拿到的页面显示的商家列表与用户输入的内容
+	查找这些商家下的所有goodsstyle
+	查找这些goodsstyle下所有的goodName含有用户输入内容的 -->
+	<resultMap type="com.chihuobao.vo.GetSearchShopAndGoodsVo" id="linkSearchGoodsList">
+		<id column="id" property="id"/>
+		<result column="shopName" property="shopName"/>
+		<result column="shopScore" property="shopScore"/>
+		<result column="openState" property="openState"/>
+		<!-- JavaType是用来指定pojo中属性的类型，而ofType指定的是映射到list集合属性中pojo的类型。 -->
+		<!-- 估计是 映射了type=“”中的 哪个属性 显示到查找的表中 -->
+		<collection property="getSearchGoodsStyleVo" ofType="com.chihuobao.vo.GetSearchGoodsStyleVo">
+			<collection property="getSearchGoodsVo" ofType="com.chihuobao.vo.GetSearchGoodsVo">
+				<id column="id" property="id"/>
+				<result column="goodName" property="goodName"/>
+				<result column="price" property="price"/>
+				<!-- sellState销售状态（是否在销售，如果不在销售状态，html页面去购买的按钮不能点击、并设置为灰色） -->
+				<result column="sellState" property="sellState"/>
+			</collection>
+		</collection>
+	</resultMap>
+	<select id="searchGoodsList" parameterType="com.chihuobao.vo.GetSearchMsg" 
+	resultMap="linkSearchGoodsList">
+	select 
+	s.id,s.shopname,s.shopscore,s.openState,g.id as goodsId,g.goodname,g.price,g.sellstate 
+	from 
+	(
+	select 
+	id,shopname,shopscore,openstate
+	from 
+	shop 
+	<where>
+	<!-- （item表示集合中每一个元素进行迭代时的别名）-->
+		<foreach collection="nearbyShopIdList" item="id" separator="," open="id in (" close=")">
+			#{id}
+		</foreach>
+	</where> 
+	) as s
+	join goodsstyle style
+	on s.id = style.shopid
+	join goods g
+	on (g.goodstyleid = style.id and goodname like "%"#{searchMsg}"%")
+	</select>
+</mapper>

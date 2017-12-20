@@ -76,7 +76,7 @@
 
 
 		//实现化WebSocket对象，指定要连接的服务器地址与端口
-		socket = new WebSocket("ws://127.0.0.1:8080/CHB/ws?username=" + $("#orderid").val());
+		socket = new WebSocket("ws://172.16.12.159:8080/CHB/ws?username=" + $("#orderid").val());
 		//打开事件
 		socket.onopen = function() {
 
@@ -120,7 +120,7 @@
 	<div class="container-fluid" style="background-color:#1e89e0;">
 		<div class="navbar-header">
 			<a class="navbar-brand"
-				href="${pageContext.request.contextPath }/home.jsp"><img
+				href="${pageContext.request.contextPath }/user/index.action"><img
 				class="chb-logo"
 				src="${pageContext.request.contextPath }/img/chb-logo.jpg" alt="吃货宝"></a>
 		</div>
@@ -188,15 +188,14 @@
 			<div class="col-md-3 pull-right">
 				<c:if test="${order.orderstate!=0}">
 					<a class="btn btn-info"
-						href="${pageContext.request.contextPath}/payOrder.action?shopcartid=
-							${order.shopcartid}&userid=${order.userid}">再来一单</a>&nbsp; 
+						href="${pageContext.request.contextPath}/payOrder.action?shopcartid=${order.shopcartid}">再来一单</a>&nbsp; 
 				  </c:if>
 
 				<!--点击后到付款页面，可能要订单id  -->
 				<c:if test="${order.orderstate==0}">
 					<a class="btn btn-info"
-						href="${pageContext.request.contextPath}/payOrder.action?shopcartid=
-							${order.shopcartid}&userid=${order.userid}">去付款</a>&nbsp; 
+						href="${pageContext.request.contextPath}/pay.action?orderId=
+							${order.id}&money=${order.totalmoney}&FrpId=CCB-NET-B2C">去付款</a>&nbsp; 
 				   </c:if>
 				<c:if test="${order.orderstate==3}">
 					<a class="btn btn-info"
@@ -361,6 +360,10 @@
 				<tr>
 					<td colspan="3">实际支付：<span class="payfontColor">￥${order.totalmoney}</span></td>
 				</tr>
+				
+				<tr>
+					<td colspan="3">评论显示：<span >${order.usercomment}</span></td>
+				</tr>
 				<!-- 为了table颜色往下延长 -->
 				<tr>
 					<td></td>
@@ -402,7 +405,7 @@
 
 			<strong>配送信息</strong><br> <br> 配送方式:<span>${order.delivermethod}</span><br>
 			<br> 送达时间:<span>17:00-17:15</span><br> <br> 联 系 人 :<span>${username}</span><br>
-			<br> 联系电话:<span>12345678901</span><br> <br> 收货地址:<span>${order.useraddress}</span><br>
+			<br> 联系电话:<span>${user.phone}</span><br> <br> 收货地址:<span>${order.useraddress}</span><br>
 			<br> 备注 : ${order.remark}
 
 

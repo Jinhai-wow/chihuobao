@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="getOrderListByPagination"
 		parameterType="PageBean" resultType="Ordertable">
-		SELECT * from ordertable order by id desc limit #{page},#{rows}
+		SELECT * from ordertable  where userid=#{userid}  order by id desc limit #{page},#{rows}
 		
 	</select>
 
@@ -66,9 +66,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 	<!-- 获取订单总数public int getOrderListSize(); -->
-	<select id="getOrderListSize" resultType="Integer">
+	<select id="getOrderListSize"    resultType="Integer"  parameterType="Integer">
 
-		SELECT count(*) from ordertable
+		SELECT count(*) from ordertable where userid=#{userid}
 
 	</select>
 
@@ -108,7 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 只查询addrss 表state=1的即默认地址 -->
 	<select id="getUser" parameterType="Integer" resultMap="addresslist">
-		SELECT * from User u LEFT JOIN Address a on u.id=a.userid where a.state=1
+		SELECT * from User u LEFT JOIN Address a on u.id=a.userid where a.state=1 and  u.id=#{userid}
 	</select>
 	
 	
@@ -156,15 +156,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateOrder" parameterType="Ordertable">
 	
 	update ordertable set  shopservice=#{shopservice},deliverspeed=#{deliverspeed},
-	evaluatefood=#{evaluatefood},orderstate=#{orderstate} where id=#{id}
+	evaluatefood=#{evaluatefood},orderstate=#{orderstate}
+	<if test="usercomment != null">
+		,usercomment = #{usercomment}
+	</if>
+	 where id=#{id}
 	
 	</update>
 	
 	
-	<!-- 更新订单状态 -->
+	<!-- 更新订单状态为收货状态 -->
 	<update id="updateOrderState" parameterType="Long">
 	
 	update ordertable set orderstate=5 where id=#{id}
+	
+	</update>
+	
+	<update id="updateOrderStateNoTakeOrder" parameterType="Long">
+	
+	update ordertable set orderstate=1 where id=#{id}
 	
 	</update>
 	<!--申请取消订单  -->
@@ -221,11 +231,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 <!-- 修改地址状态，把所有地址置为0 -->
 	<update id="modifyAddressState" >
-	update Address set state=0 
+	update Address set state=0 where userid=#{userid}
 	</update>
 <!-- 添加新地址，state置为1，即设为默认地址 -->
 	<insert id="addAddress" parameterType="Address">
-	insert into Address(userid,address,state) values(#{userid},#{address},1)	
+	insert into Address(userid,address,state) values(#{userid},#{address},1) 
 	</insert>
 	
 	

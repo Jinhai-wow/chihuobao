@@ -100,12 +100,14 @@
 		var orderId = $("#sendId").val();
 		var sendMethod = $("#delivermethod").val();
 		var arriveTime = $("#arrivetimePick").val();
+		var shopId = $("#shopId").val();
 		$.ajax({
 			type : "post",
 			url : "${pageContext.request.contextPath }/sendOrder.action",
 			dataType : "json",
 			data : {
 				"id" : orderId,
+				"shopid":shopId,
 				"delivermethod" : sendMethod,
 				"arrivetime" : arriveTime,
 			},
@@ -256,10 +258,7 @@
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="container-fluid">
 					<div class="path">
-						<span>当前位置：</span> <span><a
-							href="${pageContext.request.contextPath }" class="normal">广东海洋大学</a></span>
-						<span><a href="${pageContext.request.contextPath }">[切换地址]</a>
-						</span> <span><i>&gt;</i>&nbsp;&nbsp;近三个月订单</span>
+						<span><i>&gt;</i>&nbsp;&nbsp;近三个月订单</span>
 					</div>
 					<!-- 选择工具栏 -->
 						<div class="row list-menu">
@@ -283,7 +282,7 @@
 										<li><a
 											href="${pageContext.request.contextPath }/getOrdersFinish.action">已完成订单</a></li>
 									</c:when>
-									<c:when test="${6 eq orderState}">
+									<c:when test="${7 eq orderState}">
 										<li><a
 											href="${pageContext.request.contextPath }/getOrdersAccepting.action">待接订单<span
 												class="badge"></span></a></li>
@@ -352,6 +351,7 @@
 						</div>
 
 					<div class="row">
+						<input type="hidden" id="shopId" value="${business.shop.id }">
 						<table class="table table-striped">
 							<thead>
 								<tr>
@@ -375,15 +375,15 @@
 										<td style="text-align: center;vertical-align: middle;">${list.remark }</td>
 										<td style="text-align: center;vertical-align: middle;">￥&nbsp;${list.totalmoney }</td>
 										<td style="text-align: center;vertical-align: middle;"><c:choose>
-												<c:when test="${0 eq list.orderstate }">已拒绝接单</c:when>
+												<c:when test="${-1 eq list.orderstate }">已拒绝接单</c:when>
 												<c:when test="${1 eq list.orderstate }">未接单</c:when>
 												<c:when test="${2 eq list.orderstate }">已接单，待发货</c:when>
 												<c:when test="${3 eq list.orderstate }">已发货</c:when>
 												<c:when test="${4 eq list.orderstate }">订单已取消</c:when>
 												<c:when test="${5 eq list.orderstate }">已确认收货</c:when>
-												<c:when test="${6 eq list.orderstate }">申请取消订单</c:when>
-												<c:when test="${7 eq list.orderstate }">客户已评价</c:when>
-												<c:when test="${8 eq list.orderstate }">退单失败，待发货</c:when>
+												<c:when test="${7 eq list.orderstate }">申请取消订单</c:when>
+												<c:when test="${8 eq list.orderstate }">客户已评价</c:when>
+												<c:when test="${10 eq list.orderstate }">退单失败，待发货</c:when>
 												<c:when test="${9 eq list.orderstate }">该订单已失效</c:when>
 											</c:choose></td>
 										<td
@@ -398,7 +398,7 @@
 														data-target="#refuseModal" onclick="refuseSetId(this)">不接</a>
 													<br>
 													<a
-														href="${pageContext.request.contextPath }/getOrderDetail.actionid=${list.id }"
+														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
 														class="btn btn-primary btn-xs">查看</a>
 												</c:when>
 												<c:when test="${2 eq list.orderstate }">
@@ -426,7 +426,7 @@
 														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
 														class="btn btn-primary btn-xs">查看</a>
 												</c:when>
-												<c:when test="${6 eq list.orderstate }">
+												<c:when test="${7 eq list.orderstate }">
 													<a id="${list.id }" href="javascript:;"
 														class="btn btn-primary btn-xs"
 														onclick="backAcceptOrder(this)">接受</a>
@@ -440,12 +440,12 @@
 														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
 														class="btn btn-primary btn-xs">查看</a>
 												</c:when>
-												<c:when test="${7 eq list.orderstate }">
+												<c:when test="${8 eq list.orderstate }">
 													<a
 														href="${pageContext.request.contextPath }/getOrderDetail.action?id=${list.id }"
 														class="btn btn-primary btn-xs">查看</a>
 												</c:when>
-												<c:when test="${8 eq list.orderstate }">
+												<c:when test="${10 eq list.orderstate }">
 													<a id="${list.id }" href="javascript:;"
 														class="btn btn-primary btn-xs" data-toggle="modal"
 														data-target="#sendOrderModal"

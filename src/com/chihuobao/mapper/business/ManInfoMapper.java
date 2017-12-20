@@ -37,4 +37,6 @@ public interface ManInfoMapper {
     int updateByPrimaryKeySelective(ManInfo record);
 
     int updateByPrimaryKey(ManInfo record);
+
+	int updateMsgType();
 }

@@ -101,4 +101,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM storeraccount  WHERE telephone=#{telephone}
 	</select>
 	
+	
+	<!-- 添加地址 -->
+	<insert id="addAddress" parameterType="com.chihuobao.po.Address">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO address(userid,address,state) 
+		VALUES(#{userid},#{address},0)
+	</insert>
+	
+	<!-- 删除地址 -->
+	<delete id="deleteAddress" parameterType="java.lang.Integer">
+		DELETE FROM address WHERE id=#{id}
+	</delete>
+	
+	<!-- 修改用户地址 -->
+	<update id="updateAddress" parameterType="com.chihuobao.po.Address">
+		UPDATE address SET address=#{address}
+		WHERE id=#{id}
+	</update>
 </mapper>

@@ -4,7 +4,7 @@
   <welcome-file-list>
    <!--  <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file> -->
-    <welcome-file>home.jsp</welcome-file>
+    <welcome-file>user/home.action</welcome-file>
   <!--   <welcome-file>default.html</welcome-file>
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file> -->
@@ -52,11 +52,22 @@
 		<!-- 如果小于0，则在第一次请求进来的时候启动 -->
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>BackServlet</servlet-name>
+    <servlet-class>com.chihuobao.controller.business.BackServlet</servlet-class>
+  </servlet>
+
 	<servlet-mapping>
 		<servlet-name>CHB</servlet-name>
 		<!-- 所有的请求都进入springMVC -->
 		<url-pattern>*.action</url-pattern>
 	</servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>BackServlet</servlet-name>
+    <url-pattern>/backServlet</url-pattern>
+  </servlet-mapping>
   
   
 </web-app>

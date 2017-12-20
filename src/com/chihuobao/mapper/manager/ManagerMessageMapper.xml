@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chihuobao.mapper.manager.ManagerMessageMapper">
+
+	<insert id="saveUestMessage" parameterType="com.chihuobao.po.UserMessage">
+		insert into usermessage (userId,message,messageDate) values (#{userId},#{message},#{messageDate})
+	</insert>
+	
+	<insert id="saveStorerMessage" parameterType="com.chihuobao.po.StorerMessage">
+		insert into storermessage (storerId,message,messageDate) values (#{storerId},#{message},#{messageDate})
+	</insert>
+	
+	<select id="selectMessageByUserId" parameterType="Integer" resultType="com.chihuobao.po.UserMessage">
+		select * from usermessage where userId = #{userId}
+	</select>
+	
+	<select id="selectMessageByStorerId" parameterType="Integer" resultType="com.chihuobao.po.StorerMessage">
+		select * from storermessage where ( storerId = #{storerId} and type = 0)
+	</select>
+	
+	<delete id="deleteUserMessageById" parameterType="Integer">
+		delete 	from usermessage where id = #{id}
+	</delete>
+	
+	<delete id="deleteStorerMessageById" parameterType="Integer">
+		delete from storermessage where id = #{id}
+	</delete>
+	
+	<select id="selectUser" resultType="com.chihuobao.vo.MessageObject">
+		select id,username as name from user 
+	</select>
+	
+	<select id="selectStorer" resultType="com.chihuobao.vo.MessageObject">
+		select id,storerName as name from storeraccount
+	</select>
+	
+	<select id="selectUserAll" resultType="com.chihuobao.po.User">
+		select id from user 
+	</select>
+	
+	<select id="selectStorerAll" resultType="com.chihuobao.po.StorerAccount">
+		select id from storeraccount
+	</select>
+</mapper>

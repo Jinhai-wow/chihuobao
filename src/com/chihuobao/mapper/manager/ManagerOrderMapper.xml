@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<cache/>
 	<select id="selectOrderTotal" 
 		resultType="Integer">
-			select count(*) from shop;
+			select count(*) from ordertable;
 	</select>
 	
 	<!-- 查找所有订单 -->
@@ -21,6 +21,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	<result column="orderState" property="orderState"/>
 	 	<result column="totalMoney" property="totalMoney"/>
 	 	<result column="shopName" property="shopName"/>
+	 	<result column="createTime" property="createTime"/>
+	 	<result column="usercomment" property="usercomment"/>
 	 	<association property="user" javaType="com.chihuobao.po.User">
 	 		<!-- <id column="id" property="id"/> -->
 	 		<result column="username" property="username"/>
@@ -35,6 +37,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	o.id,
 	o.shopId,
 	o.userId,
+	o.createTime,
+	o.usercomment,
 	o.arriveTime,
 	o.deliverMethod,
 	o.userAddress,

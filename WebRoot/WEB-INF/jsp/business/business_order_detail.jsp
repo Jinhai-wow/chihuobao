@@ -278,10 +278,7 @@
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="container-fluid">
 					<div class="path">
-						<span>当前位置：</span> <span><a
-							href="${pageContext.request.contextPath }" class="normal">广东海洋大学</a></span>
-						<span><a href="${pageContext.request.contextPath }">[切换地址]</a>
-						</span>
+					
 					</div>
 
 					<%-- <form class="form-horizontal" role="form" method="post" action="${pageContext.request.contextPath }/"> --%>
@@ -319,20 +316,21 @@
 								<tfoot>
 									<tr>
 										<td colspan="2" style="vertical-align: middle;">实际支付：</td>
-										<td style="font-size: 1.5em;color:#1E89E0;">￥&nbsp;100.0</td>
+										<td style="font-size: 1.5em;color:#1E89E0;">￥&nbsp;${order.ordertable.totalmoney }</td>
 									</tr>
 									<tr>
 										<td colspan="2" style="vertical-align: middle;">订单状态：</td>
 										<td><c:choose>
-												<c:when test="${0 eq order.ordertable.orderstate }">已拒绝接单</c:when>
+												<c:when test="${-1 eq order.ordertable.orderstate }">已拒绝接单</c:when>
+												<c:when test="${0 eq order.ordertable.orderstate }">未付款</c:when>
 												<c:when test="${1 eq order.ordertable.orderstate }">未接单</c:when>
 												<c:when test="${2 eq order.ordertable.orderstate }">已接单，待发货</c:when>
 												<c:when test="${3 eq order.ordertable.orderstate }">已发货</c:when>
 												<c:when test="${4 eq order.ordertable.orderstate }">订单已取消</c:when>
 												<c:when test="${5 eq order.ordertable.orderstate }">已确认收货</c:when>
-												<c:when test="${6 eq order.ordertable.orderstate }">正在申请取消订单</c:when>
-												<c:when test="${7 eq order.ordertable.orderstate }">客户已评价</c:when>
-												<c:when test="${8 eq order.ordertable.orderstate }">取消失败，待发货</c:when>
+												<c:when test="${7 eq order.ordertable.orderstate }">正在申请取消订单</c:when>
+												<c:when test="${8 eq order.ordertable.orderstate }">客户已评价</c:when>
+												<c:when test="${10 eq order.ordertable.orderstate }">取消失败，待发货</c:when>
 												<c:when test="${9 eq order.ordertable.orderstate }">该订单已失效</c:when>
 											</c:choose></td>
 									</tr>
@@ -419,12 +417,12 @@
 										data-target="#refuseModal" onclick="refuseSetId(this)">不接</a>
 								</c:when>
 								<c:when
-									test="${(2 eq order.ordertable.orderstate)or(8 eq order.ordertable.orderstate) }">
+									test="${(2 eq order.ordertable.orderstate)or(10 eq order.ordertable.orderstate) }">
 									<a id="${order.ordertable.id}" href="javascript:;"
 										class="btn btn-primary" data-toggle="modal"
 										data-target="#sendOrderModal" onclick="sendOrder(this)">发货</a>
 								</c:when>
-								<c:when test="${6 eq order.ordertable.orderstate }">
+								<c:when test="${7 eq order.ordertable.orderstate }">
 									<a id="${order.ordertable.id}" href="javascript:;"
 										class="btn btn-primary" onclick="backAcceptOrder(this)">接受</a>
 									<a id="${order.ordertable.id }" href="javascript:;"
