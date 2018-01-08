@@ -29,5 +29,8 @@ public interface ManagerMessageMapper {
 	List<User> selectUserAll();
 
 	List<StorerAccount> selectStorerAll();
+	
+	//用户查找出信息后置style为1，已读 
+	public void updateMessageTypeByUserId(Integer userId) throws Exception;
 
 }

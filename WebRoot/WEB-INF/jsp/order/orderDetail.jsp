@@ -76,7 +76,7 @@
 
 
 		//实现化WebSocket对象，指定要连接的服务器地址与端口
-		socket = new WebSocket("ws://172.16.12.159:8080/CHB/ws?username=" + $("#orderid").val());
+		socket = new WebSocket("ws://localhost:8080/CHB/ws?username=" + $("#orderid").val());
 		//打开事件
 		socket.onopen = function() {
 
@@ -102,6 +102,7 @@
 		/*加用户名，订单号 */
 		$("#cuidan").click(function() {
 			/* $("#shopname").val() */
+			alert($("#shopid").val());
 			socket.send($("#shopid").val());
 		});
 

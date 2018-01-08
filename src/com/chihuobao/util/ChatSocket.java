@@ -106,7 +106,7 @@ public class ChatSocket {
 
 			try {
 				to_session.getBasicRemote().sendText(message.toJson());
-				from_session.getBasicRemote().sendText(message.toJson());
+//				from_session.getBasicRemote().sendText(message.toJson());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

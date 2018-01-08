@@ -26,8 +26,20 @@ public class CommentController {
 
 		//查找该商家全部的评论
 		List<ManagerOrderVo> orderVoList =  commentService.storerComment(shopId);
+		
 		model.addAttribute("comments", orderVoList);
 		
 		return "business/business_to_user_comment";
+	}
+	
+	@RequestMapping(value="/userComment.action")
+	public String userComment(Integer shopId,Model model){
+
+		//查找该商家全部的评论
+		List<ManagerOrderVo> orderVoList =  commentService.storerComment(shopId);
+		
+		model.addAttribute("comments", orderVoList);
+		
+		return "business/business_user_message";
 	}
 }

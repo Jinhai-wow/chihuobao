@@ -53,15 +53,15 @@ $(document).ready(function() {
     						var value = data.length;
     						
     						if(parseInt(value)  > parseInt(tmp) ){
-    							var noReadMsg = value-tmp;
-    							$("#sysMsg").html(noReadMsg);
-    							tmp = value;
+    							
+    							$("#sysMsg").html(value);
+    							/* tmp = value; */
     						/* tmp = value;
     							
     							alert(tmp); */
     						}
     					}); 
-    		}, 3000);
+    		}, 2000);
     
 
 });	
@@ -76,7 +76,9 @@ $(document).ready(function() {
 
 				
 					//实现化WebSocket对象，指定要连接的服务器地址与端口
-					socket = new WebSocket("ws://127.0.0.1:8080/CHB/ws?username=${business.shop.id}");
+					socket = new WebSocket("ws://localhost:8080/CHB/ws?username=${business.shop.id}");
+					
+					
 					
 					//打开事件
 					socket.onopen = function() {
@@ -84,10 +86,15 @@ $(document).ready(function() {
 						/* alert("Socket 已打开"); */
 						//socket.send("这是来自客户端的消息" + location.href + new Date());
 					};
+					
 					//获得消息事件
 					socket.onmessage = function(msg) {
+					
+					
 						alert(msg.data);
 					};
+					
+					
 					//关闭事件
 					socket.onclose = function() {
 					/* socket.close(); */
@@ -139,12 +146,11 @@ $(document).ready(function() {
 		/* alert(JSON.stringify(jsonData)); */
 		var orderId = $(obj).attr("id");
 		$("#backRefuseId").val(orderId);
-
 	}
 	;
-	function backRefuseOrder(obj) {
+	function backRefuseOrder() {
 		/* alert(JSON.stringify(jsonData)); */
-		var orderId = $(obj).attr("id");
+		var orderId = $("#backRefuseId").val();
 		var refuseReason = $("#backRefuseReason").val();
 		$.ajax({
 			type : "post",
@@ -328,10 +334,10 @@ $(document).ready(function() {
 				<h4 class="sub-header">我的消息</h4>
 				<ul class="nav nav-sidebar">
 					<li><a
-						href="${pageContext.request.contextPath }/getUserComment.action">用户评论<span
+						href="${pageContext.request.contextPath }/userComment.action?shopId=${business.shop.id}">用户评论<span
 							class="badge"></span></a></li>
 					<li><a
-						href="${pageContext.request.contextPath }/selectMessageByStorerId.action">系统消息<span
+						href="${pageContext.request.contextPath }/getSysMsg.action">系统消息<span
 							class="badge" id="sysMsg"></span></a></li>
 
 				</ul>
@@ -545,7 +551,7 @@ $(document).ready(function() {
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">输入不接该订单的原因</h4>
+					<h4 class="modal-title" id="myModalLabel">输入不接受退单的原因</h4>
 				</div>
 				<div class="modal-body">
 					<input id="backRefuseId" type="hidden" name="" value="">
@@ -555,7 +561,7 @@ $(document).ready(function() {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 					<button type="button" class="btn btn-primary"
-						onclick="refuseOrder()">提交</button>
+						onclick="backRefuseOrder()">提交</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->

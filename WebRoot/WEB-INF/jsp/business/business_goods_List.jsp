@@ -98,7 +98,7 @@
 				<h4 class="sub-header">我的消息</h4>
 				<ul class="nav nav-sidebar">
 					<li><a
-						href="${pageContext.request.contextPath }/getUserComment.action">用户评论<span
+						href="${pageContext.request.contextPath }/userComment.action?shopId=${business.shop.id}">用户评论<span
 							class="badge"></span></a></li>
 					<li><a
 						href="${pageContext.request.contextPath }/getSysMsg.action">系统消息<span

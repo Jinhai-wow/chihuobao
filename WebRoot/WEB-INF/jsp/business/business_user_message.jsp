@@ -99,7 +99,7 @@
 				<h4 class="sub-header">我的消息</h4>
 				<ul class="nav nav-sidebar">
 					<li class="active"><a
-						href="${pageContext.request.contextPath }/getUserComment.action">用户评论</a></li>
+						href="${pageContext.request.contextPath }/userComment.action?shopId=${business.shop.id}">用户评论</a></li>
 					<li><a
 						href="${pageContext.request.contextPath }/getSysMsg.action">系统消息</a></li>
 
@@ -109,27 +109,26 @@
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="container-fluid">
 					<div class="path">
-						
+						<h3>用户评论</h3>
 					</div>
 					<hr>
-					<c:forEach items="${userComments}" var="comment">
-						<c:choose>
-							<c:when test="${comment.shopId != business.shop.id}">
-								<div class="panel panel-default">暂无消息......</div>
-							</c:when>
-							<c:otherwise>
+					<c:forEach items="${comments}" var="comment">
+						
 								<div class="row info-con">
-									<div class="col-xs-12">
-										<h5>系统消息</h5>
-										<div class="message-con">${comment.userComment }</div>
-										<span class="col-xs-11"> <fmt:formatDate
-												value="${sysMsg.infoDate}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
+									<div class="col-xs-4 col-xs-2">
+					    				<img class="message-img img-responsive" src="${pageContext.request.contextPath }/img/null.png">
+					    			</div>
+									<div class="col-xs-10">
+										<h5>评分：<span style="color:#1e89e0;">${comment.shopService}</span>分</h5>
+										<div class="message-con">${comment.usercomment }</div>
+										
+										<span class="col-xs-11"><a href="javascript:;">${comment.userName }</a>&nbsp; <fmt:formatDate
+												value="${comment.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
 										<a href="" class="btn btn-primary btn-xs col-xs-1"
 											data-toggle="modal" data-target="#replyModal">回复</a>
 									</div>
 								</div>
-							</c:otherwise>
-						</c:choose>
+					
 					</c:forEach>
 					<!-- 回复弹出模态框（Modal） -->
 					<div class="modal fade" id="replyModal" tabindex="-1" role="dialog"
@@ -139,7 +138,7 @@
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal"
 										aria-hidden="true">&times;</button>
-									<h4 class="modal-title" id="feedbackModalLabel">请输入反馈信息</h4>
+									<h4 class="modal-title" id="feedbackModalLabel">请输入回复的信息</h4>
 								</div>
 								<form class="form-horizontal" role="form"
 									action="${pageContext.request.contextPath }/feedbackToSys.action"

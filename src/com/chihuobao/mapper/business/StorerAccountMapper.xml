@@ -95,6 +95,15 @@
     from storerAccount
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+   <select id="selectSysMsgByStorerId" resultType="com.chihuobao.po.StorerMessage" parameterType="java.lang.Integer" >
+    select * from storerMessage where storerId = #{storerId,jdbcType=INTEGER}
+  </select>
+  
+  <update id="updateSysMsgHadRead" parameterType="java.lang.Integer" >
+    update storerMessage set type = 1 where id = #{id,jdbcType=INTEGER}
+  </update>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from storerAccount
     where id = #{id,jdbcType=INTEGER}

@@ -12,9 +12,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into storermessage (storerId,message,messageDate) values (#{storerId},#{message},#{messageDate})
 	</insert>
 	
+	<!-- 根据userid和tyle查找message -->
 	<select id="selectMessageByUserId" parameterType="Integer" resultType="com.chihuobao.po.UserMessage">
-		select * from usermessage where userId = #{userId}
+		select * from usermessage where userId = #{userId} AND tyle=0
 	</select>
+	
+	<!-- 用户查找出信息后置style为1，已读 -->
+	<update id="updateMessageTypeByUserId" parameterType="Integer">
+		UPDATE usermessage SET tyle=1 WHERE userId=#{userId}
+	</update>
 	
 	<select id="selectMessageByStorerId" parameterType="Integer" resultType="com.chihuobao.po.StorerMessage">
 		select * from storermessage where ( storerId = #{storerId} and type = 0)

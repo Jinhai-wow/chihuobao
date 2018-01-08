@@ -21,6 +21,9 @@ public interface ManagerMessageService {
 	//给商家发送消息保存大数据库中
 	void saveStorerMessage(StorerMessage storerMessage);
 
+	//根据用户id查找属于它的消息列大小
+	List<UserMessage> selectMessageSizeByUserId(Integer userId);
+	
 	//根据用户id查找属于它的消息列
 	List<UserMessage> selectMessageByUserId(Integer userId);
 

@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.chihuobao.exception.CustomException;
 import com.chihuobao.po.Address;
+import com.chihuobao.po.Manager;
 import com.chihuobao.po.User;
 import com.chihuobao.service.user.UserService;
 import com.chihuobao.vo.AddressVo;
@@ -301,4 +302,22 @@ public class UserController {
 		return "user/personal_center";
 	}
 	
+	//进入管理员登陆页面
+	@RequestMapping("/managerLoginPage")
+	public ModelAndView managerLoginPage() throws Exception{
+		
+		ModelAndView modelAndView=new ModelAndView();
+
+		modelAndView.setViewName("user/manager_login");
+			
+		return modelAndView; 
+	}
+	
+	//管理员登陆
+	@RequestMapping("/managerLogin")
+	public String managerLogin(Manager managerVo,HttpSession session) throws Exception{
+		Manager manager=userService.findManagerByName(managerVo);
+		session.setAttribute("manager", manager);
+		return "redirect:/index.action"; 
+	}
 }

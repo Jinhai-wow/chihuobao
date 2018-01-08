@@ -25,8 +25,7 @@
 	rel="stylesheet">
 <script src="${pageContext.request.contextPath }/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/business.js"></script>
-<script
-	src="${pageContext.request.contextPath }/js/bootstrapValidator.js"></script>
+<script src="${pageContext.request.contextPath }/js/bootstrapValidator.js"></script>
 
 <script
 	src="${pageContext.request.contextPath }/js/ie-emulation-modes-warning.js"></script>

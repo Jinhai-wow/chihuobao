@@ -8,9 +8,7 @@ import java.util.Map;
 
 
 import javax.servlet.http.HttpServletRequest;
-
-
-
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -221,12 +219,13 @@ public class ManagerShopController {
 	
 	//根据商店审核资料id获取信息回显到审核页面
 	@RequestMapping(value="/shopDataEdit.action")
-	public @ResponseBody ShopData shopDataEdit(Integer id){
+	public @ResponseBody ShopData shopDataEdit(Integer id,HttpSession session){
 		
 		ShopData shopData = shopService.shopDataEdit(id);
 		System.out.println(shopData.getInPic()+"-"+shopData.getOutPic()+"-"+shopData.getOwnerId()
 		+"-"+shopData.getOwnerIdDownPic()+"-"+shopData.getOwnerIdUpPic());
 		
+		session.setAttribute("Data", shopData);
 		return shopData;
 	}
 	

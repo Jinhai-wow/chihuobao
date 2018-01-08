@@ -2,6 +2,8 @@ package com.chihuobao.mapper.business;
 
 import com.chihuobao.po.StorerAccount;
 import com.chihuobao.po.StorerAccountExample;
+import com.chihuobao.po.StorerMessage;
+
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 /**
@@ -33,4 +35,8 @@ public interface StorerAccountMapper {
     int updateByPrimaryKeySelective(StorerAccount record);
 
     int updateByPrimaryKey(StorerAccount record);
+
+	List<StorerMessage> selectSysMsgByStorerId(Integer id);
+
+	int updateSysMsgHadRead(Integer id);
 }

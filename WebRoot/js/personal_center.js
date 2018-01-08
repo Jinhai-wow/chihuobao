@@ -1,29 +1,51 @@
 $(document).ready(function(){
 	
+	$("#person-center-a").addClass("fontlink-color");
 	var userLocation=localStorage.getItem("userPoint");
     //地址
     $("#center-user-addr").text(userLocation)
 	/**
 	 * 我的消息
 	 */
-	var userId=$("#input-hid").val();
-	$.ajax({
-  		 type:'get',
-  		 url:'selectMessageByUserId.action?userId='+userId+'',
-  		 contentType:'application/json;charset=utf-8',
-  		 success:function(data){
-  			$("#my-message-size").addClass("badge");
-  			$("#my-message-size")[0].innerHTML=''+data.length+'';
-  		},
-  	 	 error: function(data){
-  	 		 alert("加载消息失败！");
-        }
-  	  });
+    var userId=$("#input-hid").val();
+    $.ajax({
+		 type:'get',
+		 url:'selectMessageSizeByUserId.action?userId='+userId+'',
+		 contentType:'application/json;charset=utf-8',
+		 success:function(data){
+			 if(data.length>0){
+				$("#my-message-size").addClass("badge");
+    			$("#my-message-size")[0].innerHTML=''+(data.length)+'';
+			 }	
+		},
+	 	 error: function(data){
+	 		 alert("加载消息失败！");
+      }
+	  });
+    function getMessage(){
+    	$.ajax({
+     		 type:'get',
+     		 url:'selectMessageSizeByUserId.action?userId='+userId+'',
+     		 contentType:'application/json;charset=utf-8',
+     		 success:function(data){
+     			 if(data.length>0){
+     				$("#my-message-size").addClass("badge");
+         			$("#my-message-size")[0].innerHTML=''+(data.length)+'';
+     			 }	
+     		},
+     	 	 error: function(data){
+     	 		 alert("加载消息失败！");
+           }
+     	  });
+    }
+    var messagetime=window.setInterval(getMessage,3000);
 	$("#my-message")[0].addEventListener('click', function(){
 		$(".messagn-panel")[0].innerHTML='<div class="profile"><div class="profileinfo" id="myMessage"><h3 ng-if="pageTitleVisible" class="profile-paneltitle ng-scope"><span ng-bind="pageTitle" class="ng-binding">我的消息</span> <span class="subtitle ng-binding" ng-bind-html="pageSubtitle | toTrusted"></span></h3></div></div>';
 		$("#my-message-size").removeClass();
 		$("#my-message-size")[0].innerHTML='';
 		$("#center-item")[0].innerHTML='我的消息';
+		$(".setfontcolor").removeClass("fontlink-color");
+		//$("#person-center-a").addClass("fontlink-color"); 
 		var id=$("#input-hid").val();
 		 $.ajax({
        		 type:'get',
@@ -31,7 +53,8 @@ $(document).ready(function(){
        		 contentType:'application/json;charset=utf-8',
        		 success:function(data){
        			 for(var i=0;i<data.length;i++){
-       				 var d=new Date(data[i].messageDate);
+       				 var j=data.length-1-i;
+       				 var d=new Date(data[j].messageDate);
        				 var year=d.getFullYear(); 
        				 var month=d.getMonth()+1; 
        				 var date=d.getDate(); 
@@ -39,7 +62,7 @@ $(document).ready(function(){
        				 var minute=d.getMinutes(); 
        				 var second=d.getSeconds(); 
        				 var da=year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
-       				 $("#myMessage").append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4>消息!</h4>'+data[i].message+'&nbsp;&nbsp;'+da+'</div>');
+       				 $("#myMessage").append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4>消息!</h4>'+data[j].message+'&nbsp;&nbsp;'+da+'</div>');
        			 }
        		 },
        	 	 error: function(data){
@@ -202,7 +225,7 @@ $(document).ready(function(){
 					contentType:'application/json;charset=utf-8',
 					data:'{"id":'+id+',"password":"'+newpassword+'"}',
 					success:function(data){
-						window.location.href="user/index.action";   //跳转到个人中心默认页面
+						window.location.href="user/personalCenter.action";   //跳转到个人中心默认页面
 					},
 					error:function(){
 						alert("修改密码失败！");

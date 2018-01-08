@@ -5,25 +5,23 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
+/**
+ * 备用controller类
+ * @author 谢韦烈
+ * 2017-11-18
+ */
 @Controller
 public class ManagerIndex {
 	
 	
-
-	@RequestMapping(value="/index.action")
+	//管理员首页入口
+	@RequestMapping(value="/admin.action")
 	public String index(){
 		
-		return "manager/index";
+		return "manager/admin";
 	}
 	
-	/*@RequestMapping(value="/go.action")
-	public String user(){
-		
-		return "manager/login";
-	}*/
-	
-	
+	//客服聊天入口
 	@RequestMapping(value="/go.action")
 	public  String login(HttpSession session){
 		String admin = "aaa";
@@ -46,14 +44,8 @@ public class ManagerIndex {
 		return "manager/text";
 	}
 	
-	/*//管理员登录
-	@RequestMapping(value="/Managerlogin.action")
-	public String managerLogin(){
-		
-		
-		return "";
-	}*/
-	
+
+	//发送消息入口
 	@RequestMapping(value="/sendMessage.action")
 	public String sendMessage(){
 		

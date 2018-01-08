@@ -101,6 +101,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM storeraccount  WHERE telephone=#{telephone}
 	</select>
 	
+	<!-- 清空默认地址 -->
+	<update id="emptyAddressState" parameterType="com.chihuobao.po.Address">
+		UPDATE address SET state=0 WHERE userid=#{userid}
+	</update>
 	
 	<!-- 添加地址 -->
 	<insert id="addAddress" parameterType="com.chihuobao.po.Address">
@@ -108,7 +112,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		INSERT INTO address(userid,address,state) 
-		VALUES(#{userid},#{address},0)
+		VALUES(#{userid},#{address},1)
 	</insert>
 	
 	<!-- 删除地址 -->
@@ -121,4 +125,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		UPDATE address SET address=#{address}
 		WHERE id=#{id}
 	</update>
+	
+	<!-- 管理员登陆 -->
+	<select id="findManagerByName" parameterType="com.chihuobao.po.Manager" resultType="com.chihuobao.po.Manager">
+		SELECT * FROM manager  WHERE username=#{username} AND password=#{password}
+	</select>
 </mapper>

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50716
 File Encoding         : 65001
 
-Date: 2017-12-20 08:39:49
+Date: 2017-12-20 17:20:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -95,13 +95,11 @@ CREATE TABLE `goods` (
   PRIMARY KEY (`id`),
   KEY `goodStyleId` (`goodStyleId`),
   CONSTRAINT `goods_fk_2` FOREIGN KEY (`goodStyleId`) REFERENCES `goodsstyle` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='商品信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='商品信息表';
 
 -- ----------------------------
 -- Records of goods
 -- ----------------------------
-INSERT INTO `goods` VALUES ('5', '20171219111621', '煲仔饭', '32', '15.0', '22', '1317ebbb584b49f09fc528737dc584b6.jpg', '这是煲仔饭', '0', '2017-12-19 17:02:29');
-INSERT INTO `goods` VALUES ('6', '20171219143114', '香辣鱿鱼', '32', '16.0', '22', '46275aa91f8049169dda44c721f7c739.jpg', '好吃香辣鱿鱼', '0', '2017-12-19 17:01:01');
 INSERT INTO `goods` VALUES ('7', '20171219143209', '咸鱼茄子煲', '32', '15.0', '22', '65508cab2661482abf76ea0565122ea1.jpg', '这是咸鱼茄子煲', '0', '2017-12-19 16:55:57');
 INSERT INTO `goods` VALUES ('8', '20171219143242', '猪颈肉', '32', '16.0', '1024', '8de888f6570f43b78c9e1197ba2e07e0.jpg', '这是猪颈肉', '0', '2017-12-19 16:55:41');
 INSERT INTO `goods` VALUES ('9', '20171219143733', '乞丐鸡', '35', '10.0', '22', '49ab5a6eebe24d4a8ea45df17a563862.jpg', '这是乞丐鸡', '0', '2017-12-19 16:37:31');
@@ -112,6 +110,8 @@ INSERT INTO `goods` VALUES ('13', '20171219164550', '羊肉卷', '36', '22.0', '
 INSERT INTO `goods` VALUES ('14', '20171219164728', '万花筒', '39', '22.0', '111', '9617e5e349cf41c888e093d0491fe316.jpg', '这是万花筒', '0', '2017-12-19 16:47:28');
 INSERT INTO `goods` VALUES ('15', '20171219164831', '百味炖鸡', '36', '19.0', '143', '333bd5410ed44cc6ad3c4dbe720f9aa0.jpg', '这是百味炖鸡', '0', '2017-12-19 16:48:31');
 INSERT INTO `goods` VALUES ('16', '20171219165213', '白丹早餐', '38', '15.0', '222', '7bd28e5f7f044c8d85506a5a92f53fb9.jpg', '这是白丹早餐', '0', '2017-12-19 16:52:13');
+INSERT INTO `goods` VALUES ('17', '20171220105725', '羊肉卷', '32', '22.0', '651', '8f8a528828fb48fb8798969b010b1ad6.jpg', '这是小吃货店的羊肉卷', '0', '2017-12-20 10:57:25');
+INSERT INTO `goods` VALUES ('18', '20171220105844', '大阪套餐', '32', '15.0', '520', 'a927a2e3e28844cd82de2c5d98dde532.jpg', '这是小吃货店的大阪套餐', '0', '2017-12-20 10:58:44');
 
 -- ----------------------------
 -- Table structure for `goodsstyle`
@@ -342,14 +342,18 @@ CREATE TABLE `shop` (
   KEY `shopStyleId` (`shopStyleId`),
   CONSTRAINT `shop_ibfk_1` FOREIGN KEY (`storerId`) REFERENCES `storeraccount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `shop_ibfk_2` FOREIGN KEY (`shopStyleId`) REFERENCES `shopstyle` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='商店信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='商店信息表';
 
 -- ----------------------------
 -- Records of shop
 -- ----------------------------
-INSERT INTO `shop` VALUES ('11', '20171219000001', '小吃货店', '22', 'BD', '湛江市麻章区广东海洋大学', '110.307239', '21.157362', '13598464684', '3756c80bd4144fe2a6eb3d90b5e5c099.png', '这是小次货店，订购请联系13598464684', '11:00-13:00|16:30-18:00', '8.0', '0.0', '0.0', '0', '1', '3', '5');
-INSERT INTO `shop` VALUES ('12', '20171219000002', '大碗饭', '23', '张三', '湛江市麻章区广东海洋大学', '110.307239', '21.157362', '13498616465', '94041bf8165b40a19c5549d9baca3bb8.jpg', '这是大碗饭', '11:00-13:00|16:30-18:00', '9.5', '0.0', '0.0', '0', '1', '3', '8');
-INSERT INTO `shop` VALUES ('13', '20171219000003', '李大哥美食', '24', '李四', '湛江市麻章区广东海洋大学', '110.307239', '21.157362', '15651496065', '68b2d123ad264e1db5a0bd1202c776f3.jpg', '这是李大哥美食，订购请联系15651496065', '11:00-13:00|16:30-18:00', '8.5', '0.0', null, '0', '0', '3', '8');
+INSERT INTO `shop` VALUES ('11', '20171219000001', '小吃货店', '22', 'BD', '湛江市麻章区广东海洋大学', '110.307239', '21.157362', '13598464684', '3756c80bd4144fe2a6eb3d90b5e5c099.png', '这是小次货店，订购请联系13598464684', '11:00-13:00|16:30-18:00', '8.0', '0.0', '4.0', '0', '1', '3', '5');
+INSERT INTO `shop` VALUES ('12', '20171219000002', '大碗饭', '23', '张三', '湛江市麻章区广东海洋大学', '110.307239', '21.157362', '13498616465', '94041bf8165b40a19c5549d9baca3bb8.jpg', '这是大碗饭', '11:00-13:00|16:30-18:00', '9.5', '0.0', '4.3', '0', '1', '3', '8');
+INSERT INTO `shop` VALUES ('13', '20171219000003', '李大哥美食', '24', '李四', '湛江市麻章区广东海洋大学', '110.307239', '21.157362', '15651496065', '68b2d123ad264e1db5a0bd1202c776f3.jpg', '这是李大哥美食，订购请联系15651496065', '11:00-13:00|16:30-18:00', '8.5', '0.0', '4.5', '0', '0', '3', '8');
+INSERT INTO `shop` VALUES ('14', '20171220000001', '溜溜小吃店', '25', '钱五', '湛江市麻章区广东海洋大学', '110.307239', '21.157362', '13646168745', '1c816b404d004286b6e36d572549aac1.jpg', '这里是溜溜小吃店，详情请联系13646168745', '11:00-13:00|16:30-18:00', '8.2', '0.0', null, '0', '1', '4', '6');
+INSERT INTO `shop` VALUES ('15', '20171220000002', '顶上披萨', '27', '小明', '湛江市麻章区广东海洋大学', '110.307239', '21.157362', '12345678922', '3cd823d23ef147399d632e728d4100f6.jpg', '这是顶上披萨店，咨询请联系12345678922', '11:00-13:00|16:00-19:00', '9.0', '0.0', null, '0', '0', '3', '6');
+INSERT INTO `shop` VALUES ('16', '20171220000003', '艾思福面包店', '28', '艾思福', '湛江市麻章区广东海洋大学', '110.307239', '21.157362', '19870202318', '62684784ac704c2da6fa58b364ccd26b.jpg', '这里是艾思福面包店，咨询请联系19870202318', '11:00-13:00|16:00-19:00', '10.0', '0.0', null, '0', '0', '5', '5');
+INSERT INTO `shop` VALUES ('17', '20171220000004', '大王叫我来巡山', '26', '大王', '湛江市麻章区广东海洋大学', '110.307239', '21.157362', '19870202318', '0cb229f503164f949ce670a45def908d.jpg', '这里是大王来巡山小吃店，咨询请联系19870202318', '11:00-13:00|16:00-19:00', '9.0', '1.0', null, '0', '0', '3', '6');
 
 -- ----------------------------
 -- Table structure for `shopanalyse`
@@ -470,7 +474,7 @@ CREATE TABLE `shopdata` (
   PRIMARY KEY (`id`),
   KEY `shopId` (`shopId`),
   CONSTRAINT `shopdata_ibfk_1` FOREIGN KEY (`shopId`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='商店审核资料表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='商店审核资料表';
 
 -- ----------------------------
 -- Records of shopdata
@@ -478,6 +482,9 @@ CREATE TABLE `shopdata` (
 INSERT INTO `shopdata` VALUES ('6', '11', 'ac7a3c4fc5964fda90c15c4e42b6a9e6.png', '60ce38f9968c4c1294fa60ba04b122ea.png', 'c4af4d36a5bd453e8b7ca00f3e565a6f.png', '11346815318513546865515', '03ce4a51f9e4434bbb0987c3a3220bb0.png', '1d5ec8fa7e734a4fb7309447a59fcf4b.png', 'b60718de29bd48cf8f07909a7ac08be5.png', null);
 INSERT INTO `shopdata` VALUES ('7', '12', 'd9cc4dd975e54556993a1d349096819c.png', 'd5d0ced341f740ad889ef51fd8e9d944.png', '7d2ea1fe15ea497a92989a6b610e80fa.png', '136849846564600000000', '1064ab418bd7432e8bbbf00f4c1b2432.png', '5c2cd9aa28704dc087653801d96bd797.png', '7335d3da436145bb9f83399c6621ce92.png', null);
 INSERT INTO `shopdata` VALUES ('8', '13', '6a92f9685e374454887b920653a0be7a.jpg', 'f3bd9851d6304ae9a316618f34e2821c.jpg', '8c1e46b9a20840ccacc20f614fef314d.jpg', '11346815318513546865515', 'ba0bc37ce17c4c6d9dfdfd60f99efb05.jpg', '201deb85cb3248b2907869df8d64188d.jpg', 'c9fd74e0b9704b64b00c415a1ed4ee95.jpg', null);
+INSERT INTO `shopdata` VALUES ('9', '15', '18a91e64834048a58e63f1fdecc3fad8.jpg', '6087d262c4d34434bf75f3e35ae56d10.jpg', '39166cb2f34b43dc9e46632d7de0540c.jpg', '123456789876543210123456', '0922ce1c2ca749ba82b0a17af1bc0af7.jpg', 'ce958fb339b045fba6c3df81ba872447.jpg', '0d4ac5a25641471991ecc7b957be87be.jpg', null);
+INSERT INTO `shopdata` VALUES ('10', '16', '3765d115155d494c97787fb3519e52a5.jpg', 'f2dd74b72d7e4acdba8fabd91f27e5ca.jpg', '2030ff6efd1a47f297765247f487c58c.jpg', '1134598446441657984156418676', 'b349f20c8aff4598b51739bf2cab7320.jpg', 'bda7295186e74cf2b1ef8fce6c0bf737.jpg', '86e618b7f3094837b16309fff787be71.jpg', null);
+INSERT INTO `shopdata` VALUES ('11', '17', '54f7e54efa084cc59cbf5aa969a850d9.jpg', 'a392029e84ed46889bd6a36b5237916e.jpg', 'b159eb44764942c6abb7475eef9e7c26.jpg', '1134598446441657984156418676', 'eb1687bd884742b6aaa71acf9533e88a.jpg', 'bb026151954f462d89a91de709479847.jpg', '925738f5eec04ab29365870cc57dfa37.jpg', null);
 
 -- ----------------------------
 -- Table structure for `shopstyle`
@@ -513,14 +520,18 @@ CREATE TABLE `storeraccount` (
   `accountState` int(10) NOT NULL DEFAULT '0' COMMENT '账号状态(0正常/1冻结)',
   `telephone` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='商家账号信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='商家账号信息表';
 
 -- ----------------------------
 -- Records of storeraccount
 -- ----------------------------
-INSERT INTO `storeraccount` VALUES ('22', '2017121900000001', 'BD', '2017-12-19 21:48:56', '', '123456', '22e1427c013d43ec9eea782f058c0594.png', '77.00', '0', '15816039724');
+INSERT INTO `storeraccount` VALUES ('22', '2017121900000001', 'BD', '2017-12-20 11:18:24', '89465148@163.com', '123456', '22e1427c013d43ec9eea782f058c0594.png', '77.00', '0', '15816039724');
 INSERT INTO `storeraccount` VALUES ('23', '2017121900000002', '张三', '2017-12-19 14:34:09', '16984798654@qq.com', '000000', 'c0d0562991b34b21acdf0b2201ebaa25.jpg', '0.00', '0', '13498616465');
 INSERT INTO `storeraccount` VALUES ('24', '2017121900000003', '李四', '2017-12-19 16:18:31', '24616584@qq.com', '000000', 'e38ef2140ad544c3a29d4a76acaa7294.jpg', '0.00', '0', '15889648566');
+INSERT INTO `storeraccount` VALUES ('25', '2017122000000001', '钱五', '2017-12-20 11:22:08', '36416444616@163.com', '000000', '98c61e8d94c04b3a8ad3d82967c42067.jpg', '0.00', '0', '12359952654');
+INSERT INTO `storeraccount` VALUES ('26', '2017122000000002', '大王', '2017-12-20 17:15:03', '846516562@qq.com', '000000', '714cc84b9380419d9a97a55f5d91e24f.jpg', '0.00', '0', '12345678911');
+INSERT INTO `storeraccount` VALUES ('27', '2017122000000003', '小明', '2017-12-20 17:07:42', '416516516@163.com', '000000', 'c1a31f8784274872a9748b66001cb2d7.jpg', '0.00', '0', '18320399586');
+INSERT INTO `storeraccount` VALUES ('28', '2017122000000004', '艾思福', '2017-12-20 17:12:14', '894651615685@163.com', '000000', '4922476e94294908ae2f3f65eab91eff.png', '0.00', '0', '13046229720');
 
 -- ----------------------------
 -- Table structure for `storermessage`
@@ -538,9 +549,9 @@ CREATE TABLE `storermessage` (
 -- ----------------------------
 -- Records of storermessage
 -- ----------------------------
-INSERT INTO `storermessage` VALUES ('5', '22', '你个小西瓜', '2017-12-19 13:45:02', '0');
-INSERT INTO `storermessage` VALUES ('6', '22', '666666', '2017-12-19 13:45:02', '0');
-INSERT INTO `storermessage` VALUES ('7', '22', '66666', '2017-12-19 13:52:25', '0');
+INSERT INTO `storermessage` VALUES ('5', '22', '你个小西瓜', '2017-12-20 14:47:18', '1');
+INSERT INTO `storermessage` VALUES ('6', '22', '666666', '2017-12-20 14:47:18', '1');
+INSERT INTO `storermessage` VALUES ('7', '22', '66666', '2017-12-20 14:47:18', '1');
 
 -- ----------------------------
 -- Table structure for `thirdpayment`
@@ -584,7 +595,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('6', '谢韦列', '123', null, null, null, '18320399586', 'a1985dfe-b270-4024-8aec-059ce35c995c.jpg', '2017-12-19 11:01:56', '1', null);
+INSERT INTO `user` VALUES ('6', '谢韦烈', '123', null, null, null, '18320399586', 'a1985dfe-b270-4024-8aec-059ce35c995c.jpg', '2017-12-19 11:01:56', '1', null);
 
 -- ----------------------------
 -- Table structure for `usercomment`

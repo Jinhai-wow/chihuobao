@@ -49,11 +49,11 @@
 							href="${pageContext.request.contextPath }"
 							class="dropdown-toggle" data-toggle="dropdown" role="button"
 							aria-haspopup="true" aria-expanded="false"> <c:choose>
-									<c:when test="${business.shop.shopName != ''} ">
-									${business.shop.shopName } 
+									<c:when test="${'' eq business.shop.shopName} ">
+									尚未申请商店
 								</c:when>
 									<c:otherwise>
-								尚未申请商店
+								${business.shop.shopName } 
 								</c:otherwise>
 								</c:choose> <span class="caret"></span></a>
 							<ul class="dropdown-menu fc-black">

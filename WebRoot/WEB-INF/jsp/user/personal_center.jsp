@@ -104,9 +104,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  <ul class="dropdown-menu fc-black">
 						  <li><a href="${pageContext.request.contextPath}/user/personalCenter.action">个人中心</a></li>
 						  <li><a href="javascript:;">我的收藏</a></li>
-						  <li><a href="javascript:;">我的地址</a></li>
 						  <li><a href="${pageContext.request.contextPath}/userChat.action" target="view_window">客服中心</a>
-						  
+						  <li><a href="javascript:;">我的地址</a></li>
 						  <li><a href="javascript:;">安全设置</a></li>
 						  <li><a href="${pageContext.request.contextPath}/user/logout.action">退出登录</a></li>
 					  </ul>
@@ -125,13 +124,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<span>当前位置：</span>
 			<span id="center-user-addr">未定位</span>
 			<span><a href="${pageContext.request.contextPath}/user/home.action">[切换地址]</a> </span>
-			<span id="center-item"></span>
+			<span id="center-item">个人中心</span>
 		</div>
 		<div class="container main-content">
 			<div class="row">
 				<div class="col-xs-2 row-left">
 					<ul class="nav nav-sidebar">
-						<li><i class="icon Hui-iconfont">&#xe625;</i><span class="pointer"><a href="#" class="setfontcolor">个人中心</a></span></li>
+						<li><i class="icon Hui-iconfont">&#xe625;</i><span class="pointer"><a  id="person-center-a" class="setfontcolor" href="${pageContext.request.contextPath }/user/personalCenter.action" class="setfontcolor">个人中心</a></span></li>
 					</ul>
 					<ul class="nav nav-sidebar">
 						<li><i class="icon Hui-iconfont">&#xe627;</i><span><a href="${pageContext.request.contextPath }/orderList.action" class="setfontcolor">我的订单</a></span></li>
@@ -155,7 +154,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<div class="col-xs-10 row-right">
 					<div class="messagn-panel">
-						
+						<div class="profile"><div class="profileinfo" id="myMessage">
+							<h3 ng-if="pageTitleVisible" class="profile-paneltitle ng-scope">
+								<span ng-bind="pageTitle" class="ng-binding">个人中心</span>
+								<span class="subtitle ng-binding" ng-bind-html="pageSubtitle | toTrusted"></span>
+						    </h3>
+						    <div class="media">
+								<a href="javascript:;" class="pull-left"><img id="profile-img" src="upload/${user.user.photo }"class="media-object" alt=''/></a>
+								<div class="media-body" style="padding-left:30px;">
+									<h3 class="media-heading" style="padding-bottom:30px;font-size: 18px;">
+										您好，<span>${user.user.username }</span>
+									</h3> 
+									<span style="margin:6px 0 10px;color: #999;font-size: 15px;">吃货宝，吃货们的世界!<br/>
+									想吃什么就吃什么！！！</span>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -233,46 +247,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" language="javascript" src="js/jquery.Jcrop.js"></script>
 <script src="js/personal_center.js"></script>
 <script>
-
-var userbroadname='${user.user.phone }';
-    	/* alert(userbroadname); */
-    	
-    	var ws;  // 管理登陆，退出，用户列表的 socket
-    	
-    	
-    	window.onload= ws_init;
-			
-	    function  ws_init(){
-				 var target="ws://172.16.12.159:8080/CHB/broadcast?username="+userbroadname;
-		   		  if ('WebSocket' in window) {
-		                 ws = new WebSocket(target);
-		             } else if ('MozWebSocket' in window) {
-		                 ws = new MozWebSocket(target);
-		             } else {
-		                 alert('WebSocket is not supported by this browser.');
-		                 return;
-		             }
-		             
-		   		  ws.onopen=function(){
-			    	alert("进入了");	
-		   		  };
-		   		   
-		   		  window.onbeforeunload=function(){
-		   		  		ws.close();
-		   		  	
-		   		  }
-		   		  
-		   		  ws.onmessage=function(event){
-		   			  		
-		   			  	eval("var msg="+event.data+";"); 
-							
-							 if(msg.content!=undefined){
-								alert(msg.content);
-							}	 
-		   		  } 	 
-	   	}
-
-
 </script>
   </body>
 </html>

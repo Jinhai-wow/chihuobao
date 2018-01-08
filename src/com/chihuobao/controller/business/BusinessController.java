@@ -587,7 +587,8 @@ public class BusinessController {
 			if (shop == null || shop.getAuditState() == 2 || shopData == null) {
 				return "business/business_noshopOrwaitingaudit";
 			}
-
+//			List<Ordertable> userComments = businessService.selectUserMsgByAccountId(businessCustom.getStorerAccount().getId());
+//			model.addAttribute("userComments", userComments);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -632,38 +633,6 @@ public class BusinessController {
 		return "business/business_account_message";
 	}
 
-//	/**
-//	 * 更新账号
-//	 * 
-//	 * @param account
-//	 * @param storerPic
-//	 * @param session
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/updateAccount.action", method = RequestMethod.POST)
-//	public String updateAccount(StorerAccountVo account, @RequestParam(value = "storerPic") MultipartFile storerPic,
-//			HttpSession session) {
-//		UploadImageUtil uImageUtil = new UploadImageUtil(storerPic);
-//
-//		BusinessCustom business = (BusinessCustom) session.getAttribute("business");
-//		int record;
-//		try {
-//			if (uImageUtil.getFileName() != null) {
-//				account.getStorerAccount().setStorerPic(uImageUtil.getFileName());// 图片
-//			}
-//			record = businessService.updateAccountById(account.getStorerAccount());
-//			StorerAccount storerAccount = businessService.selectAccountById(account.getStorerAccount().getId());
-//			business.setStorerAccount(storerAccount);
-//			if (record > 0) {
-//				uImageUtil.saveToDisk();
-//			}
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			record = -1;
-//		}
-//		session.setAttribute("business", business);
-//		return "redirect:/getAccount.action";
-//	}
 	
 	/**
 	 * 更新账号
@@ -740,42 +709,6 @@ public class BusinessController {
 		model.addAttribute("shopStyle", shopStyles);
 		return "business/business_shopIn_shop";
 	}
-
-//	/**
-//	 * 添加商店信息
-//	 * 
-//	 * @param businessCustom
-//	 * @param model
-//	 * @param request
-//	 * @param response
-//	 * @param session
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/shopIn.action", method = RequestMethod.POST)
-//	public String addShop(BusinessCustom businessCustom, @RequestParam(value = "shopPic") MultipartFile shopPic,
-//			HttpSession session) {
-//
-//		UploadImageUtil uImageUtil = new UploadImageUtil(shopPic);
-//
-//		BusinessCustom business = (BusinessCustom) session.getAttribute("business");
-//		int shopId;
-//		try {
-//			if (uImageUtil.getFileName() != null) {
-//				businessCustom.getShop().setShopPic(uImageUtil.getFileName());// 图片
-//			}
-//			shopId = businessService.insertShop(businessCustom.getShop());
-//			Shop shop = businessService.selectShopById(shopId);
-//			business.setShop(shop);
-//			if (shopId > 0) {
-//				uImageUtil.saveToDisk();
-//			}
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			shopId = -1;
-//		}
-//		session.setAttribute("business", business);
-//		return "business/business_shopIn_shopData";
-//	}
 	
 	/**
 	 * 添加商店信息
@@ -824,65 +757,6 @@ public class BusinessController {
 		return "business/business_shopIn_shopData";
 	}
 
-//	/**
-//	 * 更新商店审核资料
-//	 * 
-//	 * @param shopCustom
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/shopDataIn.action", method = RequestMethod.POST)
-//	public String addShopData(ShopCustom shopCustom, @RequestParam(value = "outPic") MultipartFile outPic,
-//			@RequestParam(value = "inPic") MultipartFile inPic,
-//			@RequestParam(value = "serviceLicense") MultipartFile serviceLicense,
-//			@RequestParam(value = "shopLicense") MultipartFile shopLicense,
-//			@RequestParam(value = "ownerIdUpPic") MultipartFile ownerIdUpPic,
-//			@RequestParam(value = "ownerIdDownPic") MultipartFile ownerIdDownPic, HttpSession session) {
-//
-//		BusinessCustom business = (BusinessCustom) session.getAttribute("business");
-//
-//		UploadImageUtil uImageUtil1 = new UploadImageUtil(outPic);
-//		UploadImageUtil uImageUtil2 = new UploadImageUtil(inPic);
-//		UploadImageUtil uImageUtil3 = new UploadImageUtil(serviceLicense);
-//		UploadImageUtil uImageUtil4 = new UploadImageUtil(shopLicense);
-//		UploadImageUtil uImageUtil5 = new UploadImageUtil(ownerIdUpPic);
-//		UploadImageUtil uImageUtil6 = new UploadImageUtil(ownerIdDownPic);
-//		int record;
-//		try {
-//			if (uImageUtil1.getFileName() != null) {
-//				shopCustom.getShopData().setOutPic(uImageUtil1.getFileName());// 图片
-//			}
-//			if (uImageUtil2.getFileName() != null) {
-//				shopCustom.getShopData().setInPic(uImageUtil2.getFileName());// 图片
-//			}
-//			if (uImageUtil3.getFileName() != null) {
-//				shopCustom.getShopData().setServiceLicense(uImageUtil3.getFileName());// 图片
-//			}
-//			if (uImageUtil4.getFileName() != null) {
-//				shopCustom.getShopData().setShopLicense(uImageUtil4.getFileName());// 图片
-//			}
-//			if (uImageUtil5.getFileName() != null) {
-//				shopCustom.getShopData().setOwnerIdUpPic(uImageUtil5.getFileName());// 图片
-//			}
-//			if (uImageUtil6.getFileName() != null) {
-//				shopCustom.getShopData().setOwnerIdDownPic(uImageUtil6.getFileName());// 图片
-//			}
-//
-//			record = businessService.insertShopDataByShopId(shopCustom.getShopData());
-//
-//			if (record > 0) {
-//				uImageUtil1.saveToDisk();
-//				uImageUtil2.saveToDisk();
-//				uImageUtil3.saveToDisk();
-//				uImageUtil4.saveToDisk();
-//				uImageUtil5.saveToDisk();
-//				uImageUtil6.saveToDisk();
-//			}
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			record = -1;
-//		}
-//		return "business/business_addSuccess";
-//	}
 	
 	/**
 	 * 更新商店审核资料
@@ -974,41 +848,7 @@ public class BusinessController {
 		return "business/business_shop_message";
 	}
 
-//	/**
-//	 * 更新商店
-//	 * 
-//	 * @param businessCustom
-//	 * @param model
-//	 * @param request
-//	 * @param response
-//	 * @param session
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/updateShop.action", method = RequestMethod.POST)
-//	public String updateShop(BusinessCustom businessCustom, @RequestParam(value = "shopPic") MultipartFile shopPic,
-//			HttpSession session) {
-//		UploadImageUtil uImageUtil = new UploadImageUtil(shopPic);
-//
-//		BusinessCustom business = (BusinessCustom) session.getAttribute("business");
-//		int record;
-//		try {
-//			if (uImageUtil.getFileName() != null) {
-//				businessCustom.getShop().setShopPic(uImageUtil.getFileName());// 图片
-//			}
-//			record = businessService.updateShopById(businessCustom.getShop());
-//			Shop shop = businessService.selectShopById(businessCustom.getShop().getId());
-//			business.setShop(shop);
-//			if (record > 0) {
-//				uImageUtil.saveToDisk();
-//			}
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			record = -1;
-//		}
-//		session.setAttribute("business", business);
-//		return "redirect:/getShopMsg.action";
-//	}
-	
+
 	/**
 	 * 更新商店
 	 * 
@@ -1081,66 +921,6 @@ public class BusinessController {
 		return "business/business_shopData_message";
 	}
 
-//	/**
-//	 * 更新商店审核资料
-//	 * 
-//	 * @param shopCustom
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/updateShopData.action", method = RequestMethod.POST)
-//	public String updateShopData(ShopCustom shopCustom, @RequestParam(value = "outPic") MultipartFile outPic,
-//			@RequestParam(value = "inPic") MultipartFile inPic,
-//			@RequestParam(value = "serviceLicense") MultipartFile serviceLicense,
-//			@RequestParam(value = "shopLicense") MultipartFile shopLicense,
-//			@RequestParam(value = "ownerIdUpPic") MultipartFile ownerIdUpPic,
-//			@RequestParam(value = "ownerIdDownPic") MultipartFile ownerIdDownPic, HttpSession session) {
-//
-//		BusinessCustom business = (BusinessCustom) session.getAttribute("business");
-//
-//		UploadImageUtil uImageUtil1 = new UploadImageUtil(outPic);
-//		UploadImageUtil uImageUtil2 = new UploadImageUtil(inPic);
-//		UploadImageUtil uImageUtil3 = new UploadImageUtil(serviceLicense);
-//		UploadImageUtil uImageUtil4 = new UploadImageUtil(shopLicense);
-//		UploadImageUtil uImageUtil5 = new UploadImageUtil(ownerIdUpPic);
-//		UploadImageUtil uImageUtil6 = new UploadImageUtil(ownerIdDownPic);
-//		int record;
-//		try {
-//			if (uImageUtil1.getFileName() != null) {
-//				shopCustom.getShopData().setOutPic(uImageUtil1.getFileName());// 图片
-//			}
-//			if (uImageUtil2.getFileName() != null) {
-//				shopCustom.getShopData().setInPic(uImageUtil2.getFileName());// 图片
-//			}
-//			if (uImageUtil3.getFileName() != null) {
-//				shopCustom.getShopData().setServiceLicense(uImageUtil3.getFileName());// 图片
-//			}
-//			if (uImageUtil4.getFileName() != null) {
-//				shopCustom.getShopData().setShopLicense(uImageUtil4.getFileName());// 图片
-//			}
-//			if (uImageUtil5.getFileName() != null) {
-//				shopCustom.getShopData().setOwnerIdUpPic(uImageUtil5.getFileName());// 图片
-//			}
-//			if (uImageUtil6.getFileName() != null) {
-//				shopCustom.getShopData().setOwnerIdDownPic(uImageUtil6.getFileName());// 图片
-//			}
-//			record = businessService.updateShopDataByShopId(shopCustom.getShopData());
-//
-//			if (record > 0) {
-//				uImageUtil1.saveToDisk();
-//				uImageUtil2.saveToDisk();
-//				uImageUtil3.saveToDisk();
-//				uImageUtil4.saveToDisk();
-//				uImageUtil5.saveToDisk();
-//				uImageUtil6.saveToDisk();
-//				Shop shop = businessService.selectShopById(business.getShop().getId());
-//				business.setShop(shop);
-//			}
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			record = -1;
-//		}
-//		return "redirect:/getShopData.action";
-//	}
 	
 	/**
 	 * 更新商店审核资料
@@ -1274,10 +1054,11 @@ public class BusinessController {
 			if (storerAccount == null) {
 				return "user/storer_login_register";
 			}
+			business.setStorerAccount(storerAccount);
+			session.setAttribute("business", business);
+			
 			Shop shop = businessService.selectShopByAccountId(account.getId());
 
-			business.setStorerAccount(account);
-			session.setAttribute("business", business);
 			if (shop == null || shop.getAuditState() == 2) {
 				if (shop!=null) {
 					business.setShop(shop);

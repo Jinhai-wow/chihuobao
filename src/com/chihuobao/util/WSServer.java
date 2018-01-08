@@ -32,8 +32,10 @@ public class WSServer {
 	System.out.println(user);
 		sessionMap.put(currentUser, session);
 		/*System.out.println("Connected ... " + session.getId());*/
-		System.out.println("Connected ... " + currentUser);
+		System.out.println("Connected ... ............................................." + currentUser);
 		System.out.println("sessionid ... " + session.getId());
+		
+		/*this.onMessage(message, session);*/
 	}
 
 	//收到消息时执行

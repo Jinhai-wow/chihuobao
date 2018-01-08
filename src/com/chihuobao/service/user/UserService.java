@@ -4,6 +4,7 @@ package com.chihuobao.service.user;
 import java.util.List;
 
 import com.chihuobao.po.Address;
+import com.chihuobao.po.Manager;
 import com.chihuobao.po.User;
 import com.chihuobao.vo.StorerAccountEx;
 import com.chihuobao.vo.UserVo;
@@ -53,5 +54,8 @@ public interface UserService {
 	
 	//修改地址
 	public void updateAddress(Address address) throws Exception;
+	
+	//管理员登陆
+	public Manager findManagerByName(Manager managerVo) throws Exception;
 	
 }

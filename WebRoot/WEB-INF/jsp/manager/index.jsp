@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	window.onload= ws_init;
 			
 	    function  ws_init(){
-				 var target="ws://172.16.12.159:8080/CHB/broadcast?username="+adminbroadname;
+				 var target="ws://localhost:8080/CHB/broadcast?username="+adminbroadname;
 		   		  if ('WebSocket' in window) {
 		                 ws = new WebSocket(target);
 		             } else if ('MozWebSocket' in window) {

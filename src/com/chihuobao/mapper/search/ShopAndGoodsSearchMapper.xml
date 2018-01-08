@@ -50,6 +50,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	join goodsstyle style
 	on s.id = style.shopid
 	join goods g
-	on (g.goodstyleid = style.id and goodname like "%"#{searchMsg}"%")
+	on (g.goodstyleid = style.id and sellState=0 and goodname like "%"#{searchMsg}"%")
 	</select>
 </mapper>

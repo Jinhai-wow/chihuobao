@@ -3,6 +3,7 @@ package com.chihuobao.mapper.user;
 import java.util.List;
 
 import com.chihuobao.po.Address;
+import com.chihuobao.po.Manager;
 import com.chihuobao.po.User;
 import com.chihuobao.vo.StorerAccountEx;
 import com.chihuobao.vo.UserVo;
@@ -51,6 +52,9 @@ public interface UserMapper {
 	//商家短信登陆
 	public StorerAccountEx findstoreraccountByPhone(StorerAccountEx storerAccountVo)throws Exception;
 	
+	//清空默认地址
+	public void emptyAddressState(Address address) throws Exception;
+	
 	//添加地址
 	public void addAddress(Address address) throws Exception;
 	
@@ -59,4 +63,7 @@ public interface UserMapper {
 	
 	//修改地址
 	public void updateAddress(Address address) throws Exception;
+	
+	//管理员登陆
+	public Manager findManagerByName(Manager managerVo) throws Exception;
 }

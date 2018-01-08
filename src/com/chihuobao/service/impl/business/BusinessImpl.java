@@ -399,7 +399,11 @@ public class BusinessImpl implements BusinessService {
 	@Override
 	public List<StorerMessage> selectSysMsgByAccountId(Integer id) {
 		// TODO Auto-generated method stub
-		return null;
+		List<StorerMessage> messages=storerAccountMapper.selectSysMsgByStorerId(id);
+		for (StorerMessage storerMessage : messages) {
+			storerAccountMapper.updateSysMsgHadRead(storerMessage.getId());
+		}
+		return storerAccountMapper.selectSysMsgByStorerId(id);
 	}
 
 }

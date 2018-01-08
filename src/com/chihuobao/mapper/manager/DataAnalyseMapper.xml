@@ -77,7 +77,7 @@ where ot.id=og.orderId and ot.shopId = s.id and s.shopStyleId = ss.id  and creat
 	<!-- 根据条件查找商品条数 -->
 	<select id="selectBestGoodsTotalByTime" parameterType="String" resultType="Integer">
 		select count(*) from orderanalyse 
-		where createTime like #{createTime}"%"
+		where payTime like #{createTime}"%"
 		
 	</select>
 	
@@ -85,20 +85,20 @@ where ot.id=og.orderId and ot.shopId = s.id and s.shopStyleId = ss.id  and creat
 	<select id="selectBestGoodsListByTime" parameterType="String"
 		resultType="com.chihuobao.po.OrderAnalyse">
 			select * from orderanalyse 
-			where createTime like #{createTime}"%"
+			where payTime like #{createTime}"%"
 	</select>
 	
 	<!-- 根据条件查找商家条数 -->
 	<select id="selectBestShopTotalByTime" parameterType="String" resultType="com.chihuobao.po.ShopAnalyse">
 		select count(*) from shopanalyse 
-		where createTime like #{createTime}"%"
+		where payTime like #{createTime}"%"
 	</select>
 	
 	<!-- 根据条件查找商家记录 -->
 	<select id="selectBestShopListByTime" parameterType="String"
 		resultType="com.chihuobao.po.ShopAnalyse">
 			select * from shopanalyse 
-			where createTime like #{createTime}"%"
+			where payTime like #{createTime}"%"
 	</select>
 	
 	<!-- 根据时间初始值来获取销售最多的商品数据显示图表 -->

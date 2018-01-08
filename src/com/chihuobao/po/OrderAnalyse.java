@@ -21,20 +21,26 @@ public class OrderAnalyse implements Serializable{
 	private String todate;    //扩展属性：始时间
 	
 	
-	private Integer id;
-	private String shopName;
-	private String shopStyleName;
-	private String goodsName;
-	private String goodsStyleName;
-	private Integer total;
-	private Date createTime;
-	private Double goodsMoney;
-	private Double totalMoney;
+	private Integer id;      //id主键   
+	private String shopName;  //商店名称
+	private String shopStyleName;  //商家类型
+	private String goodsName;   //商品名
+	private String goodsStyleName;  //商品类型名
+	private Integer total;        //数量
+	private Date createTime;      //创建时间
+	private Double goodsMoney;    //商品价格
+	private Double totalMoney;    //总金额
+	
+	private Date payTime;        //付款时间
 	
 	
 	
-	
-	
+	public Date getPayTime() {
+		return payTime;
+	}
+	public void setPayTime(Date payTime) {
+		this.payTime = payTime;
+	}
 	public String getFromdate() {
 		return fromdate;
 	}

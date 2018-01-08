@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.chihuobao.exception.CustomException;
 import com.chihuobao.mapper.user.UserMapper;
 import com.chihuobao.po.Address;
+import com.chihuobao.po.Manager;
 import com.chihuobao.po.User;
 import com.chihuobao.service.user.UserService;
 import com.chihuobao.util.MessageVerification;
@@ -183,6 +184,7 @@ public class UserServiceImpl implements UserService {
 		if(address.getUserid()==null){
 			throw new CustomException("用户未登陆！");
 		}
+		userMapper.emptyAddressState(address);
 		userMapper.addAddress(address);	
 	}
 
@@ -200,5 +202,15 @@ public class UserServiceImpl implements UserService {
 			throw new CustomException("修改地址异常！");
 		}
 		userMapper.updateAddress(address);
+	}
+
+	//管理员登陆
+	public Manager findManagerByName(Manager managerVo) throws Exception {
+		if(managerVo==null||managerVo.getUsername()==null||managerVo.getUsername()==""
+				||managerVo.getPassword()==null||managerVo.getPassword()==""){
+			throw new CustomException("输入的用户名或密码有问题，管理员登陆失败！");
+		}
+		Manager manager=userMapper.findManagerByName(managerVo);
+		return manager;
 	}
 }

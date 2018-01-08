@@ -24,7 +24,9 @@ public class Message implements Serializable{
 		return content;
 	}
 	public void setContent(String name,String msg) {
-		this.content = new Date().toLocaleString()+":"+msg+"";
+		String time = new Date().toLocaleString();
+		/*this.content = "<i style='color:red;font-size: 10px'>"+time+":</i><br/><i style='color:#ff7c3d;font-size: 10px'>"+name+":</i><br/>"+msg+"";*/
+		this.content= name+":"+msg;
 	}
 	public String getWelcome() {
 		return welcome;

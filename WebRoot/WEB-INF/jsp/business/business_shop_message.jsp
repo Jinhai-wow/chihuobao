@@ -24,6 +24,7 @@
 	rel="stylesheet">
 <link href="${pageContext.request.contextPath }/css/star-rating.css"
 	rel="stylesheet">
+<link href="${pageContext.request.contextPath }/css/bootstrapValidator.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/normalize.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/animate.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/jquery.gDialog.css">
@@ -34,6 +35,8 @@
 <script src="${pageContext.request.contextPath }/js/jquery.js"></script>
 <script src="${pageContext.request.contextPath }/js/jquery.gDialog.js"></script>
 <script src="${pageContext.request.contextPath }/js/business.js"></script>
+<script src="${pageContext.request.contextPath }/js/bootstrapValidator.js"></script>
+
 </head>
 
 <body>
@@ -174,10 +177,13 @@
 								<div class="form-group">
 									<label for="address" class="col-xs-2 control-label">商店地址</label>
 									<div class="col-xs-5">
-										<input type="text" disabled="true" class="form-control"
-											value="${business.shop.address }"> <input type="text"
-											name="shop.address" class="form-control " id="address"
-											placeholder="在这里输入新地址" value="${business.shop.address }">
+										<input id="newAddress" type="text" name="shop.address" class="form-control"
+											value="${business.shop.address }"> 
+											<div class="input-group">
+											<input type="text" class="form-control " id="address"
+											placeholder="在这里输入新地址" value="">
+										<a class="input-group-addon" id="addAddress" href="javascript:;" onclick="toAddAddress()">确定新地址</a>
+										</div>
 										<div id="searchResultPanel" class="col-xs-5"
 											style="z-index:9999;border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
 									</div>
@@ -326,6 +332,11 @@
 
 </body>
 <script type="text/javascript">
+function toAddAddress(){
+	var toAddAggress = $("#address").val();
+	/* alert(toAddAggress); */
+	$("#newAddress").val(toAddAggress);
+}
 	// 百度地图API功能
 	var map = new BMap.Map("allmap");
 

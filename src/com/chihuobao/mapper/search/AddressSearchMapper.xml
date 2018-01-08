@@ -10,7 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 根据用户经纬度找到附件商家 -->
 	<select id="selectShopByUserPoint" parameterType="com.chihuobao.vo.LngAndLatVo" resultType="com.chihuobao.po.Shop">
 		select * from 
-(select * from shop where longitude &lt; ( #{lng} + #{rangeLng} ) and longitude &gt; ( #{lng} - #{rangeLng} ) ) as lngandid
+(select * from shop where longitude &lt; ( #{lng} + #{rangeLng} ) and longitude &gt; ( #{lng} - #{rangeLng} ) and auditState=1 ) as lngandid
 		where latitude &lt; ( #{lat} + #{rangeLat} ) and latitude &gt; ( #{lat} - #{rangeLat} )
 	</select>
 </mapper>

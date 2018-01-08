@@ -29,6 +29,7 @@ public class ManagerOrderVo implements Serializable{
 	private String userName;  //用户名称
 	private Integer shopId;
 	private String shopName;
+	private String shopService;
 	private String arriveTime;
 	private String deliverMethod;
 	private String userAddress;
@@ -40,6 +41,12 @@ public class ManagerOrderVo implements Serializable{
 	private String remark;
 	private String usercomment;  //用户评论
 	
+	public String getShopService() {
+		return shopService;
+	}
+	public void setShopService(String shopService) {
+		this.shopService = shopService;
+	}
 	private List<Ordergoods> orderGoodsList;
 	
 	private Shop shop;      //商家实体类

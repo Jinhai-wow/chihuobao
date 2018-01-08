@@ -72,8 +72,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="new-msg">
 			<div class="alert alert-info" role="alert">
 				<p class="center-msg">
-					<strong>HiHi</strong>
-					测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+				
 				</p>
 			</div>
 		</div>
@@ -244,21 +243,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	              success: function (result) {
 	                  //跳转页面 location.replace("pageJump.action");
 	                if(result == []){
-	                	alert("请先选定需要配送到的地址");
+	                	alertBox("请先选定需要配送到的地址","");
 	                }
 					if(result != []){
 					  localStorage.setItem("searchShopsAndGoodsList", JSON.stringify(result));
 	                  self.location = "jumpToSearchResultPage.action";
 					}
 	              },error: function (XMLResponse) {
-	                  alert("内部错误");
+	                  /* alert("内部错误"); */
 	              }
 	          });
 		  }
-      })
-      
-         
-      	//监控键盘输入
+      })  
+    //监控键盘输入
     $(document).on("keydown",function (event) {
         event = event || window.event;
 
@@ -268,10 +265,80 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             $searchBtn[0].click();
             return false;
         }
-    })
-      
+    })  
+    
+    /*<div class="msg-box"><!-- msg-box 只用来定位-->
+		<div class="new-msg">
+			<div class="alert alert-info" role="alert">
+				<p class="center-msg">
+					<strong>HiHi</strong>
+					3666
+				</p>
+			</div>
+		</div>
+	</div>*/
+	//显示还是隐藏就控制这里的display
+	var $newMsg = $(".msg-box .new-msg");
+	//获取存放通知的位置
+	var putMsg = $(".msg-box .center-msg")[0];
+	//获取通知内容
+	var getNotice = "";
+	//装置旧的通知
+	var oldNotice = "";
+	setInterval (checkNotice, 5000);
+	//定时检测是否有传来的消息
+	function checkNotice(){
+		if(getNotice != "" && getNotice != oldNotice){
+			oldNotice = getNotice;
+			putMsg.innerHTML = getNotice;
+			$newMsg.css({display:"block"});
+			setTimeout(function(){
+				getNotice="";
+				$newMsg.css({display:"none"});
+			},60000);
+		}
+	}
+	
+	var userbroadname='${user.user.phone}';
+    /* alert(userbroadname); */
+    var ws;  // 管理登陆，退出，用户列表的 socket
+
+
+	ws_init()
+    function  ws_init(){
+		var target="ws://localhost:8080/CHB/broadcast?username="+userbroadname;
+		
+		if ('WebSocket' in window) {
+			ws = new WebSocket(target);
+		} else if ('MozWebSocket' in window) {
+			ws = new MozWebSocket(target);
+		} else {
+			alertBox('WebSocket is not supported by this browser.','');
+			return;
+		}
+	             
+		ws.onopen=function(){
+/* 			alert("进入了");	 */
+		};
+	   		   
+		window.onbeforeunload=function(){
+			ws.close();
+		}
+	   		  
+		ws.onmessage=function(event){
+			eval("var msg="+event.data+";"); 
+			if(msg.content!=undefined){
+				console.log(msg.content);
+				getNotice = msg.content;
+			}	 
+		} 	 
+   	}
+    
   })
-			
+
+
+	
+
 </script>
   </body>
 </html>

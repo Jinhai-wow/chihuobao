@@ -43,11 +43,25 @@ public class ManagerMessageServiceImpl implements ManagerMessageService {
 		storerMessage.setMessageDate(date);
 		mMessageMapper.saveStorerMessage(storerMessage);
 	}
+	
+	//用户根据该id查找属于它的消息大小
+	public List<UserMessage> selectMessageSizeByUserId(Integer userId) {
+		List<UserMessage> userMessage=mMessageMapper.selectMessageByUserId(userId);
+		//消息置为已读
+		return userMessage;
+	}
 
-	@Override
+	//用户根据该id查找属于它的消息
 	public List<UserMessage> selectMessageByUserId(Integer userId) {
-		
-		return mMessageMapper.selectMessageByUserId(userId);
+		List<UserMessage> userMessage=mMessageMapper.selectMessageByUserId(userId);
+		//消息置为已读
+		try {
+			mMessageMapper.updateMessageTypeByUserId(userId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return userMessage;
 	}
 
 	//商家根据该id查找属于它的消息

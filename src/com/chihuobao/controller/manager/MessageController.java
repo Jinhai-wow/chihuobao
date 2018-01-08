@@ -33,6 +33,14 @@ public class MessageController {
 	
 	StorerMessage storerMessage = new StorerMessage(); //商家消息实体类
 	
+	//用户根据该id查找属于它的消息大小
+	@RequestMapping(value="/selectMessageSizeByUserId.action")
+	public @ResponseBody List<UserMessage> selectMessageSizeByUserId(Integer userId){
+			
+		List<UserMessage> userMessageList = mMessageService.selectMessageSizeByUserId(userId);
+		return userMessageList;
+	}
+	
 	//用户根据该id查找属于它的消息
 	@RequestMapping(value="/selectMessageByUserId.action")
 	public @ResponseBody List<UserMessage> selectMessageByUserId(Integer userId){

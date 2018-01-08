@@ -99,7 +99,7 @@
 				<h4 class="sub-header">我的消息</h4>
 				<ul class="nav nav-sidebar">
 					<li><a
-						href="${pageContext.request.contextPath }/getUserComment.action">用户评论<span
+						href="${pageContext.request.contextPath }/userComment.action?shopId=${business.shop.id}">用户评论<span
 							class="badge"></span></a></li>
 					<li class="active"><a
 						href="${pageContext.request.contextPath }/getSysMsg.action">系统消息</a></li>
@@ -146,16 +146,16 @@
 					</div>
 					<c:forEach items="${sysMsgs}" var="sysMsg">
 						<c:choose>
-							<c:when test="${sysMsg.infomation == ''}">
+							<c:when test="${'' eq sysMsg.message}">
 								<div class="panel panel-default">暂无消息......</div>
 							</c:when>
 							<c:otherwise>
 								<div class="row info-con">
 									<div class="col-xs-12">
-										<h5>系统消息</h5>
-										<div class="message-con">${sysMsg.infomation }</div>
+										<h5 style="border-bottom: 1px solid #ccc">系统消息</h5>
+										<div class="message-con">${sysMsg.message }</div>
 										<span class="col-xs-11"> <fmt:formatDate
-												value="${sysMsg.infoDate}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
+												value="${sysMsg.messageDate}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
 										<a href="" class="btn btn-primary btn-xs col-xs-1"
 											data-toggle="modal" data-target="#replyModal">回复</a>
 									</div>
@@ -171,7 +171,7 @@
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal"
 										aria-hidden="true">&times;</button>
-									<h4 class="modal-title" id="feedbackModalLabel">请输入反馈信息</h4>
+									<h4 class="modal-title" id="feedbackModalLabel">请输入回复信息</h4>
 								</div>
 								<form class="form-horizontal" role="form"
 									action="${pageContext.request.contextPath }/feedbackToSys.action"
